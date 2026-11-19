@@ -21,6 +21,7 @@ const labels={openingInventory:"Opening Inventory",purchases:"Purchases",closing
 function calculate(id,raw,context){
  const d=definitions[id];if(!d)return {ok:false,status:"not-supported",messages:["Unknown KPI identifier."]};
  const v={},messages=[];
+ if(id==="sales-mix")v.mode=raw.mode;
  const fields=id==="sales-mix"?(raw.mode==="unit"?["itemUnits","totalUnits"]:raw.mode==="revenue"?["itemNetSales","totalNetSales"]:[]):d.fields;
  if(id==="sales-mix"&&!raw.mode)messages.push("Select and label Sales Mix as Unit Mix or Revenue Mix.");
  for(const key of fields){
