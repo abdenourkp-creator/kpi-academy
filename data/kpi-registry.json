@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "source": "KPI Academy — Product Decisions & KPI Registry",
+  "kpis": [
+    {
+      "id": "food-cost",
+      "name": "Food Cost %",
+      "formula": "Food COGS ÷ Food Net Sales × 100",
+      "inputs": [
+        "openingInventory",
+        "purchases",
+        "closingInventory",
+        "netSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and outlet scope",
+      "assumptions": [
+        "Food inventory and purchases use the same valuation basis.",
+        "Transfers and adjustments are recorded separately."
+      ]
+    },
+    {
+      "id": "beverage-cost",
+      "name": "Beverage Cost %",
+      "formula": "Beverage COGS ÷ Beverage Net Sales × 100",
+      "inputs": [
+        "openingInventory",
+        "purchases",
+        "closingInventory",
+        "netSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and outlet scope",
+      "assumptions": [
+        "Beverage inventory and purchases use the same valuation basis.",
+        "Transfers and adjustments are recorded separately."
+      ]
+    },
+    {
+      "id": "cogs",
+      "name": "COGS",
+      "formula": "Opening Inventory + Purchases − Closing Inventory",
+      "inputs": [
+        "openingInventory",
+        "purchases",
+        "closingInventory"
+      ],
+      "unit": "Currency",
+      "period": "Same inventory valuation basis and reporting period",
+      "assumptions": [
+        "Transfers and adjustments must be separately recorded."
+      ]
+    },
+    {
+      "id": "gross-profit",
+      "name": "Gross Profit",
+      "formula": "Net Sales − COGS",
+      "inputs": [
+        "netSales",
+        "cogs"
+      ],
+      "unit": "Currency",
+      "period": "Matching reporting period and scope",
+      "assumptions": []
+    },
+    {
+      "id": "gross-profit-margin",
+      "name": "Gross Profit Margin %",
+      "formula": "Gross Profit ÷ Net Sales × 100",
+      "inputs": [
+        "grossProfit",
+        "netSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and scope",
+      "assumptions": []
+    },
+    {
+      "id": "labor-cost",
+      "name": "Labor Cost %",
+      "formula": "Included Labor Cost ÷ Net Sales × 100",
+      "inputs": [
+        "includedLaborCost",
+        "netSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and scope",
+      "assumptions": [
+        "Included wages, overtime, benefits and employer costs must follow outlet policy."
+      ]
+    },
+    {
+      "id": "prime-cost",
+      "name": "Prime Cost",
+      "formula": "COGS + Included Labor Cost",
+      "inputs": [
+        "cogs",
+        "includedLaborCost"
+      ],
+      "unit": "Currency",
+      "period": "Matching reporting period and scope",
+      "assumptions": [
+        "Use the same COGS and labor definitions as component KPIs."
+      ]
+    },
+    {
+      "id": "prime-cost-percent",
+      "name": "Prime Cost %",
+      "formula": "Prime Cost ÷ Net Sales × 100",
+      "inputs": [
+        "primeCost",
+        "netSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and scope",
+      "assumptions": []
+    },
+    {
+      "id": "average-check",
+      "name": "Average Check",
+      "formula": "Net Sales ÷ Number of Checks",
+      "inputs": [
+        "netSales",
+        "numberOfChecks"
+      ],
+      "unit": "Currency / check",
+      "period": "Same reporting period and outlet scope",
+      "assumptions": [
+        "Use a consistent check-count definition; do not substitute covers."
+      ]
+    },
+    {
+      "id": "sales-mix",
+      "name": "Sales Mix %",
+      "formula": "Unit Mix = Item Units ÷ Total Units × 100; Revenue Mix = Item Net Sales ÷ Total Net Sales × 100",
+      "inputs": [
+        "mode",
+        "itemUnits",
+        "totalUnits",
+        "itemNetSales",
+        "totalNetSales"
+      ],
+      "unit": "%",
+      "period": "Matching reporting period and scope",
+      "assumptions": [
+        "The mode must be explicitly selected and labeled as Unit Mix or Revenue Mix."
+      ]
+    },
+    {
+      "id": "contribution-margin",
+      "name": "Contribution Margin",
+      "formula": "Selling Price − Variable Cost",
+      "inputs": [
+        "sellingPrice",
+        "variableCost"
+      ],
+      "unit": "Currency / unit",
+      "period": "Same unit, currency and variable-cost basis",
+      "assumptions": []
+    },
+    {
+      "id": "break-even-sales",
+      "name": "Break-even Sales",
+      "formula": "Fixed Costs ÷ Contribution Margin Ratio; CM Ratio = Total Contribution Margin ÷ Net Sales",
+      "inputs": [
+        "fixedCosts",
+        "totalContributionMargin",
+        "netSales"
+      ],
+      "unit": "Currency",
+      "period": "Matching reporting period and sales-mix assumptions",
+      "assumptions": [
+        "Contribution-margin ratio must be positive and non-zero."
+      ]
+    },
+    {
+      "id": "inventory-turnover",
+      "name": "Inventory Turnover",
+      "formula": "Period COGS ÷ Average Inventory; Average Inventory = (Opening + Closing) ÷ 2",
+      "inputs": [
+        "periodCogs",
+        "openingInventory",
+        "closingInventory"
+      ],
+      "unit": "Times per period",
+      "period": "Same reporting period and valuation basis",
+      "assumptions": [
+        "Use a documented daily/monthly average instead when supplied."
+      ]
+    },
+    {
+      "id": "waste",
+      "name": "Waste %",
+      "formula": "Recorded Waste Cost ÷ Food & Beverage COGS × 100",
+      "inputs": [
+        "recordedWasteCost",
+        "foodBeverageCogs"
+      ],
+      "unit": "%",
+      "period": "Same reporting period and scope",
+      "assumptions": [
+        "KPI Academy internal denominator; not a universal industry definition."
+      ]
+    },
+    {
+      "id": "revpash",
+      "name": "RevPASH",
+      "formula": "Net F&B Revenue ÷ Available Seat Hours; Seat Hours = Available Seats × Operating Hours",
+      "inputs": [
+        "netFandbRevenue",
+        "availableSeats",
+        "operatingHours"
+      ],
+      "unit": "Currency / available seat hour",
+      "period": "Same outlet and reporting period",
+      "assumptions": [
+        "Adjust for seats or time unavailable during operations."
+      ]
+    }
+  ]
+}
