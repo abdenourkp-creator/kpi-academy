@@ -29,6 +29,7 @@ const invalid=[
 ["cogs",{openingInventory:"",purchases:10,closingInventory:5},"invalid-input"],
 ["cogs",{openingInventory:"abc",purchases:10,closingInventory:5},"invalid-input"],
 ["cogs",{openingInventory:-1,purchases:10,closingInventory:5},"invalid-input"],
+["cogs",{openingInventory:1,purchases:1,closingInventory:3},"invalid-input"],
 ["food-cost",{openingInventory:1,purchases:1,closingInventory:3,netSales:10},"invalid-input"],
 ["gross-profit-margin",{grossProfit:10,netSales:0},"not-calculable"],
 ["average-check",{netSales:100,numberOfChecks:0},"not-calculable"],
