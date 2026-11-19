@@ -26,7 +26,7 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [x] Lesson list and in-app reader (first-pass Markdown rendering)
 - [ ] Browser runtime and visual QA
 - [ ] RTL/LTR and mobile accessibility QA
-- [ ] Deterministic 15-KPI calculation engine and tests
+- [x] Deterministic 15-KPI calculation engine and test source (16 calculation cases + 12 validation cases; runtime execution pending)
 - [ ] Hospitality Accounting detailed curriculum
 - [ ] Restaurant KPIs detailed curriculum
 - [ ] Eight chapter assessments and final practical exam
@@ -35,4 +35,4 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [ ] Admin content panel
 - [ ] Deployment
 
-The application must not claim features as implemented until they are built and tested. All current work is on the development branch; the main branch has not been modified.
+The application must not claim features as implemented until they are built and tested. Implementation work is isolated on `implementation/kpi-academy-mvp`. The main branch's affected CSS file content was restored after an accidental update; its Git history retains the update and rollback commits. No further main-branch writes are permitted.
