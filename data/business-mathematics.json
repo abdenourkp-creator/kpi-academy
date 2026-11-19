@@ -1,0 +1,249 @@
+{
+  "moduleId": "business-mathematics",
+  "level": "Foundation",
+  "source": "KPI Academy Notion lesson pages",
+  "lessonCount": 32,
+  "availableXpPerLesson": 90,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Numerical Foundations",
+      "lessons": [
+        {
+          "code": "BM-001",
+          "title": "Understanding Numbers",
+          "sourcePath": "content/business-mathematics/lessons/BM-001.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-002",
+          "title": "Arithmetic Operations",
+          "sourcePath": "content/business-mathematics/lessons/BM-002.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-003",
+          "title": "Order of Operations",
+          "sourcePath": "content/business-mathematics/lessons/BM-003.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-004",
+          "title": "Rounding & Precision",
+          "sourcePath": "content/business-mathematics/lessons/BM-004.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Percentages & Percentage Change",
+      "lessons": [
+        {
+          "code": "BM-005",
+          "title": "Understanding Percentages",
+          "sourcePath": "content/business-mathematics/lessons/BM-005.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-006",
+          "title": "Calculating Percentages",
+          "sourcePath": "content/business-mathematics/lessons/BM-006.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-007",
+          "title": "Finding the Original Value",
+          "sourcePath": "content/business-mathematics/lessons/BM-007.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-008",
+          "title": "Percentage Increase & Decrease",
+          "sourcePath": "content/business-mathematics/lessons/BM-008.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-009",
+          "title": "Percentage Points vs Percentage Change",
+          "sourcePath": "content/business-mathematics/lessons/BM-009.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Ratios & Proportions",
+      "lessons": [
+        {
+          "code": "BM-010",
+          "title": "Understanding Ratios",
+          "sourcePath": "content/business-mathematics/lessons/BM-010.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-011",
+          "title": "Simplifying Ratios",
+          "sourcePath": "content/business-mathematics/lessons/BM-011.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-012",
+          "title": "Proportions & Cross Multiplication",
+          "sourcePath": "content/business-mathematics/lessons/BM-012.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-013",
+          "title": "Business Resource Allocation",
+          "sourcePath": "content/business-mathematics/lessons/BM-013.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Averages & Weighted Averages",
+      "lessons": [
+        {
+          "code": "BM-014",
+          "title": "Arithmetic Mean",
+          "sourcePath": "content/business-mathematics/lessons/BM-014.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-015",
+          "title": "Understanding Weighted Average",
+          "sourcePath": "content/business-mathematics/lessons/BM-015.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-016",
+          "title": "Average Check & Sales Averages",
+          "sourcePath": "content/business-mathematics/lessons/BM-016.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-017",
+          "title": "Interpreting Business Averages",
+          "sourcePath": "content/business-mathematics/lessons/BM-017.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Business Equations",
+      "lessons": [
+        {
+          "code": "BM-018",
+          "title": "Understanding Variables",
+          "sourcePath": "content/business-mathematics/lessons/BM-018.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-019",
+          "title": "Solving Basic Equations",
+          "sourcePath": "content/business-mathematics/lessons/BM-019.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-020",
+          "title": "Rearranging Formulas",
+          "sourcePath": "content/business-mathematics/lessons/BM-020.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-021",
+          "title": "Finding Missing Business Values",
+          "sourcePath": "content/business-mathematics/lessons/BM-021.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Variance Analysis",
+      "lessons": [
+        {
+          "code": "BM-022",
+          "title": "Understanding Variance",
+          "sourcePath": "content/business-mathematics/lessons/BM-022.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-023",
+          "title": "Absolute Variance",
+          "sourcePath": "content/business-mathematics/lessons/BM-023.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-024",
+          "title": "Variance Percentage",
+          "sourcePath": "content/business-mathematics/lessons/BM-024.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-025",
+          "title": "Favorable vs Unfavorable",
+          "sourcePath": "content/business-mathematics/lessons/BM-025.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Units, Rates & Productivity",
+      "lessons": [
+        {
+          "code": "BM-026",
+          "title": "Units of Measurement",
+          "sourcePath": "content/business-mathematics/lessons/BM-026.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-027",
+          "title": "Rates & Ratios Over Time",
+          "sourcePath": "content/business-mathematics/lessons/BM-027.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-028",
+          "title": "Productivity Calculations",
+          "sourcePath": "content/business-mathematics/lessons/BM-028.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-029",
+          "title": "Capacity & Utilization",
+          "sourcePath": "content/business-mathematics/lessons/BM-029.md",
+          "availableXp": 90
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Tables, Data & Business Interpretation",
+      "lessons": [
+        {
+          "code": "BM-030",
+          "title": "Reading Business Tables",
+          "sourcePath": "content/business-mathematics/lessons/BM-030.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-031",
+          "title": "Understanding Trends & Charts",
+          "sourcePath": "content/business-mathematics/lessons/BM-031.md",
+          "availableXp": 90
+        },
+        {
+          "code": "BM-032",
+          "title": "From Numbers to Decisions",
+          "sourcePath": "content/business-mathematics/lessons/BM-032.md",
+          "availableXp": 90
+        }
+      ]
+    }
+  ]
+}
