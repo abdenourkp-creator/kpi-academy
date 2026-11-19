@@ -1,0 +1,44 @@
+[
+  {
+    "id":"business-mathematics",
+    "code":"MODULE 01",
+    "title":"Business Mathematics",
+    "icon":"∑",
+    "description":"الأساس الحسابي والتحليلي لاتخاذ قرارات تجارية دقيقة في بيئة الضيافة.",
+    "status":"foundation",
+    "statusLabel":"Foundation · 8 فصول · 32 درساً",
+    "outcomes":["العمليات الحسابية التجارية","النسب والتغيرات المئوية","النسب والمتوسطات المرجحة","المعادلات وتحليل الانحرافات","الوحدات والإنتاجية","قراءة البيانات واتخاذ القرار"],
+    "chapters":[
+      {"title":"Numerical Foundations","description":"فهم الأعداد والعمليات الحسابية وترتيبها والتقريب والدقة.","lessonCount":4},
+      {"title":"Percentages & Percentage Change","description":"النسب المئوية، حسابها، القيمة الأصلية، الزيادة والنقصان، والنقاط المئوية.","lessonCount":5},
+      {"title":"Ratios & Proportions","description":"فهم النسب وتبسيطها والتناسب والتخصيص التجاري للموارد.","lessonCount":4},
+      {"title":"Averages & Weighted Averages","description":"المتوسط الحسابي والمتوسط المرجح ومتوسط الفاتورة وقراءة المتوسطات.","lessonCount":4},
+      {"title":"Business Equations","description":"المتغيرات وحل المعادلات وإعادة ترتيب الصيغ وإيجاد القيم المفقودة.","lessonCount":4},
+      {"title":"Variance Analysis","description":"فهم الانحرافات وحساب الانحراف المطلق والنسبي وتفسير favorable/unfavorable.","lessonCount":4},
+      {"title":"Units, Rates & Productivity","description":"وحدات القياس والمعدلات والإنتاجية والسعة ومعدل الاستخدام.","lessonCount":4},
+      {"title":"Tables, Data & Business Interpretation","description":"قراءة الجداول والاتجاهات والرسوم وتحويل الأرقام إلى قرارات.","lessonCount":3}
+    ]
+  },
+  {
+    "id":"hospitality-accounting",
+    "code":"MODULE 02",
+    "title":"Hospitality Accounting",
+    "icon":"▤",
+    "description":"فهم اللغة المالية للضيافة: الإيرادات والمصروفات والتكلفة والربح وقائمة الأرباح والخسائر.",
+    "status":"planned",
+    "statusLabel":"المحتوى التفصيلي قيد الإعداد",
+    "outcomes":["Revenue & Expenses","COGS","Gross Profit","Net Profit","Profit & Loss literacy"],
+    "chapters":[]
+  },
+  {
+    "id":"restaurant-kpis",
+    "code":"MODULE 03",
+    "title":"Restaurant KPIs",
+    "icon":"▥",
+    "description":"قراءة مؤشرات الأداء وربطها بالتكلفة والمبيعات والعمالة والمخزون وإنتاجية المقاعد.",
+    "status":"planned",
+    "statusLabel":"المحتوى التفصيلي قيد الإعداد",
+    "outcomes":["Cost & Profitability","Labor & Prime Cost","Sales Performance","Inventory & Waste","Seat Productivity"],
+    "chapters":[]
+  }
+]
