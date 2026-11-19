@@ -36,6 +36,11 @@ function calculate(id,raw,context){
  if(["food-cost","beverage-cost","gross-profit-margin","labor-cost","prime-cost-percent","average-check"].includes(id)&&v.netSales===0)return {ok:false,status:"not-calculable",messages:["Net Sales is zero; division by zero is not permitted."]};
  if(id==="sales-mix"&&((raw.mode==="unit"&&v.totalUnits===0)||(raw.mode==="revenue"&&v.totalNetSales===0)))return {ok:false,status:"not-calculable",messages:["Selected Sales Mix denominator is zero."]};
  if(id==="average-check"&&v.numberOfChecks===0)return {ok:false,status:"not-calculable",messages:["Number of Checks is zero."]};
+ if(["food-cost","beverage-cost"].includes(id)&&(v.openingInventory+v.purchases-v.closingInventory)<0)return {ok:false,status:"invalid-input",messages:["Derived COGS is negative; verify inventory valuation, purchases, transfers and adjustments."]};
+ if(id==="break-even-sales"&&v.netSales===0)return {ok:false,status:"not-calculable",messages:["Net Sales is zero; the contribution-margin ratio cannot be calculated."]};
+ if(id==="sales-mix"&&raw.mode==="unit"&&v.itemUnits>v.totalUnits)return {ok:false,status:"invalid-input",messages:["Item Units cannot exceed Total Units for this Unit Mix calculation."]};
+ if(id==="sales-mix"&&raw.mode==="revenue"&&v.itemNetSales>v.totalNetSales)return {ok:false,status:"invalid-input",messages:["Item Net Sales cannot exceed Total Net Sales for this Revenue Mix calculation."]};
+
  if(id==="waste"&&v.foodBeverageCogs===0)return {ok:false,status:"not-calculable",messages:["Food & Beverage COGS denominator is zero."]};
  if(id==="revpash"&&(v.availableSeats===0||v.operatingHours===0))return {ok:false,status:"not-calculable",messages:["Available Seat Hours must be greater than zero."]};
  if(id==="inventory-turnover"&&(v.openingInventory+v.closingInventory)===0)return {ok:false,status:"not-calculable",messages:["Average Inventory is zero."]};
