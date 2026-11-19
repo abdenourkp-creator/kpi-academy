@@ -43,7 +43,7 @@ async function init(){
  const root=el("app");if(!root)return;
  document.addEventListener("change",e=>{if(e.target.id==="kpiSelect"){renderInputs();el("calcResult").innerHTML='<div class="result-empty">∑<h2>النتيجة ستظهر هنا</h2><p>أكمل المدخلات المطلوبة ثم نفّذ الحساب.</p></div>';}if(e.target.id==="salesMode"){const value=e.target.value;renderInputs();const select=el("salesMode");if(select)select.value=value;}});
  document.addEventListener("submit",e=>{if(e.target.id!=="kpiForm")return;e.preventDefault();const form=new FormData(e.target),id=el("kpiSelect").value,raw={};for(const [key,value] of form.entries())if(!["period","scope","currency"].includes(key))raw[key]=value;if(id==="sales-mix")raw.mode=el("salesMode").value;const result=window.KPIEngine.calculate(id,raw,{period:form.get("period"),scope:form.get("scope"),currency:form.get("currency")});showResult(result);});
- window.calculatorView=calculatorView;
+ window.calculatorView=calculatorView;if(location.hash==="#calculator")window.dispatchEvent(new Event("hashchange"));
  }catch(e){console.error(e);}
 }
 init();
