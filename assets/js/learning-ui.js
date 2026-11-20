@@ -86,6 +86,9 @@
 
   function dashboardSummary() {
     if (!ENGINE) return "";
+    if (!curriculum) {
+      return '<section class="learning-resume"><div><span class="eyebrow">LEARNING ENGINE</span><h3>جارٍ تحميل خريطة الدروس…</h3><p>لن نعرض نسبة إكمال قبل التحقق من بيانات المنهج.</p></div></section>';
+    }
     const data = ENGINE.getDashboard();
     const lessonProgress = pct(data.completedLessons, data.totalLessons);
     const assessmentProgress = pct(data.passedAssessments, data.totalAssessments);
@@ -167,7 +170,10 @@
   function progressView() {
     if (!catalog || !curriculum) {
       loadCatalog();
-      return '<div class="page-heading"><div><span class="eyebrow">ASSESSMENTS & PROGRESS</span><h1>التقييم والتقدم</h1><p>سجل الإنجاز والاختبارات والشهادة.</p></div></div><div class="loading-state">جارٍ تجهيز سجل التعلم…</div>';
+      const message = loadError
+        ? '<div class="empty-card"><h2>تعذر تحميل بيانات التقييم</h2><p>' + esc(loadError) + '</p><button class="primary-action" id="retryLearningCatalog">إعادة المحاولة</button></div>'
+        : '<div class="loading-state">جارٍ تجهيز سجل التعلم…</div>';
+      return '<div class="page-heading"><div><span class="eyebrow">ASSESSMENTS & PROGRESS</span><h1>التقييم والتقدم</h1><p>سجل الإنجاز والاختبارات والشهادة.</p></div></div>' + message;
     }
     const data = ENGINE.getDashboard();
     const certificate = ENGINE.getCertificateEligibility();
@@ -307,8 +313,18 @@
 
   function mountProgressActions() {
     bindProgressActions();
-    document.querySelectorAll(".assessment-open").forEach(link => {
-      link.addEventListener("click", () => {});
+    const retry = document.getElementById("retryLearningCatalog");
+    if (retry) retry.addEventListener("click", () => {
+      loadPromise = null;
+      loadError = null;
+      retry.disabled = true;
+      retry.textContent = "جارٍ إعادة التحميل…";
+      loadCatalog().then(ok => {
+        if (!ok && retry.isConnected) {
+          retry.disabled = false;
+          retry.textContent = "إعادة المحاولة";
+        }
+      });
     });
   }
 
