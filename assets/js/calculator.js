@@ -15,7 +15,7 @@ const configs={
 "waste":["recordedWasteCost","foodBeverageCogs"],"revpash":["netFandbRevenue","availableSeats","operatingHours"]};
 let registry=[];
 const el=id=>document.getElementById(id);
-function escapeHtml(value){return String(value??"").replace(/[&<>"\']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[char]));}
+function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function input(key){const f=fieldDefs[key];return '<label class="calc-field"><span>'+f[1]+' <small>'+f[0]+'</small></span><input type="number" min="0" step="any" name="'+key+'" inputmode="decimal" required placeholder="0.00"></label>';}
 function fieldsFor(id,mode){if(id==="sales-mix")return mode==="unit"?["itemUnits","totalUnits"]:mode==="revenue"?["itemNetSales","totalNetSales"]:[];return configs[id]||[];}
 function calculatorView(){
