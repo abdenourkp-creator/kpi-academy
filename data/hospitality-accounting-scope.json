@@ -1,0 +1,32 @@
+{
+  "moduleId": "hospitality-accounting",
+  "source": "KPI Academy — Product Decisions & KPI Registry; MVP module selection",
+  "curriculumStatus": "scope-defined; chapter and lesson structure not specified in source",
+  "approvedScope": [
+    {
+      "title": "Financial Statements",
+      "description": "التعرّف إلى القوائم المالية بوصفها جزءاً من النطاق المعتمد للوحدة."
+    },
+    {
+      "title": "Revenue",
+      "description": "فهم الإيرادات ضمن اللغة المالية لعمليات الضيافة."
+    },
+    {
+      "title": "Expenses",
+      "description": "فهم المصروفات وعلاقتها بالأداء المالي."
+    },
+    {
+      "title": "Cost of Goods Sold (COGS)",
+      "description": "فهم تكلفة البضاعة المباعة، مع ربطها بتعريفات KPI Academy المعتمدة."
+    },
+    {
+      "title": "Gross Profit",
+      "description": "فهم مجمل الربح بوصفه أحد المفاهيم الأساسية في المحاسبة."
+    },
+    {
+      "title": "Profit & Loss (P&L) Literacy",
+      "description": "بناء القدرة على قراءة قائمة الأرباح والخسائر وفهم لغتها."
+    }
+  ],
+  "curriculumNotice": "هذه قائمة نطاق وليست منهجاً تفصيلياً. لم يحدد المصدر بعد الفصول أو ترتيب الدروس أو أهداف كل درس أو الأنشطة أو الاختبارات أو قواعد XP. ستبقى هذه العناصر غير منشأة حتى اعتماد مخطط المنهج."
+}
