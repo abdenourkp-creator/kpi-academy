@@ -58,22 +58,47 @@ function startServer() {
     assert.match(await page.locator(".learning-resume").textContent(), /BM-001|جارٍ تحميل خريطة الدروس/);
 
     const failurePage = await context.newPage();
+    const recoveryPageErrors = [];
+    failurePage.on("pageerror", error => recoveryPageErrors.push(error.message));
     await failurePage.addInitScript(() => {
       const originalFetch = window.fetch.bind(window);
+      window.__assessmentFetchTrace = { matching: 0, failed: 0, succeeded: 0, urls: [], hash: "" };
       let failOnce = true;
       window.fetch = (input, init) => {
-        const url = String(input);
-        if (failOnce && url.includes("data/assessments/business-mathematics.json")) {
-          failOnce = false;
-          return Promise.reject(new TypeError("simulated assessment catalog network failure"));
+        const url = new URL(typeof input === "string" ? input : input.url, window.location.href);
+        if (url.pathname.endsWith("/data/assessments/business-mathematics.json")) {
+          const trace = window.__assessmentFetchTrace;
+          trace.matching += 1;
+          trace.urls.push(url.href);
+          trace.hash = window.location.hash;
+          if (failOnce) {
+            failOnce = false;
+            trace.failed += 1;
+            return Promise.reject(new TypeError("simulated assessment catalog network failure"));
+          }
+          return originalFetch(input, init).then(response => {
+            trace.succeeded += response.ok ? 1 : 0;
+            return response;
+          });
         }
         return originalFetch(input, init);
       };
     });
     await failurePage.goto("http://127.0.0.1:" + port + "/#progress", { waitUntil: "networkidle" });
     await failurePage.getByRole("heading", { name: "تعذر تحميل بيانات التقييم" }).waitFor();
+    const failedTrace = await failurePage.evaluate(() => window.__assessmentFetchTrace);
+    assert.equal(failedTrace.failed, 1, "the first assessment catalog request must be rejected by the injected failure");
+    assert.equal(failedTrace.matching, 1, "the UI must not silently auto-retry after entering its error state");
+    assert.match(failedTrace.urls[0], /data\/assessments\/business-mathematics\.json$/);
+    assert.equal(failedTrace.hash, "#progress");
+    assert.equal(await failurePage.locator("#retryLearningCatalog").count(), 1);
     await failurePage.locator("#retryLearningCatalog").click();
     await failurePage.waitForFunction(() => document.querySelectorAll(".assessment-card").length === 9);
+    const recoveredTrace = await failurePage.evaluate(() => window.__assessmentFetchTrace);
+    assert.equal(recoveredTrace.matching, 2, "manual retry must issue exactly one subsequent catalog request");
+    assert.equal(recoveredTrace.failed, 1);
+    assert.equal(recoveredTrace.succeeded, 1, "the retry request must receive a successful HTTP response");
+    assert.deepEqual(recoveryPageErrors, [], "catalog failure and recovery must not cause uncaught page errors");
     await failurePage.close();
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
