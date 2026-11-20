@@ -1117,7 +1117,7 @@
           }
         ],
         "correctOption": "B",
-        "sourceLesson": "تحقق من Gross Profit = Net Sales − COGS: سابقاً 140,000، حالياً 145,000.",
+        "sourceLesson": null,
         "explanation": "تحقق من Gross Profit = Net Sales − COGS: سابقاً 140,000، حالياً 145,000."
       },
       {
@@ -1142,7 +1142,7 @@
           }
         ],
         "correctOption": "C",
-        "sourceLesson": "المتوسط المرجح = (10×100 + 30×200) ÷ 40 = 175 MAD.",
+        "sourceLesson": null,
         "explanation": "المتوسط المرجح = (10×100 + 30×200) ÷ 40 = 175 MAD."
       },
       {
@@ -1167,7 +1167,7 @@
           }
         ],
         "correctOption": "A",
-        "sourceLesson": "الفرق المطلق بالنقاط = 2 pp؛ التغير النسبي = 2 ÷ 25 = 8%.",
+        "sourceLesson": null,
         "explanation": "الفرق المطلق بالنقاط = 2 pp؛ التغير النسبي = 2 ÷ 25 = 8%."
       },
       {
@@ -1192,7 +1192,7 @@
           }
         ],
         "correctOption": "B",
-        "sourceLesson": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. ",
+        "sourceLesson": null,
         "explanation": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. "
       },
       {
@@ -1217,7 +1217,7 @@
           }
         ],
         "correctOption": "C",
-        "sourceLesson": "لا تستبدل Missing بقيمة مخمّنة؛ تحقق من المصدر والمقام.",
+        "sourceLesson": null,
         "explanation": "لا تستبدل Missing بقيمة مخمّنة؛ تحقق من المصدر والمقام."
       },
       {
@@ -1242,7 +1242,7 @@
           }
         ],
         "correctOption": "B",
-        "sourceLesson": "المقاعد متاحة 4 ساعات فقط؛ 80 × 4 = 320 seat-hours.",
+        "sourceLesson": null,
         "explanation": "المقاعد متاحة 4 ساعات فقط؛ 80 × 4 = 320 seat-hours."
       },
       {
@@ -1267,7 +1267,7 @@
           }
         ],
         "correctOption": "C",
-        "sourceLesson": "يجب تحليل المؤشرات في سياق موحد وعدم الاعتماد على KPI واحد.",
+        "sourceLesson": null,
         "explanation": "يجب تحليل المؤشرات في سياق موحد وعدم الاعتماد على KPI واحد."
       },
       {
@@ -1292,7 +1292,7 @@
           }
         ],
         "correctOption": "C",
-        "sourceLesson": "Correlation لا يثبت causation؛ ابحث عن أدلة تشغيلية إضافية.",
+        "sourceLesson": null,
         "explanation": "Correlation لا يثبت causation؛ ابحث عن أدلة تشغيلية إضافية."
       },
       {
@@ -1317,7 +1317,7 @@
           }
         ],
         "correctOption": "B",
-        "sourceLesson": "التقرير الجيد يوضح المرجع والفترة والوحدات، ويفصل الوصف عن تفسير السبب.",
+        "sourceLesson": null,
         "explanation": "التقرير الجيد يوضح المرجع والفترة والوحدات، ويفصل الوصف عن تفسير السبب."
       },
       {
@@ -1342,7 +1342,7 @@
           }
         ],
         "correctOption": "B",
-        "sourceLesson": "يجب ربط الإجراء بمسؤول وموعد ومقياس نجاح.",
+        "sourceLesson": null,
         "explanation": "يجب ربط الإجراء بمسؤول وموعد ومقياس نجاح."
       }
     ]
