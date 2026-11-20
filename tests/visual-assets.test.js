@@ -19,11 +19,11 @@ for (const asset of registry.assets) {
   assert.ok(fs.statSync(absolute).size > 100, asset.id + " file must not be empty");
   if (asset.localPath.endsWith(".svg")) {
     const svg = fs.readFileSync(absolute, "utf8");
-    assert.match(svg, /^<svg\\s/);
+    assert.match(svg, /^<svg\s/);
     assert.match(svg, /viewBox=/);
     assert.match(svg, /<title/);
     assert.match(svg, /<desc/);
-    assert.match(svg, /<\\/svg>\\s*$/);
+    assert.match(svg, /<\/svg>\s*$/);
   }
 }
 console.log("Visual asset registry tests passed (" + registry.assets.length + " assets; all local paths and SVG accessibility metadata verified).");
