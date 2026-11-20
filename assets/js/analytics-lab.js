@@ -31,7 +31,7 @@ function series(){return sample.map(calculatePeriod);}
 function chart(metricKey){
  const spec=metrics[metricKey]||metrics.grossProfitMargin,rows=series(),values=rows.map(x=>x[metricKey]),max=Math.max(...values)*1.18||1;
  const bars=rows.map((row,i)=>{const y=42+i*66,w=values[i]/max*340;return '<g><text x="12" y="'+(y+18)+'" text-anchor="start" class="ka-chart-label">'+row.period.replace("Sample Period ","P") +'</text><rect x="130" y="'+y+'" width="340" height="24" rx="6" class="ka-chart-track"/><rect x="130" y="'+y+'" width="'+w.toFixed(2)+'" height="24" rx="6" class="ka-chart-bar"/><text x="'+Math.min(130+w+30,500)+'" y="'+(y+17)+'" class="ka-chart-value">'+spec.format(values[i])+'</text></g>';}).join("");
- return '<svg viewBox="0 0 720 250" role="img" aria-label="'+spec.label+' comparison across three educational sample periods"><line x1="205" y1="25" x2="205" y2="235" class="ka-chart-axis"/>'+bars+'</svg>';
+ return '<svg viewBox="0 0 720 250" role="img" aria-label="'+spec.label+' comparison across three educational sample periods"><line x1="130" y1="25" x2="130" y2="235" class="ka-chart-axis"/>'+bars+'</svg>';
 }
 function table(){
  return series().map(row=>'<tr><th scope="row">'+row.period+'</th><td>'+money(row.netSales)+'</td><td>'+money(row.cogs)+'</td><td>'+money(row.grossProfit)+'</td><td>'+pct(row.grossProfitMargin)+'</td><td>'+pct(row.laborCost)+'</td><td>'+pct(row.primeCostPercent)+'</td></tr>').join("");
