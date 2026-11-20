@@ -27,12 +27,15 @@ async function lessonView(code){
     const markdown=source.replace(/^# .+\n+/, "");
     let lessonContent=markdownHtml(markdown);
     if(code==="BM-005"){
-      const insertionPoint=markdown.indexOf("## 7. Worked Case");
+      const diagramAt=markdown.indexOf("## 7. Worked Case");
+      const labAt=markdown.indexOf("## 9. Common Mistakes");
       const diagramFigure='<figure class="lesson-visual-card"><div class="lesson-visual-copy"><span class="eyebrow">رسم توضيحي · Food Cost</span><h3>كيف تتحول المبيعات والتكلفة إلى نسبة؟</h3><p><strong>هدف التعلم:</strong> تحديد الجزء والمقام الصحيحين قبل تفسير النسبة.</p><p>وفق المثال الأصلي في الدرس: 9,000 MAD Food COGS ÷ 30,000 MAD Food Net Sales = 30%. أي أن كل 100 MAD من صافي مبيعات الطعام تقابلها 30 MAD تكلفة طعام.</p></div><img src="assets/diagrams/restaurant-kpis/food-cost-calculation.svg" alt="مخطط حساب تكلفة الطعام بقسمة Food COGS على Food Net Sales وضرب الناتج في 100"></figure>';
       const labMount='<div id="lessonExperienceMount" aria-label="المختبر التفاعلي"></div>';
-      lessonContent=insertionPoint>=0
-        ?markdownHtml(markdown.slice(0,insertionPoint))+diagramFigure+markdownHtml(markdown.slice(insertionPoint))+labMount
-        :lessonContent+diagramFigure+labMount;
+      if(diagramAt>=0&&labAt>diagramAt){
+        lessonContent=markdownHtml(markdown.slice(0,diagramAt))+diagramFigure+markdownHtml(markdown.slice(diagramAt,labAt))+labMount+markdownHtml(markdown.slice(labAt));
+      }else{
+        lessonContent=markdownHtml(markdown)+diagramFigure+labMount;
+      }
     }
     app.innerHTML=
       '<div class="lesson-toolbar"><a class="text-link" href="#module-business-mathematics">← العودة إلى الفصول</a><span class="tag">'+arLabel(chapter.title)+'</span></div>'+
