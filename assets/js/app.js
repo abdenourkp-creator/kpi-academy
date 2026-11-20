@@ -59,6 +59,18 @@ function markdownHtml(md){
  }
  closeBlocks();return html;
 }
+const lessonVisuals={
+ "BM-009":{path:"assets/diagrams/business-mathematics/percentage-points-vs-change.svg",alt:"مقارنة بين فرق النقاط المئوية والتغير النسبي في مثال تكلفة الطعام من 30% إلى 25%.",title:"نفس النسبتان، لكن سؤالان مختلفان",description:"الفرق المباشر هو −5 نقاط مئوية، أما التغير النسبي مقارنة بالقيمة الأصلية فهو −16.67%.",before:"## 6. Worked Management Case"},
+ "BM-015":{path:"assets/diagrams/business-mathematics/weighted-average.svg",alt:"حساب المتوسط المرجح لمتوسط الفاتورة بين فترتي الغداء والعشاء بحسب عدد الفواتير.",title:"لماذا لا نأخذ متوسط المتوسطين؟",description:"عدد الفواتير هو الوزن: نجمع المبيعات أولاً ثم نقسمها على إجمالي الفواتير، فنحصل على 125 MAD.",before:"## 6. Worked Case — Three Sales Channels"},
+ "BM-020":{path:"assets/diagrams/business-mathematics/formula-rearrangement.svg",alt:"إعادة ترتيب معادلة المبيعات لعزل متوسط الفاتورة.",title:"اعزل المتغير دون كسر العلاقة",description:"من Sales = Checks × Average Check نحصل على Average Check = Sales ÷ Checks.",before:"## 3. Average Check"},
+ "BM-024":{path:"assets/diagrams/business-mathematics/variance-percentage.svg",alt:"مقارنة فرق نقدي قدره 5000 درهم مع مرجعين مختلفين لإظهار نسبتي 25% و2.5%.",title:"القيمة نفسها لا تعني الأثر النسبي نفسه",description:"الفرق النقدي +5,000 MAD يساوي +25% من مرجع 20,000، لكنه +2.5% فقط من مرجع 200,000.",before:"## 4. Worked Examples"},
+ "BM-029":{path:"assets/diagrams/business-mathematics/capacity-utilization.svg",alt:"مقارنة الطاقة المتاحة 160 مقعداً لكل جلسة استخدام مع 120 وحدة مستخدمة ومعدل استغلال 75%.",title:"وحّد وحدة القياس قبل حساب الاستغلال",description:"80 مقعداً × جلستين = 160 seat-seatings؛ استخدام 120 منها يساوي 75%.",before:"## 3. Simple Capacity Example"},
+ "BM-031":{path:"assets/diagrams/business-mathematics/trend-reading.svg",alt:"رسم خطي لمبيعات ثلاثة أشهر مع قائمة تحقق قبل اتخاذ قرار إداري.",title:"الاتجاه إشارة، وليس تفسيراً كاملاً",description:"انخفاض المبيعات لثلاثة أشهر يوضح نمطاً هبوطياً، لكنه لا يثبت السبب قبل فحص الموسمية والسياق ومصدر البيانات.",before:"## 7. Worked Case — Monthly Beverage Sales"}
+};
+function lessonVisualFigure(code){
+ const v=lessonVisuals[code];if(!v)return "";
+ return '<figure class="lesson-visual-card ka-lesson-visual-card"><div class="lesson-visual-copy"><span class="eyebrow">رسم توضيحي · '+code+'</span><h3>'+v.title+'</h3><p>'+v.description+'</p></div><img src="'+v.path+'" alt="'+v.alt+'" loading="lazy"></figure>';
+}
 async function lessonView(code){
   const chapter=businessMath.chapters.find(item=>item.lessons.some(lesson=>lesson.code===code));
   const lesson=chapter&&chapter.lessons.find(item=>item.code===code);
@@ -81,6 +93,12 @@ async function lessonView(code){
       }else{
         lessonContent=markdownHtml(markdown)+diagramFigure+labMount;
       }
+    }else if(lessonVisuals[code]){
+      const visual=lessonVisuals[code];
+      const position=markdown.indexOf(visual.before);
+      const figure=lessonVisualFigure(code);
+      if(position>=0)lessonContent=markdownHtml(markdown.slice(0,position))+figure+markdownHtml(markdown.slice(position));
+      else lessonContent=figure+lessonContent;
     }
     const allLessons=businessMath.chapters.flatMap(item=>item.lessons);
     const lessonIndex=allLessons.findIndex(item=>item.code===code);

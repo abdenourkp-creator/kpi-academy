@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+<title id="title">Rearranging a Business Formula</title><desc id="desc">Sales equals checks multiplied by average check. Divide both sides by checks to isolate average check.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FBF8F0"/><stop offset="1" stop-color="#EEF3F8"/></linearGradient><linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17324D"/><stop offset="1" stop-color="#244F70"/></linearGradient></defs>
+<rect width="960" height="360" rx="24" fill="url(#bg)"/>
+<path d="M0 70H960" stroke="#D8E1E8" stroke-width="1"/>
+<text x="44" y="42" fill="#17324D" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="1.5">REARRANGING A BUSINESS FORMULA</text>
+
+<rect x="60" y="98" width="390" height="172" rx="20" fill="#fff" stroke="#D8E1E8"/><text x="255" y="137" text-anchor="middle" fill="#617487" font-family="Arial" font-size="15" font-weight="700">START WITH THE RELATIONSHIP</text><text x="255" y="207" text-anchor="middle" fill="#17324D" font-family="Arial" font-size="38" font-weight="700">Sales = Checks × Avg Check</text>
+<path d="M470 183H520m-10-10 10 10-10 10" fill="none" stroke="#C69A43" stroke-width="5"/>
+<rect x="540" y="98" width="360" height="172" rx="20" fill="url(#navy)"/><text x="720" y="137" text-anchor="middle" fill="#F6E9C8" font-family="Arial" font-size="15" font-weight="700">ISOLATE THE UNKNOWN</text><text x="720" y="200" text-anchor="middle" fill="#fff" font-family="Arial" font-size="38" font-weight="700">Avg Check = Sales ÷ Checks</text>
+<rect x="60" y="286" width="840" height="30" rx="9" fill="#E7F2EF"/><text x="480" y="307" text-anchor="middle" fill="#286B60" font-family="Arial" font-size="14" font-weight="700">Example: 45,000 MAD ÷ 300 checks = 150 MAD per check</text>
+<text x="916" y="335" text-anchor="end" fill="#6D7D8A" font-family="Arial,sans-serif" font-size="11" letter-spacing="1">KPI ACADEMY · VISUAL LEARNING</text>
+</svg>
