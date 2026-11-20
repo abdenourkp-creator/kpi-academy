@@ -262,12 +262,17 @@
       link.href = url;
       link.download = "kpi-academy-learning-backup.json";
       link.click();
-      URL.revokeObjectURL(url);
+      root.setTimeout(() => URL.revokeObjectURL(url), 1500);
       if (feedback) feedback.textContent = "تم تجهيز نسخة احتياطية للتنزيل.";
     });
     if (importInput) importInput.addEventListener("change", async () => {
       const file = importInput.files && importInput.files[0];
       if (!file) return;
+      const accepted = root.confirm("ستُستبدل بيانات التعلم الحالية بمحتوى النسخة الاحتياطية. هل تريد المتابعة؟");
+      if (!accepted) {
+        importInput.value = "";
+        return;
+      }
       try {
         const text = await file.text();
         const result = ENGINE.importBackup(text);
