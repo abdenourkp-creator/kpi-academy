@@ -132,6 +132,7 @@ function startServer() {
     await page.locator(".lesson-reader").waitFor();
     assert.equal(await page.locator(".lesson-reader").count(), 1, "section navigation must not route away from the active lesson");
     assert.ok(await page.locator(".ka-lesson-section").count() >= 8, "lesson sections must be grouped into semantic reading panels");
+    for (const kind of ["worked", "lab", "mistakes", "challenge", "assessment", "checklist"]) assert.ok(await page.locator(".ka-lesson-section--" + kind).count() > 0, "lesson must style the " + kind + " section distinctly");
     assert.ok(await page.locator(".ka-lesson-navigation a").count() >= 1, "lesson navigation must expose a next or previous lesson link");
     assert.match(await page.locator(".lesson-visual-copy").textContent(), /9,000 MAD.*30,000 MAD.*30%/);
     assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"));
