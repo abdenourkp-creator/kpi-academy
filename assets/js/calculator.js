@@ -15,6 +15,7 @@ const configs={
 "waste":["recordedWasteCost","foodBeverageCogs"],"revpash":["netFandbRevenue","availableSeats","operatingHours"]};
 let registry=[];
 const el=id=>document.getElementById(id);
+function escapeHtml(value){return String(value??"").replace(/[&<>"\']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[char]));}
 function input(key){const f=fieldDefs[key];return '<label class="calc-field"><span>'+f[1]+' <small>'+f[0]+'</small></span><input type="number" min="0" step="any" name="'+key+'" inputmode="decimal" required placeholder="0.00"></label>';}
 function fieldsFor(id,mode){if(id==="sales-mix")return mode==="unit"?["itemUnits","totalUnits"]:mode==="revenue"?["itemNetSales","totalNetSales"]:[];return configs[id]||[];}
 function calculatorView(){
@@ -36,7 +37,7 @@ function showResult(result){
  const box=el("calcResult");
  if(!result.ok){box.innerHTML='<div class="result-error"><span>!</span><h2>تعذر حساب المؤشر</h2><ul>'+result.messages.map(x=>"<li>"+x+"</li>").join("")+'</ul></div>';return;}
  const amount=result.result.toLocaleString("en-US",{maximumFractionDigits:2});
- box.innerHTML='<div class="result-success"><span class="result-label">CALCULATION RESULT</span><h2>'+result.name+'</h2><div class="result-number">'+amount+' <small>'+result.units+'</small></div><div class="result-details"><h3>Formula</h3><p>'+result.formula+'</p><h3>Inputs</h3><dl>'+Object.entries(result.inputs).map(([k,v])=>'<dt>'+((fieldDefs[k]||[k,k])[1])+'</dt><dd>'+v.toLocaleString("en-US")+'</dd>').join("")+'</dl><h3>Reporting context</h3><p>'+result.period+' · '+result.scope+' · '+result.currency+'</p><h3>Assumptions</h3><ul>'+(result.assumptions.length?result.assumptions.map(x=>"<li>"+x+"</li>").join(""):"<li>تم تطبيق تعريف KPI Academy دون افتراض إضافي.</li>")+'</ul></div><p class="result-foot">تم الاحتفاظ بالدقة الكاملة في الحساب؛ التقريب للعرض فقط.</p></div>';
+ box.innerHTML='<div class="result-success"><span class="result-label">CALCULATION RESULT</span><h2>'+result.name+'</h2><div class="result-number">'+amount+' <small>'+result.units+'</small></div><div class="result-details"><h3>Formula</h3><p>'+result.formula+'</p><h3>Inputs</h3><dl>'+Object.entries(result.inputs).map(([k,v])=>'<dt>'+((fieldDefs[k]||[k,k])[1])+'</dt><dd>'+v.toLocaleString("en-US")+'</dd>').join("")+'</dl><h3>Reporting context</h3><p>'+escapeHtml(result.period)+' · '+escapeHtml(result.scope)+' · '+escapeHtml(result.currency)+'</p><h3>Assumptions</h3><ul>'+(result.assumptions.length?result.assumptions.map(x=>"<li>"+x+"</li>").join(""):"<li>تم تطبيق تعريف KPI Academy دون افتراض إضافي.</li>")+'</ul></div><p class="result-foot">تم الاحتفاظ بالدقة الكاملة في الحساب؛ التقريب للعرض فقط.</p></div>';
 }
 async function init(){
  try{const r=await fetch("data/kpi-registry.json");if(!r.ok)throw Error("KPI registry not found");registry=(await r.json()).kpis;

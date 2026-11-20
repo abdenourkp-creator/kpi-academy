@@ -250,6 +250,21 @@ function startServer() {
     await page.waitForFunction(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp === 90);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().passedAssessments), 1);
 
+    await page.goto("http://127.0.0.1:" + port + "/#calculator", { waitUntil: "networkidle" });
+    await page.locator("#kpiForm").waitFor();
+    await page.locator('input[name="period"]').fill("2026-11");
+    const xssPayload = '<img src=x onerror="window.__kpiXss=1">';
+    await page.locator('input[name="scope"]').fill(xssPayload);
+    await page.locator('input[name="openingInventory"]').fill("100");
+    await page.locator('input[name="purchases"]').fill("50");
+    await page.locator('input[name="closingInventory"]').fill("40");
+    await page.locator('#kpiForm button[type="submit"]').click();
+    await page.locator(".result-success").waitFor();
+    assert.equal(await page.locator("#calcResult img").count(), 0, "user-entered report context must not create HTML elements");
+    assert.ok((await page.locator("#calcResult .result-details").textContent()).includes(xssPayload),
+      "report context must be shown as literal text after escaping");
+    assert.equal(await page.evaluate(() => window.__kpiXss || 0), 0, "user-entered report context must not execute script-capable markup");
+
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
     await page.locator(".chapter-progress").waitFor();
