@@ -50,6 +50,9 @@ function startServer() {
     await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
     assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
     await page.locator(".chapter-progress").waitFor();
+    await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
+    await page.locator(".ka-kpi-registry-list").waitFor();
+    assert.equal(await page.locator(".ka-kpi-registry-item").count(), 15, "Restaurant KPIs module must render the exact approved registry, not invented curriculum");
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
     await page.waitForFunction(() => !!window.KPI_LEARNING_ENGINE && !!window.KPI_LEARNING_UI);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
