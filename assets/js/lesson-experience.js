@@ -140,7 +140,8 @@
   function mount(code, container) {
     if (code !== "BM-005" || !container) return false;
     const checked = Object.create(null);
-    container.innerHTML =
+    function renderMarkup() {
+      container.innerHTML =
       '<section class="lesson-lab" aria-labelledby="lesson-lab-title">' +
         '<div class="le-hero"><div><span class="le-kicker">مختبر تطبيقي · BUSINESS MATHEMATICS</span><h3 id="lesson-lab-title">حوّل النسب إلى قراءة تشغيلية</h3><p>استخدم بيانات المثال نفسها، ثم احسب النسب وافهم ما تقوله وما لا تقوله.</p></div><div class="le-score"><strong data-score>0/5</strong><span>إجابات صحيحة</span></div></div>' +
         '<div class="le-data-grid" aria-label="بيانات الحالة">' +
@@ -155,6 +156,8 @@
         '<div class="le-insight" data-insight role="status" aria-live="polite">ابدأ بالمهمة الأولى. لا تتعجل: حدّد دائماً ما الذي تقيسه، ثم اختر المقام المناسب.</div>' +
         '<div class="le-footer"><p>هذا المختبر تدريب تعليمي داخل الدرس. نتائجه لا تُسجّل كتقييم رسمي، ولا تمنح XP، ولا تستبدل أدلة إكمال الدرس الأربعة.</p><button type="button" class="le-reset-button" data-reset>إعادة المختبر</button></div>' +
       '</section>';
+    }
+    renderMarkup();
 
     function updateProgress() {
       const ids = Object.keys(checked);
@@ -180,7 +183,8 @@
       const reset = event.target.closest("[data-reset]");
       if (reset) {
         Object.keys(checked).forEach(key => delete checked[key]);
-        mount(code, container);
+        renderMarkup();
+        updateProgress();
         return;
       }
 
