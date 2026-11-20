@@ -123,8 +123,19 @@ function startServer() {
     assert.equal(overflow, false, "progress view must not overflow horizontally on a mobile viewport");
     assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
 
+    await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
+    await page.locator("#lessonProgressPanel").waitFor();
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "lesson reader and evidence controls must fit a mobile viewport");
+    assert.equal(await page.locator(".lesson-meta").evaluate(node => getComputedStyle(node).direction), "ltr");
+
+    await page.goto("http://127.0.0.1:" + port + "/#assessment-bm-final-practical", { waitUntil: "networkidle" });
+    await page.locator("#learningAssessmentForm").waitFor();
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "final assessment options must fit a mobile viewport");
+
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
-    console.log("Browser smoke passed: dashboard, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow, and zero uncaught page errors.");
+    console.log("Browser smoke passed: dashboard, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");
     await context.close();
   } catch (error) {
     console.error(error);
