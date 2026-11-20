@@ -1,0 +1,14 @@
+const assert=require("node:assert/strict");
+const store=new Map();
+global.window=global;
+global.localStorage={getItem:key=>store.has(key)?store.get(key):null,setItem:(key,value)=>store.set(key,value)};
+require("../assets/js/study-tools.js");
+const api=global.KPI_STUDY_TOOLS;
+assert.ok(api);
+assert.equal(api.terms.length,15);
+assert.equal(api.dueItems().length,0);
+const widget=api.dashboardWidget();
+assert.match(widget,/مركز المراجعة الشخصية/);
+assert.match(widget,/مراجعة مستحقة/);
+assert.equal(store.has("kpi-academy.learning.v1"),false,"study tools must not modify the official learning engine storage key");
+console.log("Personal study tools passed: glossary catalogue, separate storage namespace and dashboard review summary.");
