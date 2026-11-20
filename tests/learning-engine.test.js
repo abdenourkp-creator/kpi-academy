@@ -55,6 +55,10 @@ function assessment(id, count) {
     }))
   };
 }
+const malformed = assessment("bm-final-practical", 2);
+malformed.questions[0].correctOption = "Z";
+assert.equal(engine.submitAssessment(malformed, {}).ok, false, "unknown answer keys must be rejected");
+
 const sample = assessment("bm-chapter-01", 5);
 const passAnswers = Object.fromEntries(sample.questions.map(q => [q.id, "B"]));
 const failAnswers = Object.fromEntries(sample.questions.map((q, i) => [q.id, i < 3 ? "B" : "A"]));
@@ -113,4 +117,13 @@ assert.equal(engine.getDashboard().courseComplete, true);
 
 engine.resetProgress();
 assert.equal(engine.getDashboard().earnedXp, 0);
-console.log("Learning Engine tests passed: XP evidence gates, no duplicate awards, assessment pass/retake/best/latest, course completion, certificate gate, backup restore, tamper rejection, and local persistence.");
+const retainedStorage = global.localStorage;
+delete global.localStorage;
+engine = loadEngine();
+assert.equal(engine.getStorageStatus().persistent, false, "missing browser storage must be reported");
+const volatileWrite = engine.startLesson("BM-002");
+assert.equal(volatileWrite.ok, true);
+assert.equal(volatileWrite.persisted, false, "volatile progress must never be described as saved");
+global.localStorage = retainedStorage;
+engine = loadEngine();
+console.log("Learning Engine tests passed: evidence-gated and idempotent XP, attempt history/retakes/best/latest, pass thresholds, course/certificate gate, backup validation, reload persistence, and no-storage warning.");
