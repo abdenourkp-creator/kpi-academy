@@ -54,6 +54,25 @@ function startServer() {
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
     assert.equal(await page.locator(".assessment-card").count(), 9);
+    assert.equal(await page.locator(".learning-resume").count(), 1);
+    assert.match(await page.locator(".learning-resume").textContent(), /BM-001|جارٍ تحميل خريطة الدروس/);
+
+    const failurePage = await context.newPage();
+    let failOnce = true;
+    await failurePage.route("**/data/assessments/business-mathematics.json", route => {
+      if (failOnce) {
+        failOnce = false;
+        route.abort();
+      } else {
+        route.continue();
+      }
+    });
+    await failurePage.goto("http://127.0.0.1:" + port + "/#progress", { waitUntil: "networkidle" });
+    await failurePage.getByRole("heading", { name: "تعذر تحميل بيانات التقييم" }).waitFor();
+    await failurePage.unroute("**/data/assessments/business-mathematics.json");
+    await failurePage.locator("#retryLearningCatalog").click();
+    await failurePage.waitForFunction(() => document.querySelectorAll(".assessment-card").length === 9);
+    await failurePage.close();
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
     await page.locator("#lessonProgressPanel").waitFor();
@@ -135,7 +154,7 @@ function startServer() {
       "final assessment options must fit a mobile viewport");
 
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
-    console.log("Browser smoke passed: dashboard, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");
+    console.log("Browser smoke passed: dashboard load state and assessment retry, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");
     await context.close();
   } catch (error) {
     console.error(error);
