@@ -7,7 +7,7 @@ window.KPI_AR_LABEL=arLabel;
 const titles={dashboard:"لوحة التحكم",modules:"الوحدات التعليمية",calculator:"حاسبة المؤشرات",analytics:"مختبر التحليل",simulator:"محاكاة الإدارة",progress:"التقييم والتقدم"};
 let modules=[],businessMath=null,hospitalityAccounting=null,kpiRegistry=null;
 async function loadData(){try{const [m,b,h,k]=await Promise.all([fetch(MODULES_URL),fetch(BM_URL),fetch(HA_URL),fetch(KPI_URL)]);if(!m.ok||!b.ok||!h.ok||!k.ok)throw Error("تعذر تحميل بيانات المنهج والسجل");modules=await m.json();businessMath=await b.json();hospitalityAccounting=await h.json();kpiRegistry=await k.json();render();}catch(e){app.innerHTML='<div class="empty-card"><h2>تعذر تحميل بيانات المنهج</h2><p>تحقق من ملفات البيانات ثم أعد تحميل الصفحة.</p></div>';console.error(e);}}
-function moduleVisual(id){const map={"business-mathematics":["module-business-mathematics.svg","رسم توضيحي للحساب والتحليل التجاري"],"hospitality-accounting":["module-hospitality-accounting.svg","رسم توضيحي لتدفق الإيرادات والتكاليف والربح"],"restaurant-kpis":["module-restaurant-kpis.svg","رسم توضيحي لمؤشرات أداء المطعم"]};const v=map[id];return v?'<div class="ka-module-art"><img src="assets/diagrams/academy/'+v[0]+'" alt="'+v[1]+'" loading="lazy"></div>':"";}
+function moduleVisual(id){const map={"business-mathematics":["module-business-mathematics.svg","رسم توضيحي للحساب والتحليل التجاري"],"hospitality-accounting":["module-hospitality-accounting.svg","رسم توضيحي لتدفق الإيرادات والتكاليف والربح"],"restaurant-kpis":["module-restaurant-kpis.svg","رسم توضيحي لمؤشرات أداء المطعم"]};const v=map[id];return v?'<div class="ka-module-art"><img src="assets/diagrams/academy/'+v[0]+'" alt="'+v[1]+'"></div>':"";}
 function chapterVisual(chapter,compact){
  const n=chapter.number;
  const art=[
