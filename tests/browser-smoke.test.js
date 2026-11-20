@@ -176,6 +176,15 @@ function startServer() {
       "lab reset must restore the initial guidance message");
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
+    await page.locator(".st-panel").waitFor();
+    assert.equal(await page.locator(".st-term").count(), 15, "lesson must expose the foundation glossary");
+    await page.locator("#stGlossarySearch").fill("Food Cost");
+    assert.ok(await page.locator(".st-term:not([hidden])").count() >= 1, "glossary search must filter matching terms");
+    await page.locator("#stGlossarySearch").fill("");
+    await page.locator("#stNote").fill("راجع Part و Whole قبل حساب النسبة.");
+    assert.match(await page.locator("#stNoteStatus").textContent(), /تم حفظ الملاحظة/);
+    await page.locator("#stBookmark").click();
+    assert.equal(await page.locator("#stBookmark").getAttribute("aria-pressed"), "true");
     await page.locator("#lessonProgressPanel").waitFor();
     assert.ok(await page.locator(".ka-formula-block").count() > 0, "standalone formulas must be visually distinguished");
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
