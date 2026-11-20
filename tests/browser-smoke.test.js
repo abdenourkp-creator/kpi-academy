@@ -106,13 +106,25 @@ function startServer() {
     assert.equal(backup.backupTag, "KPI_ACADEMY_LEARNING_BACKUP");
     assert.equal(backup.state.xpTransactions.length, 1);
 
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator("#resetLearningProgress").click();
+    await page.waitForFunction(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp === 0);
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator("#importLearningBackup").setInputFiles({
+      name: "kpi-academy-learning-backup.json",
+      mimeType: "application/json",
+      buffer: fs.readFileSync(backupPath)
+    });
+    await page.waitForFunction(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp === 90);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().passedAssessments), 1);
+
     await page.setViewportSize({ width: 390, height: 844 });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     assert.equal(overflow, false, "progress view must not overflow horizontally on a mobile viewport");
     assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
 
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
-    console.log("Browser smoke passed: dashboard, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export, RTL mobile overflow, and zero uncaught page errors.");
+    console.log("Browser smoke passed: dashboard, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow, and zero uncaught page errors.");
     await context.close();
   } catch (error) {
     console.error(error);
