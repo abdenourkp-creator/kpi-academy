@@ -21,8 +21,8 @@
       "chapterOrLesson": "Food Cost Percentage — exact lesson mapping pending curriculum audit",
       "screen": "KPI explanation section",
       "purpose": "Explain numerator, denominator, multiplication by 100, and interpretation.",
-      "integrationStatus": "REGISTERED_NOT_INTEGRATED",
-      "verificationStatus": "ORIGINAL_SOURCE_CREATED"
+      "integrationStatus": "INTEGRATED_BM-005",
+      "verificationStatus": "INTEGRATION_ADDED_PENDING_CI"
     },
     {
       "id": "VIS-002",
