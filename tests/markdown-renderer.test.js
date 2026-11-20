@@ -42,9 +42,9 @@ assert.match(withoutLtrIsolation(aligned), /<th scope="col">KPI<\/th>/);
 assert.match(aligned, /<td>28%<\/td>/);
 assert.doesNotMatch(aligned, /:---|---:/);
 
-const prose = render("## Business Controls\n\nReview **every invoice** before posting.");
+const prose = render("## Business Controls\n\nReview **every invoice** and *verify precision* before posting `COGS`.");
 assert.match(withoutLtrIsolation(prose), /<h2>Business Controls<\/h2>/);
-assert.match(withoutLtrIsolation(prose), /<strong>every invoice<\/strong>/);
+assert.match(withoutLtrIsolation(prose), /<strong>every invoice<\/strong>/);\nassert.match(withoutLtrIsolation(prose), /<em>verify precision<\/em>/);\nassert.match(withoutLtrIsolation(prose), /<code>COGS<\/code>/);
 
 const lists = render("- First control\n- Second control\n\n1. Verify source\n2. Reconcile POS");
 assert.match(withoutLtrIsolation(lists), /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/);
