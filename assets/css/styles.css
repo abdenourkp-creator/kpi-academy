@@ -173,3 +173,10 @@
  .certificate-panel{align-items:flex-start}
  .certificate-state{font-size:9px}
 }
+
+.learning-resume{display:flex;align-items:center;justify-content:space-between;gap:18px;background:#fff;border:1px solid var(--border);border-radius:13px;padding:16px 19px;margin:12px 0 18px}
+.learning-resume h3{font-size:13px;color:var(--navy);margin:4px 0}
+.learning-resume p{font-size:10px;color:var(--muted);margin:0}
+.learning-resume .primary-action{width:auto;white-space:nowrap;padding:10px 14px;font-size:10px}
+.learning-resume.complete{background:#F8FCF9;border-color:#B9DDCC}
+@media(max-width:600px){.learning-resume{display:block}.learning-resume .primary-action{width:100%;margin-top:12px}}
