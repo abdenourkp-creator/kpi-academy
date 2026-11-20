@@ -1,0 +1,1350 @@
+{
+  "version": "1.0.0",
+  "moduleId": "business-mathematics",
+  "sourceBasis": "KPI Academy Notion Business Mathematics lessons BM-001 through BM-032 and Product Decisions & KPI Registry",
+  "authoringNote": "Chapter questions are derived from lesson assessment questions. Distractor options and the integrated final scenarios are authored for this MVP from the same curriculum concepts. They require academic review before any external accreditation claim.",
+  "passThreshold": 80,
+  "retakes": "unlimited",
+  "scoring": "Equal weight per question; score is rounded to the nearest whole percentage for display.",
+  "xpPolicy": "Assessments award no XP under the current product decision baseline.",
+  "chapterAssessments": [
+    {
+      "id": "bm-chapter-01",
+      "type": "chapter",
+      "chapterNumber": 1,
+      "title": "Chapter 01 — Numerical Foundations",
+      "sourceLessons": "BM-001…BM-004",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch01-q01",
+          "prompt": "في العدد 348.75، ما قيمة الرقم 7؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "0.7"
+            },
+            {
+              "id": "B",
+              "label": "0.07"
+            },
+            {
+              "id": "C",
+              "label": "7"
+            },
+            {
+              "id": "D",
+              "label": "70"
+            }
+          ],
+          "correctOption": "A",
+          "sourceLesson": "BM-001",
+          "explanation": "الرقم 7 في منزلة الأعشار، وقيمته 0.7."
+        },
+        {
+          "id": "ch01-q02",
+          "prompt": "احسب 18 × 85 + 1,140.",
+          "options": [
+            {
+              "id": "A",
+              "label": "2,570"
+            },
+            {
+              "id": "B",
+              "label": "2,670"
+            },
+            {
+              "id": "C",
+              "label": "2,770"
+            },
+            {
+              "id": "D",
+              "label": "2,870"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-002",
+          "explanation": "18 × 85 = 1,530؛ ثم نضيف 1,140 = 2,670."
+        },
+        {
+          "id": "ch01-q03",
+          "prompt": "احسب 48 ÷ 6 × 2 وفق ترتيب العمليات.",
+          "options": [
+            {
+              "id": "A",
+              "label": "4"
+            },
+            {
+              "id": "B",
+              "label": "8"
+            },
+            {
+              "id": "C",
+              "label": "16"
+            },
+            {
+              "id": "D",
+              "label": "24"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-003",
+          "explanation": "للضرب والقسمة الأولوية نفسها، ويحسب من اليسار إلى اليمين."
+        },
+        {
+          "id": "ch01-q04",
+          "prompt": "ما ناتج Truncation للعدد 8.789 إلى منزلتين عشريتين؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "8.79"
+            },
+            {
+              "id": "B",
+              "label": "8.78"
+            },
+            {
+              "id": "C",
+              "label": "8.80"
+            },
+            {
+              "id": "D",
+              "label": "8.70"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-004",
+          "explanation": "Truncation يحذف ما بعد المنزلتين دون تقريب."
+        },
+        {
+          "id": "ch01-q05",
+          "prompt": "2 kg + 500 g يساوي:",
+          "options": [
+            {
+              "id": "A",
+              "label": "2.05 kg"
+            },
+            {
+              "id": "B",
+              "label": "2.5 kg"
+            },
+            {
+              "id": "C",
+              "label": "7 kg"
+            },
+            {
+              "id": "D",
+              "label": "2.005 kg"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-001",
+          "explanation": "500 g = 0.5 kg، فيكون الإجمالي 2.5 kg."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-02",
+      "type": "chapter",
+      "chapterNumber": 2,
+      "title": "Chapter 02 — Percentages & Percentage Change",
+      "sourceLessons": "BM-005…BM-009",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch02-q01",
+          "prompt": "9,000 من أصل 30,000 تمثل:",
+          "options": [
+            {
+              "id": "A",
+              "label": "3%"
+            },
+            {
+              "id": "B",
+              "label": "30%"
+            },
+            {
+              "id": "C",
+              "label": "300%"
+            },
+            {
+              "id": "D",
+              "label": "33.3%"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-005",
+          "explanation": "9,000 ÷ 30,000 × 100 = 30%."
+        },
+        {
+          "id": "ch02-q02",
+          "prompt": "خصم 10% ثم خصم 5% من السعر المتبقي يعطي خصماً فعلياً:",
+          "options": [
+            {
+              "id": "A",
+              "label": "15%"
+            },
+            {
+              "id": "B",
+              "label": "14.5%"
+            },
+            {
+              "id": "C",
+              "label": "10.5%"
+            },
+            {
+              "id": "D",
+              "label": "5%"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-006",
+          "explanation": "السعر المتبقي 0.90 × 0.95 = 0.855، أي خصم 14.5%."
+        },
+        {
+          "id": "ch02-q03",
+          "prompt": "سعر أصبح 800 MAD بعد خصم 20%. ما السعر الأصلي؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "960"
+            },
+            {
+              "id": "B",
+              "label": "1,000"
+            },
+            {
+              "id": "C",
+              "label": "1,020"
+            },
+            {
+              "id": "D",
+              "label": "1,200"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-007",
+          "explanation": "800 ÷ 0.8 = 1,000 MAD."
+        },
+        {
+          "id": "ch02-q04",
+          "prompt": "المبيعات ارتفعت من 80,000 إلى 100,000. نسبة الزيادة:",
+          "options": [
+            {
+              "id": "A",
+              "label": "20%"
+            },
+            {
+              "id": "B",
+              "label": "25%"
+            },
+            {
+              "id": "C",
+              "label": "80%"
+            },
+            {
+              "id": "D",
+              "label": "125%"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-008",
+          "explanation": "الزيادة 20,000 ÷ 80,000 = 25%."
+        },
+        {
+          "id": "ch02-q05",
+          "prompt": "انخفض Food Cost من 40% إلى 34%. ما التغير بالنقاط المئوية؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "−6 pp"
+            },
+            {
+              "id": "B",
+              "label": "−15 pp"
+            },
+            {
+              "id": "C",
+              "label": "−6% relative"
+            },
+            {
+              "id": "D",
+              "label": "−15 pp"
+            }
+          ],
+          "correctOption": "A",
+          "sourceLesson": "BM-009",
+          "explanation": "34% − 40% = −6 percentage points؛ والتغير النسبي −15%."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-03",
+      "type": "chapter",
+      "chapterNumber": 3,
+      "title": "Chapter 03 — Ratios & Proportions",
+      "sourceLessons": "BM-010…BM-013",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch03-q01",
+          "prompt": "النسبة 6:3 في أبسط صورة هي:",
+          "options": [
+            {
+              "id": "A",
+              "label": "3:2"
+            },
+            {
+              "id": "B",
+              "label": "2:1"
+            },
+            {
+              "id": "C",
+              "label": "1:2"
+            },
+            {
+              "id": "D",
+              "label": "6:1"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-010",
+          "explanation": "قسمة الطرفين على 3 تعطي 2:1."
+        },
+        {
+          "id": "ch03-q02",
+          "prompt": "بسّط النسبة 36:48.",
+          "options": [
+            {
+              "id": "A",
+              "label": "4:3"
+            },
+            {
+              "id": "B",
+              "label": "3:4"
+            },
+            {
+              "id": "C",
+              "label": "6:8"
+            },
+            {
+              "id": "D",
+              "label": "2:3"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-011",
+          "explanation": "القاسم المشترك الأكبر 12؛ النتيجة 3:4."
+        },
+        {
+          "id": "ch03-q03",
+          "prompt": "إذا كان 4/10 = x/50، فقيمة x:",
+          "options": [
+            {
+              "id": "A",
+              "label": "10"
+            },
+            {
+              "id": "B",
+              "label": "20"
+            },
+            {
+              "id": "C",
+              "label": "25"
+            },
+            {
+              "id": "D",
+              "label": "40"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-012",
+          "explanation": "x = 4 × 50 ÷ 10 = 20."
+        },
+        {
+          "id": "ch03-q04",
+          "prompt": "30% من ميزانية 60,000 MAD تساوي:",
+          "options": [
+            {
+              "id": "A",
+              "label": "12,000"
+            },
+            {
+              "id": "B",
+              "label": "15,000"
+            },
+            {
+              "id": "C",
+              "label": "18,000"
+            },
+            {
+              "id": "D",
+              "label": "20,000"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-013",
+          "explanation": "0.30 × 60,000 = 18,000 MAD."
+        },
+        {
+          "id": "ch03-q05",
+          "prompt": "في Direct Proportion، إذا تضاعف x مع ثبات معامل التناسب، فإن y:",
+          "options": [
+            {
+              "id": "A",
+              "label": "ينخفض للنصف"
+            },
+            {
+              "id": "B",
+              "label": "يتضاعف"
+            },
+            {
+              "id": "C",
+              "label": "يبقى ثابتاً"
+            },
+            {
+              "id": "D",
+              "label": "يصبح صفراً"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-012",
+          "explanation": "في التناسب الطردي يتغير المتغيران في الاتجاه نفسه وبالنسبة نفسها."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-04",
+      "type": "chapter",
+      "chapterNumber": 4,
+      "title": "Chapter 04 — Averages & Weighted Averages",
+      "sourceLessons": "BM-014…BM-017",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch04-q01",
+          "prompt": "المتوسط الحسابي للأعداد 10 و20 و30:",
+          "options": [
+            {
+              "id": "A",
+              "label": "15"
+            },
+            {
+              "id": "B",
+              "label": "20"
+            },
+            {
+              "id": "C",
+              "label": "25"
+            },
+            {
+              "id": "D",
+              "label": "30"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-014",
+          "explanation": "المجموع 60 ÷ 3 = 20."
+        },
+        {
+          "id": "ch04-q02",
+          "prompt": "10 مشاهدات متوسطها 20، و30 مشاهدة متوسطها 40. المتوسط المرجح:",
+          "options": [
+            {
+              "id": "A",
+              "label": "30"
+            },
+            {
+              "id": "B",
+              "label": "32"
+            },
+            {
+              "id": "C",
+              "label": "35"
+            },
+            {
+              "id": "D",
+              "label": "40"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-015",
+          "explanation": "(10×20 + 30×40) ÷ 40 = 35."
+        },
+        {
+          "id": "ch04-q03",
+          "prompt": "Net Sales = 18,000 MAD وعدد Checks = 120. Average Check:",
+          "options": [
+            {
+              "id": "A",
+              "label": "120"
+            },
+            {
+              "id": "B",
+              "label": "140"
+            },
+            {
+              "id": "C",
+              "label": "150"
+            },
+            {
+              "id": "D",
+              "label": "180"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-016",
+          "explanation": "18,000 ÷ 120 = 150 MAD per check."
+        },
+        {
+          "id": "ch04-q04",
+          "prompt": "ما Range للقيم من 4 إلى 15؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "9"
+            },
+            {
+              "id": "B",
+              "label": "10"
+            },
+            {
+              "id": "C",
+              "label": "11"
+            },
+            {
+              "id": "D",
+              "label": "19"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-017",
+          "explanation": "Range = maximum − minimum = 15 − 4 = 11."
+        },
+        {
+          "id": "ch04-q05",
+          "prompt": "عند دمج Average Check بين منفذين، الوزن المناسب هو:",
+          "options": [
+            {
+              "id": "A",
+              "label": "عدد الموظفين"
+            },
+            {
+              "id": "B",
+              "label": "عدد Checks"
+            },
+            {
+              "id": "C",
+              "label": "عدد المقاعد"
+            },
+            {
+              "id": "D",
+              "label": "عدد أيام الشهر"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-015",
+          "explanation": "عدد Checks يمثل عدد المشاهدات التي بُني عليها متوسط الفاتورة."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-05",
+      "type": "chapter",
+      "chapterNumber": 5,
+      "title": "Chapter 05 — Business Equations",
+      "sourceLessons": "BM-018…BM-021",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch05-q01",
+          "prompt": "في المعادلة 7x + 40، ما Coefficient؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "7"
+            },
+            {
+              "id": "B",
+              "label": "40"
+            },
+            {
+              "id": "C",
+              "label": "x"
+            },
+            {
+              "id": "D",
+              "label": "47"
+            }
+          ],
+          "correctOption": "A",
+          "sourceLesson": "BM-018",
+          "explanation": "المعامل هو العدد المضروب في المتغير x."
+        },
+        {
+          "id": "ch05-q02",
+          "prompt": "في المعادلة 7x + 40، ما Constant؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "7"
+            },
+            {
+              "id": "B",
+              "label": "x"
+            },
+            {
+              "id": "C",
+              "label": "40"
+            },
+            {
+              "id": "D",
+              "label": "280"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-018",
+          "explanation": "الثابت هو الحد الذي لا يحتوي على متغير."
+        },
+        {
+          "id": "ch05-q03",
+          "prompt": "إذا 5x = 100، فإن x:",
+          "options": [
+            {
+              "id": "A",
+              "label": "5"
+            },
+            {
+              "id": "B",
+              "label": "10"
+            },
+            {
+              "id": "C",
+              "label": "20"
+            },
+            {
+              "id": "D",
+              "label": "50"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-019",
+          "explanation": "قسمة الطرفين على 5 تعطي x = 20."
+        },
+        {
+          "id": "ch05-q04",
+          "prompt": "COGS يمكن إعادة ترتيبها من Gross Profit وNet Sales كالتالي:",
+          "options": [
+            {
+              "id": "A",
+              "label": "Net Sales + Gross Profit"
+            },
+            {
+              "id": "B",
+              "label": "Net Sales − Gross Profit"
+            },
+            {
+              "id": "C",
+              "label": "Gross Profit − Net Sales"
+            },
+            {
+              "id": "D",
+              "label": "Net Sales ÷ Gross Profit"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-020",
+          "explanation": "Gross Profit = Net Sales − COGS؛ إذن COGS = Net Sales − Gross Profit."
+        },
+        {
+          "id": "ch05-q05",
+          "prompt": "Food Sales = 80,000 وFood Cost = 25%. قيمة Food COGS:",
+          "options": [
+            {
+              "id": "A",
+              "label": "15,000"
+            },
+            {
+              "id": "B",
+              "label": "20,000"
+            },
+            {
+              "id": "C",
+              "label": "25,000"
+            },
+            {
+              "id": "D",
+              "label": "32,000"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-021",
+          "explanation": "80,000 × 25% = 20,000."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-06",
+      "type": "chapter",
+      "chapterNumber": 6,
+      "title": "Chapter 06 — Variance Analysis",
+      "sourceLessons": "BM-022…BM-025",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch06-q01",
+          "prompt": "Actual = 110,000 وBudget = 100,000. Actual − Budget:",
+          "options": [
+            {
+              "id": "A",
+              "label": "+5,000"
+            },
+            {
+              "id": "B",
+              "label": "+10,000"
+            },
+            {
+              "id": "C",
+              "label": "−10,000"
+            },
+            {
+              "id": "D",
+              "label": "+110,000"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-022",
+          "explanation": "الانحراف المطلق = 110,000 − 100,000 = +10,000."
+        },
+        {
+          "id": "ch06-q02",
+          "prompt": "ما Magnitude للانحراف −5,000؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "−5,000"
+            },
+            {
+              "id": "B",
+              "label": "0"
+            },
+            {
+              "id": "C",
+              "label": "5,000"
+            },
+            {
+              "id": "D",
+              "label": "10,000"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-023",
+          "explanation": "Magnitude هو القيمة المطلقة، أي 5,000."
+        },
+        {
+          "id": "ch06-q03",
+          "prompt": "ارتفع الرقم من 40,000 إلى 44,000 مقارنة بالمرجع 40,000. Variance %:",
+          "options": [
+            {
+              "id": "A",
+              "label": "−10%"
+            },
+            {
+              "id": "B",
+              "label": "+4%"
+            },
+            {
+              "id": "C",
+              "label": "+10%"
+            },
+            {
+              "id": "D",
+              "label": "+110%"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-024",
+          "explanation": "4,000 ÷ 40,000 × 100 = +10%."
+        },
+        {
+          "id": "ch06-q04",
+          "prompt": "لماذا نستخدم Flexible Budget؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "لإلغاء كل الانحرافات"
+            },
+            {
+              "id": "B",
+              "label": "لمقارنة الأداء مع مستوى نشاط فعلي مماثل"
+            },
+            {
+              "id": "C",
+              "label": "لإخفاء زيادة المصروفات"
+            },
+            {
+              "id": "D",
+              "label": "لتحويل المصروفات إلى إيرادات"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-025",
+          "explanation": "يساعد على مقارنة الأداء عند مستوى النشاط الفعلي."
+        },
+        {
+          "id": "ch06-q05",
+          "prompt": "Labor أقل من Budget؛ هل يعني ذلك دائماً نجاحاً؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "نعم دائماً"
+            },
+            {
+              "id": "B",
+              "label": "لا؛ يجب فحص التغطية والخدمة والإنتاجية"
+            },
+            {
+              "id": "C",
+              "label": "يعني أن المبيعات ارتفعت"
+            },
+            {
+              "id": "D",
+              "label": "يعني أن كل الموظفين عملوا ساعات إضافية"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-025",
+          "explanation": "خفض التكلفة قد يؤثر في التغطية وجودة الخدمة؛ يلزم تفسير تشغيلي."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-07",
+      "type": "chapter",
+      "chapterNumber": 7,
+      "title": "Chapter 07 — Units, Rates & Productivity",
+      "sourceLessons": "BM-026…BM-029",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch07-q01",
+          "prompt": "حوّل 2.4 kg إلى grams.",
+          "options": [
+            {
+              "id": "A",
+              "label": "240 g"
+            },
+            {
+              "id": "B",
+              "label": "2,040 g"
+            },
+            {
+              "id": "C",
+              "label": "2,400 g"
+            },
+            {
+              "id": "D",
+              "label": "24,000 g"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-026",
+          "explanation": "1 kg = 1,000 g؛ إذن 2.4 kg = 2,400 g."
+        },
+        {
+          "id": "ch07-q02",
+          "prompt": "حوّل 1.25 L إلى milliliters.",
+          "options": [
+            {
+              "id": "A",
+              "label": "125 ml"
+            },
+            {
+              "id": "B",
+              "label": "1,025 ml"
+            },
+            {
+              "id": "C",
+              "label": "1,250 ml"
+            },
+            {
+              "id": "D",
+              "label": "12,500 ml"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-026",
+          "explanation": "1 L = 1,000 ml."
+        },
+        {
+          "id": "ch07-q03",
+          "prompt": "90 orders خلال 3 ساعات تعطي معدل:",
+          "options": [
+            {
+              "id": "A",
+              "label": "30 orders/hour"
+            },
+            {
+              "id": "B",
+              "label": "45 orders/hour"
+            },
+            {
+              "id": "C",
+              "label": "87 orders/hour"
+            },
+            {
+              "id": "D",
+              "label": "270 orders/hour"
+            }
+          ],
+          "correctOption": "A",
+          "sourceLesson": "BM-027",
+          "explanation": "90 ÷ 3 = 30 orders/hour."
+        },
+        {
+          "id": "ch07-q04",
+          "prompt": "Output = 150 units وInput = 30 labor hours. Productivity:",
+          "options": [
+            {
+              "id": "A",
+              "label": "3 units/hour"
+            },
+            {
+              "id": "B",
+              "label": "5 units/hour"
+            },
+            {
+              "id": "C",
+              "label": "30 units/hour"
+            },
+            {
+              "id": "D",
+              "label": "120 units/hour"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-028",
+          "explanation": "150 ÷ 30 = 5 units per input hour."
+        },
+        {
+          "id": "ch07-q05",
+          "prompt": "100 seats متاحة لمدة 6 ساعات تعطي:",
+          "options": [
+            {
+              "id": "A",
+              "label": "100 seat-hours"
+            },
+            {
+              "id": "B",
+              "label": "106 seat-hours"
+            },
+            {
+              "id": "C",
+              "label": "600 seat-hours"
+            },
+            {
+              "id": "D",
+              "label": "6,000 seat-hours"
+            }
+          ],
+          "correctOption": "C",
+          "sourceLesson": "BM-029",
+          "explanation": "Available Seat Hours = available seats × operating hours."
+        }
+      ]
+    },
+    {
+      "id": "bm-chapter-08",
+      "type": "chapter",
+      "chapterNumber": 8,
+      "title": "Chapter 08 — Tables, Data & Business Interpretation",
+      "sourceLessons": "BM-030…BM-032",
+      "questionCount": 5,
+      "questions": [
+        {
+          "id": "ch08-q01",
+          "prompt": "هل Blank في التقرير تعني Zero تلقائياً؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "نعم دائماً"
+            },
+            {
+              "id": "B",
+              "label": "لا؛ قد تعني بيانات مفقودة"
+            },
+            {
+              "id": "C",
+              "label": "تعني رقماً سالباً"
+            },
+            {
+              "id": "D",
+              "label": "تعني أن الصف إجمالي"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-030",
+          "explanation": "القيمة الفارغة ليست صفراً؛ يجب التحقق من معناها ومصدرها."
+        },
+        {
+          "id": "ch08-q02",
+          "prompt": "أفضل نوع رسم لعرض اتجاه مؤشر عبر الزمن عادةً:",
+          "options": [
+            {
+              "id": "A",
+              "label": "Pie Chart"
+            },
+            {
+              "id": "B",
+              "label": "Line Chart"
+            },
+            {
+              "id": "C",
+              "label": "Scatter فقط"
+            },
+            {
+              "id": "D",
+              "label": "Donut Chart"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-031",
+          "explanation": "Line Chart مناسب لإظهار الاتجاه عبر الزمن."
+        },
+        {
+          "id": "ch08-q03",
+          "prompt": "هل الارتباط بين متغيرين يثبت أن أحدهما سبب الآخر؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "نعم دائماً"
+            },
+            {
+              "id": "B",
+              "label": "لا"
+            },
+            {
+              "id": "C",
+              "label": "فقط في المبيعات"
+            },
+            {
+              "id": "D",
+              "label": "فقط عند وجود نسب مئوية"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-031",
+          "explanation": "Correlation لا يثبت Causation."
+        },
+        {
+          "id": "ch08-q04",
+          "prompt": "ما أول خطوة عند اختلاف إجمالي تقرير POS عن مجموع مكوناته؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "تعديل التقرير فوراً"
+            },
+            {
+              "id": "B",
+              "label": "مصالحة المكونات والتحقق من الفترة والنطاق"
+            },
+            {
+              "id": "C",
+              "label": "حذف الصفوف المتأخرة"
+            },
+            {
+              "id": "D",
+              "label": "استبدال القيم بمتوسط الشهر"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-030",
+          "explanation": "يجب التحقق من المكونات والنطاق والفترة قبل تعديل البيانات."
+        },
+        {
+          "id": "ch08-q05",
+          "prompt": "أي صيغة صحيحة لحساب Average Check وفق المنهج؟",
+          "options": [
+            {
+              "id": "A",
+              "label": "Gross Sales ÷ Covers"
+            },
+            {
+              "id": "B",
+              "label": "Net Sales ÷ Checks"
+            },
+            {
+              "id": "C",
+              "label": "Checks ÷ Net Sales"
+            },
+            {
+              "id": "D",
+              "label": "Net Sales ÷ Seats"
+            }
+          ],
+          "correctOption": "B",
+          "sourceLesson": "BM-030",
+          "explanation": "Average Check = Net Sales ÷ Number of Checks."
+        }
+      ]
+    }
+  ],
+  "finalAssessment": {
+    "id": "bm-final-practical",
+    "type": "final",
+    "title": "Final Practical Examination — Business Mathematics",
+    "questionCount": 10,
+    "questions": [
+      {
+        "id": "final-q01",
+        "prompt": "ارتفعت Sales من 200,000 إلى 220,000، وارتفع COGS من 60,000 إلى 75,000. ما الاستنتاج الصحيح؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "Gross Profit ارتفع حتماً"
+          },
+          {
+            "id": "B",
+            "label": "Gross Profit انخفض من 140,000 إلى 145,000"
+          },
+          {
+            "id": "C",
+            "label": "Gross Profit لم يتغير"
+          },
+          {
+            "id": "D",
+            "label": "لا يمكن حساب Gross Profit من البيانات"
+          }
+        ],
+        "correctOption": "B",
+        "sourceLesson": "تحقق من Gross Profit = Net Sales − COGS: سابقاً 140,000، حالياً 145,000.",
+        "explanation": "تحقق من Gross Profit = Net Sales − COGS: سابقاً 140,000، حالياً 145,000."
+      },
+      {
+        "id": "final-q02",
+        "prompt": "Outlet A: 10 checks بمتوسط 100 MAD. Outlet B: 30 checks بمتوسط 200 MAD. Combined Average Check:",
+        "options": [
+          {
+            "id": "A",
+            "label": "150 MAD"
+          },
+          {
+            "id": "B",
+            "label": "160 MAD"
+          },
+          {
+            "id": "C",
+            "label": "175 MAD"
+          },
+          {
+            "id": "D",
+            "label": "180 MAD"
+          }
+        ],
+        "correctOption": "C",
+        "sourceLesson": "المتوسط المرجح = (10×100 + 30×200) ÷ 40 = 175 MAD.",
+        "explanation": "المتوسط المرجح = (10×100 + 30×200) ÷ 40 = 175 MAD."
+      },
+      {
+        "id": "final-q03",
+        "prompt": "تحرك Labor Cost % من 25% إلى 27%. أي وصف رياضي أدق؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "+2 percentage points، و+8% relative change"
+          },
+          {
+            "id": "B",
+            "label": "+2% relative change، و+8 pp"
+          },
+          {
+            "id": "C",
+            "label": "+2 pp، و+2% relative change"
+          },
+          {
+            "id": "D",
+            "label": "+8 pp، و+27% relative change"
+          }
+        ],
+        "correctOption": "A",
+        "sourceLesson": "الفرق المطلق بالنقاط = 2 pp؛ التغير النسبي = 2 ÷ 25 = 8%.",
+        "explanation": "الفرق المطلق بالنقاط = 2 pp؛ التغير النسبي = 2 ÷ 25 = 8%."
+      },
+      {
+        "id": "final-q04",
+        "prompt": "Net Sales = 150,000 وCOGS = 55,000 وLabor = 40,000. Prime Cost:",
+        "options": [
+          {
+            "id": "A",
+            "label": "55,000"
+          },
+          {
+            "id": "B",
+            "label": "95,000"
+          },
+          {
+            "id": "C",
+            "label": "110,000"
+          },
+          {
+            "id": "D",
+            "label": "245,000"
+          }
+        ],
+        "correctOption": "C",
+        "sourceLesson": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. ",
+        "explanation": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. "
+      },
+      {
+        "id": "final-q05",
+        "prompt": "تقرير يعرض Blank في عدد Checks، لكنه يعرض مبيعات. كيف تتصرف؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "أفترض أن Checks = 0"
+          },
+          {
+            "id": "B",
+            "label": "أستبدلها بمتوسط الأسبوع"
+          },
+          {
+            "id": "C",
+            "label": "أوقف حساب Average Check وأتحقق من المصدر"
+          },
+          {
+            "id": "D",
+            "label": "أقسم المبيعات على عدد المقاعد"
+          }
+        ],
+        "correctOption": "C",
+        "sourceLesson": "لا تستبدل Missing بقيمة مخمّنة؛ تحقق من المصدر والمقام.",
+        "explanation": "لا تستبدل Missing بقيمة مخمّنة؛ تحقق من المصدر والمقام."
+      },
+      {
+        "id": "final-q06",
+        "prompt": "المطعم لديه 80 مقعداً ويعمل 5 ساعات. أحدت مقاعده غير متاحة لمدة ساعة كاملة (كل المقاعد). Available Seat Hours المعدلة:",
+        "options": [
+          {
+            "id": "A",
+            "label": "80"
+          },
+          {
+            "id": "B",
+            "label": "320"
+          },
+          {
+            "id": "C",
+            "label": "400"
+          },
+          {
+            "id": "D",
+            "label": "480"
+          }
+        ],
+        "correctOption": "B",
+        "sourceLesson": "المقاعد متاحة 4 ساعات فقط؛ 80 × 4 = 320 seat-hours.",
+        "explanation": "المقاعد متاحة 4 ساعات فقط؛ 80 × 4 = 320 seat-hours."
+      },
+      {
+        "id": "final-q07",
+        "prompt": "Sales ارتفعت لكن Waste % ارتفعت أيضاً. ما القرار الإداري الأفضل؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "إعلان نجاح شامل بسبب ارتفاع المبيعات"
+          },
+          {
+            "id": "B",
+            "label": "خفض العمالة فوراً"
+          },
+          {
+            "id": "C",
+            "label": "تحليل COGS والمبيعات المسجلة والهدر حسب الفترة والصنف قبل القرار"
+          },
+          {
+            "id": "D",
+            "label": "تجاهل Waste لأن Sales أعلى"
+          }
+        ],
+        "correctOption": "C",
+        "sourceLesson": "يجب تحليل المؤشرات في سياق موحد وعدم الاعتماد على KPI واحد.",
+        "explanation": "يجب تحليل المؤشرات في سياق موحد وعدم الاعتماد على KPI واحد."
+      },
+      {
+        "id": "final-q08",
+        "prompt": "ظهر ارتباط بين انخفاض Labor Cost وارتفاع Guest Complaints. ماذا يثبت ذلك؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "أن خفض العمالة سبب الشكاوى قطعاً"
+          },
+          {
+            "id": "B",
+            "label": "أن الشكاوى سببت خفض العمالة قطعاً"
+          },
+          {
+            "id": "C",
+            "label": "وجود علاقة تستدعي التحقيق، لكنها لا تثبت السببية"
+          },
+          {
+            "id": "D",
+            "label": "أن المؤشرين غير مهمين"
+          }
+        ],
+        "correctOption": "C",
+        "sourceLesson": "Correlation لا يثبت causation؛ ابحث عن أدلة تشغيلية إضافية.",
+        "explanation": "Correlation لا يثبت causation؛ ابحث عن أدلة تشغيلية إضافية."
+      },
+      {
+        "id": "final-q09",
+        "prompt": "أي تقرير Variance أكثر فائدة للإدارة؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "رقم الفرق فقط"
+          },
+          {
+            "id": "B",
+            "label": "الفرق مع المرجع والفترة والوحدة وتصنيف أولي وتفسير يحتاج تحققاً"
+          },
+          {
+            "id": "C",
+            "label": "نسبة بلا مقام"
+          },
+          {
+            "id": "D",
+            "label": "قيمة Actual دون Budget"
+          }
+        ],
+        "correctOption": "B",
+        "sourceLesson": "التقرير الجيد يوضح المرجع والفترة والوحدات، ويفصل الوصف عن تفسير السبب.",
+        "explanation": "التقرير الجيد يوضح المرجع والفترة والوحدات، ويفصل الوصف عن تفسير السبب."
+      },
+      {
+        "id": "final-q10",
+        "prompt": "ما الذي يجعل Action Plan قابلاً للمتابعة؟",
+        "options": [
+          {
+            "id": "A",
+            "label": "عنوان عام مثل تحسين الخدمة"
+          },
+          {
+            "id": "B",
+            "label": "Owner وDeadline وSuccess Metric وإجراء محدد"
+          },
+          {
+            "id": "C",
+            "label": "مضاعفة الهدف دون بيانات"
+          },
+          {
+            "id": "D",
+            "label": "حذف KPI بعد تنفيذ الإجراء"
+          }
+        ],
+        "correctOption": "B",
+        "sourceLesson": "يجب ربط الإجراء بمسؤول وموعد ومقياس نجاح.",
+        "explanation": "يجب ربط الإجراء بمسؤول وموعد ومقياس نجاح."
+      }
+    ]
+  }
+}
