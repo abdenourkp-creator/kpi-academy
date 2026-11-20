@@ -16,7 +16,7 @@ const rendererFactory = new Function(
   escSource + "\n" + fmtSource + "\n" + rendererSource + "\nreturn markdownHtml;"
 );
 const render = rendererFactory();
-const withoutLtrIsolation = html => html.replace(/<span class="ltr-term"[^>]*>(.*?)<\\/span>/g, "$1");
+const withoutLtrIsolation = html => html.replace(/<span class="ltr-term"[^>]*>(.*?)<\/span>/g, "$1");
 
 const table = render([
   "| Item | Qty | Unit Price | Total |",
@@ -25,8 +25,8 @@ const table = render([
   "| Juice | 12 | 15.00 | 180.00 |",
   "| Subtotal |  |  | 384.00 |"
 ].join("\n"));
-assert.match(table, /<th>Item<\/th>/);
-assert.match(table, /<td>Water<\/td>/);
+assert.match(withoutLtrIsolation(table), /<th>Item<\/th>/);
+assert.match(withoutLtrIsolation(table), /<td>Water<\/td>/);
 assert.match(table, /<td>384\.00<\/td>/);
 assert.doesNotMatch(table, /<td>---<\/td>/);
 assert.equal((table.match(/<tr>/g) || []).length, 4, "separator row must not render");
@@ -36,17 +36,17 @@ const aligned = render([
   "| :--- | ---: |",
   "| Food Cost | 28% |"
 ].join("\n"));
-assert.match(aligned, /<th>KPI<\/th>/);
+assert.match(withoutLtrIsolation(aligned), /<th>KPI<\/th>/);
 assert.match(aligned, /<td>28%<\/td>/);
 assert.doesNotMatch(aligned, /:---|---:/);
 
 const prose = render("## Business Controls\n\nReview **every invoice** before posting.");
-assert.match(prose, /<h2>Business Controls<\/h2>/);
+assert.match(withoutLtrIsolation(prose), /<h2>Business Controls<\/h2>/);
 assert.match(prose, /<strong>every invoice<\/strong>/);
 
 const lists = render("- First control\n- Second control\n\n1. Verify source\n2. Reconcile POS");
-assert.match(lists, /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/);
-assert.match(lists, /<ol><li>Verify source<\/li><li>Reconcile POS<\/li><\/ol>/);
+assert.match(withoutLtrIsolation(lists), /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/);
+assert.match(withoutLtrIsolation(lists), /<ol><li>Verify source<\/li><li>Reconcile POS<\/li><\/ol>/);
 
 const lineBreak = render("First line<br />Second line");
 assert.match(withoutLtrIsolation(lineBreak), /First line Second line/);
