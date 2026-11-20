@@ -50,6 +50,12 @@ const lists = render("- First control\n- Second control\n\n1. Verify source\n2. 
 assert.match(withoutLtrIsolation(lists), /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/);
 assert.match(withoutLtrIsolation(lists), /<ol><li>Verify source<\/li><li>Reconcile POS<\/li><\/ol>/);
 
+
+const nested = render("- Main control\n  - Check the source\n  - Verify the unit\n    1. Match the invoice\n    2. Reconcile the POS\n- Final control");
+assert.match(withoutLtrIsolation(nested), /<ul><li>Main control<ul><li>Check the source<\/li><li>Verify the unit<ol><li>Match the invoice<\/li><li>Reconcile the POS<\/li><\/ol><\/li><\/ul><\/li><li>Final control<\/li><\/ul>/);
+const escapedPipe = render("Level: Foundation \\\\| Chapter: Numerical Foundations");
+assert.match(withoutLtrIsolation(escapedPipe), /Foundation \| Chapter/);
+
 const lineBreak = render("First line<br />Second line");
 assert.match(withoutLtrIsolation(lineBreak), /First line Second line/);
 
