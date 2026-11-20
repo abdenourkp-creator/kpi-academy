@@ -121,10 +121,15 @@ async function lessonView(code){
           const next=node.nextSibling;section.appendChild(node);node=next;
         }
         section.querySelectorAll("p").forEach(paragraph=>{
-          const value=paragraph.textContent.trim();
-          if(value.length<160&&!/[\\u0600-\\u06FF]/.test(value)&&/[=×÷]/.test(value)&&/^[A-Za-z0-9\\s.,%()+\\-×÷=/:]+$/.test(value)){
-            paragraph.classList.add("ka-formula-block");paragraph.setAttribute("dir","ltr");
-          }
+          const segments=paragraph.innerHTML.split(/<br\s*\/?>/);
+          const rendered=segments.map(segment=>{
+            const value=segment.replace(/<[^>]*>/g,"").trim();
+            if(value.length>0&&value.length<160&&!/[\u0600-\u06FF]/.test(value)&&/[=×÷]/.test(value)&&/^[A-Za-z0-9\s.,%()+\-×÷=/:]+$/.test(value)){
+              return '<span class="ka-formula-block" dir="ltr">'+segment+'</span>';
+            }
+            return segment;
+          });
+          paragraph.innerHTML=rendered.join("<br>");
         });
       });
     }
