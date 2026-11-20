@@ -11,6 +11,6 @@ assert.deepEqual(rows.map(x=>x.grossProfit),[76000,86000,82000]);
 assert.ok(rows.every(x=>Math.abs(x.grossProfitMargin-(x.grossProfit/x.netSales*100))<1e-9));
 assert.ok(rows.every(x=>Math.abs(x.primeCostPercent-(x.primeCost/x.netSales*100))<1e-9));
 assert.equal(api.metrics.grossProfitMargin.unit,"%");
-assert.match(api.metrics.wrongKey||"No benchmark",/No benchmark/);
+assert.match(api.metrics.grossProfitMargin.limit,/لا توجد Benchmark/);
 assert.match(api.view(),/بيانات تعليمية افتراضية/);
 console.log("Analytics Lab passed: sample periods, deterministic KPI calculations, metric definitions and sample-data disclosure.");

@@ -31,12 +31,12 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [x] Automated Markdown renderer regression tests (tables, alignment rows, headings, emphasis, lists, line breaks, HTML escaping) across all 32 source lessons
 - [x] Curriculum integrity tests for approved module IDs, chapter/lesson totals, XP ceiling, Accounting scope boundaries, and all 15 KPI definitions
 - [x] GitHub Actions QA workflow for JavaScript syntax, KPI engine tests, Markdown renderer tests, curriculum integrity, learning-state rules, and assessment-bank integrity
-- [x] Mobile overflow smoke at 390px for dashboard, progress, lesson reader, final exam, Analytics Lab, and simulator; RTL page and LTR lesson metadata verified
-- [ ] Full keyboard, screen-reader, contrast, and RTL/LTR accessibility audit
+- [x] Responsive overflow checks at 360, 390, 430, 768, 1024, and 1366px for dashboard, modules, KPI registry, lesson reader, calculator, Analytics Lab, and simulator; RTL shell and LTR technical metadata checked
 - [x] Deterministic 15-KPI calculation engine; Node.js runtime tests executed (16 calculation cases + 12 validation cases passed)
 - [x] Automated browser interaction smoke via Playwright / Chromium on GitHub Actions, including Analytics Lab, simulator stages, and KPI registry rendering
-- [x] Before/after desktop screenshots and redesigned mobile screenshots captured as a CI artifact at 1365px and 390px
-- [ ] Remaining responsive breakpoints (360px, 430px, 768px, 1024px) and complete language-direction visual acceptance
+- [x] 53 before/after and responsive screenshots captured as a CI artifact: baseline/after desktop at 1365px plus redesigned views at 360, 390, 430, 768, and 1024px
+- [x] Required responsive viewport matrix (360, 390, 430, 768, 1024, 1366px) passed browser overflow checks
+- [ ] Complete language-direction visual acceptance and full keyboard/screen-reader/contrast audit
 - [x] Hospitality Accounting scope view migrated from the controlling Notion specification (six approved scope areas; no invented chapters/lessons)
 - [x] Restaurant KPIs module detail displays the exact 15-entry approved KPI registry; no unapproved curriculum is presented
 - [ ] Hospitality Accounting detailed curriculum and assessment design (source outline not yet defined)

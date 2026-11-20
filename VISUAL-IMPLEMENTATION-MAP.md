@@ -24,6 +24,12 @@
 | Inventory Turnover flow | Restaurant KPIs → Inventory Turnover | Before calculation exercise | Explain COGS / Average Inventory and period matching | Registered; placement pending |
 | RevPASH visual | Restaurant KPIs → RevPASH | Before seat-hour example | Clarify available seat hours | Registered; placement pending |
 
+## Responsive verification status
+
+- Playwright viewport checks cover 360, 390, 430, 768, 1024, and 1366px for dashboard, module discovery, Restaurant KPI registry, lesson reader, calculator, Analytics Lab, and simulator.
+- Visual comparison artifacts include the pre-redesign baseline and the redesigned desktop screens, plus redesigned responsive captures across 360–1024px.
+- Full keyboard, screen-reader, color-contrast, and exhaustive RTL/LTR accessibility acceptance remains open.
+
 ## Dashboard implementation status
 
 - The learner dashboard now renders an eight-row chapter completion chart from `KPI_LEARNING_ENGINE.getLessonProgress()` and the official Business Mathematics curriculum.
