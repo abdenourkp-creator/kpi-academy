@@ -101,6 +101,30 @@ function startServer() {
     assert.deepEqual(recoveryPageErrors, [], "catalog failure and recovery must not cause uncaught page errors");
     await failurePage.close();
 
+    await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
+    await page.locator("#lessonExperienceMount .lesson-lab").waitFor();
+    assert.equal(await page.locator(".le-task-card").count(), 5, "BM-005 must render five interactive learning tasks");
+
+    await page.locator("#le-answer-food-cost").fill("30");
+    await page.locator('[data-check="food-cost"]').click();
+    assert.match(await page.locator('[data-task-id="food-cost"] .le-feedback').textContent(), /إجابة صحيحة/);
+
+    await page.locator('input[name="le-beverage-cost"][value="b"]').check();
+    await page.locator('[data-check="beverage-cost"]').click();
+    await page.locator("#le-answer-combined-cogs").fill("28.33");
+    await page.locator('[data-check="combined-cogs"]').click();
+    await page.locator("#le-answer-labor-cost").fill("25");
+    await page.locator('[data-check="labor-cost"]').click();
+    await page.locator('input[name="le-interpretation"][value="b"]').check();
+    await page.locator('[data-check="interpretation"]').click();
+
+    assert.equal(await page.locator("[data-score]").textContent(), "5/5");
+    assert.equal(await page.locator('[role="progressbar"]').getAttribute("aria-valuenow"), "5");
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+      "interactive practice must not award XP or change completion rules");
+    await page.locator("[data-reset]").click();
+    assert.equal(await page.locator("[data-score]").textContent(), "0/5", "lab reset must clear only the temporary exercise state");
+
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
     await page.locator("#lessonProgressPanel").waitFor();
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
