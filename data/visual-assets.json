@@ -222,7 +222,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Differentiate direct percentage-point difference from relative percentage change using the lesson's Food Cost case.",
       "integrationStatus": "INTEGRATED_BM-009",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-012",
@@ -242,7 +242,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Show why checks must weight average checks when combining service periods.",
       "integrationStatus": "INTEGRATED_BM-015",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-013",
@@ -262,7 +262,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Show how to isolate Average Check from the original sales equation.",
       "integrationStatus": "INTEGRATED_BM-020",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-014",
@@ -282,7 +282,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Compare equal cash variances against different reference bases.",
       "integrationStatus": "INTEGRATED_BM-024",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-015",
@@ -302,7 +302,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Show capacity, actual output, and utilization using matching seat-seating units.",
       "integrationStatus": "INTEGRATED_BM-029",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-016",
@@ -322,7 +322,7 @@
       "screen": "Inserted in lesson immediately before the worked example/case",
       "purpose": "Show a three-month downward sales pattern and the context checks required before a decision.",
       "integrationStatus": "INTEGRATED_BM-031",
-      "verificationStatus": "SOURCE_CREATED_CI_PENDING"
+      "verificationStatus": "BROWSER_CI_PASSED_2026-11-20"
     },
     {
       "id": "VIS-017",
