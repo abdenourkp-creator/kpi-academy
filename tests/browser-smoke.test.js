@@ -75,11 +75,16 @@ function startServer() {
 
     await page.goto("http://127.0.0.1:" + port + "/#simulator", { waitUntil: "networkidle" });
     await page.getByRole("heading", { name: "محاكاة الإدارة" }).waitFor();
-    await page.locator(".ka-simulator-empty").waitFor();
+    await page.locator(".ka-sim-scenario-grid").waitFor();
+    assert.equal(await page.locator(".ka-sim-scenario").count(), 3, "simulator must show three clearly labelled synthetic management cases");
     await page.locator('[data-simulator-stage="decision"]').click();
     assert.equal(await page.locator('[data-simulator-stage="decision"]').getAttribute("aria-selected"), "true");
     assert.match(await page.locator("#simulatorStageDetail").textContent(), /Management Decision/);
-    assert.match(await page.locator(".ka-simulator-note").textContent(), /لا توجد حالة نشطة/);
+    assert.match(await page.locator(".ka-sim-disclaimer").textContent(), /بيانات تدريبية افتراضية/);
+    assert.match(await page.locator(".ka-sim-footer").textContent(), /لا نقاط ولا تقييم رسمي/);
+    await page.locator('[data-simulator-stage="decision"]').click();
+    await page.locator(".ka-sim-choice").first().click();
+    assert.equal(await page.locator(".ka-sim-feedback").count(), 1);
 
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
