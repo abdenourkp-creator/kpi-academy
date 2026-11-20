@@ -16,6 +16,7 @@ const rendererFactory = new Function(
   escSource + "\n" + fmtSource + "\n" + rendererSource + "\nreturn markdownHtml;"
 );
 const render = rendererFactory();
+const withoutLtrIsolation = html => html.replace(/<span class="ltr-term"[^>]*>(.*?)<\\/span>/g, "$1");
 
 const table = render([
   "| Item | Qty | Unit Price | Total |",
@@ -48,11 +49,11 @@ assert.match(lists, /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/)
 assert.match(lists, /<ol><li>Verify source<\/li><li>Reconcile POS<\/li><\/ol>/);
 
 const lineBreak = render("First line<br />Second line");
-assert.match(lineBreak, /First line Second line/);
+assert.match(withoutLtrIsolation(lineBreak), /First line Second line/);
 
 const escaped = render("User input: <img src=x onerror=alert(1)>");
 assert.doesNotMatch(escaped, /<img/);
-assert.match(escaped, /&lt;img/);
+assert.match(withoutLtrIsolation(escaped), /&lt;img/);
 
 const lessonDir = path.join(__dirname, "../content/business-mathematics/lessons");
 const lessonFiles = fs.readdirSync(lessonDir).filter(name => /^BM-\d{3}\.md$/.test(name)).sort();
