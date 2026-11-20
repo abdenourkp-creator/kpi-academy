@@ -105,7 +105,7 @@ async function lessonView(code){
         const label=heading.textContent.trim();
         let kind="content";
         if(/Business Mystery|الموقف التجاري|لغز/i.test(label))kind="mystery";
-        else if(/Common Mistakes|أخطاء شائعة/i.test(label))kind="mistakes";
+        else if(/Common Mistakes|أخطاء|الأخطاء|شائعة|الشائعة/i.test(label))kind="mistakes";
         else if(/Professional Challenge|التحدي المهني/i.test(label))kind="challenge";
         else if(/Assessment|التقييم/i.test(label))kind="assessment";
         else if(/Field Checklist|Application Checklist|قائمة التحقق/i.test(label))kind="checklist";
