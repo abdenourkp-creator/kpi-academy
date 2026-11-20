@@ -32,6 +32,7 @@
       .catch(error => {
         loadError = error.message || "تعذر تحميل بيانات التقييم.";
         loadPromise = null;
+        refreshCurrentView();
         return false;
       });
     return loadPromise;
