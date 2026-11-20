@@ -30,7 +30,7 @@ function calculatePeriod(row){
 function series(){return sample.map(calculatePeriod);}
 function chart(metricKey){
  const spec=metrics[metricKey]||metrics.grossProfitMargin,rows=series(),values=rows.map(x=>x[metricKey]),max=Math.max(...values)*1.18||1;
- const bars=rows.map((row,i)=>{const y=42+i*66,w=values[i]/max*440;return '<g><text x="690" y="'+(y+18)+'" text-anchor="end" class="ka-chart-label">'+row.period.replace("Sample ","")+'</text><rect x="205" y="'+y+'" width="440" height="24" rx="6" class="ka-chart-track"/><rect x="205" y="'+y+'" width="'+w.toFixed(2)+'" height="24" rx="6" class="ka-chart-bar"/><text x="'+Math.min(205+w+12,650)+'" y="'+(y+17)+'" class="ka-chart-value">'+spec.format(values[i])+'</text></g>';}).join("");
+ const bars=rows.map((row,i)=>{const y=42+i*66,w=values[i]/max*380;return '<g><text x="12" y="'+(y+18)+'" text-anchor="start" class="ka-chart-label">'+row.period.replace("Sample ","") +'</text><rect x="130" y="'+y+'" width="380" height="24" rx="6" class="ka-chart-track"/><rect x="130" y="'+y+'" width="'+w.toFixed(2)+'" height="24" rx="6" class="ka-chart-bar"/><text x="'+Math.min(130+w+10,520)+'" y="'+(y+17)+'" class="ka-chart-value">'+spec.format(values[i])+'</text></g>';}).join("");
  return '<svg viewBox="0 0 720 250" role="img" aria-label="'+spec.label+' comparison across three educational sample periods"><line x1="205" y1="25" x2="205" y2="235" class="ka-chart-axis"/>'+bars+'</svg>';
 }
 function table(){
