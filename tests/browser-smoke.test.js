@@ -81,7 +81,7 @@ function startServer() {
     assert.equal(await page.locator(".ka-sim-scenario").count(), 3, "simulator must show three clearly labelled synthetic management cases");
     await page.locator('[data-simulator-stage="decision"]').click();
     assert.equal(await page.locator('[data-simulator-stage="decision"]').getAttribute("aria-selected"), "true");
-    assert.match(await page.locator("#simulatorStageDetail").textContent(), /Management Decision/);
+    assert.match(await page.locator("#simulatorStageDetail").textContent(), /Management Decision/i);
     assert.match(await page.locator(".ka-sim-disclaimer").textContent(), /بيانات تدريبية افتراضية/);
     assert.match(await page.locator(".ka-sim-footer").textContent(), /لا نقاط ولا تقييم رسمي/);
     await page.locator('[data-simulator-stage="decision"]').click();

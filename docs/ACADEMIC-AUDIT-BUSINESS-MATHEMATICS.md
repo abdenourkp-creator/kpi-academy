@@ -76,3 +76,7 @@ The following remain unchanged:
 - Strengthened `tests/assessment-catalog.test.js` to assert non-empty and unique option labels.
 
 The CI workflow is the authoritative execution check after this commit. No local or remote test result is claimed by this document.
+
+## CI follow-up
+
+The earlier QA run on the audit baseline passed every verification-stage test, but the browser smoke job failed because its assertion matched `Management Decision` case-sensitively while the rendered stage label is uppercase `MANAGEMENT DECISION`. The browser assertion has been made case-insensitive; no application behavior was changed. The new commit's CI browser result is pending and must be checked before claiming end-to-end success.
