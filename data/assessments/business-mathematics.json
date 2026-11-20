@@ -1105,7 +1105,7 @@
           },
           {
             "id": "B",
-            "label": "Gross Profit انخفض من 140,000 إلى 145,000"
+            "label": "Gross Profit ارتفع من 140,000 إلى 145,000"
           },
           {
             "id": "C",
@@ -1191,7 +1191,7 @@
             "label": "245,000"
           }
         ],
-        "correctOption": "C",
+        "correctOption": "B",
         "sourceLesson": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. ",
         "explanation": "Prime Cost = COGS + included Labor = 55,000 + 40,000 = 95,000. "
       },
@@ -1222,7 +1222,7 @@
       },
       {
         "id": "final-q06",
-        "prompt": "المطعم لديه 80 مقعداً ويعمل 5 ساعات. أحدت مقاعده غير متاحة لمدة ساعة كاملة (كل المقاعد). Available Seat Hours المعدلة:",
+        "prompt": "المطعم لديه 80 مقعداً، وكانت جميع المقاعد غير متاحة لمدة ساعة كاملة من فترة التشغيل ذات الخمس ساعات. Available Seat Hours المعدلة:",
         "options": [
           {
             "id": "A",
