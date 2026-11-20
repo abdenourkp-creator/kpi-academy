@@ -1,0 +1,32 @@
+name: KPI Academy QA
+
+on:
+  push:
+    branches:
+      - implementation/kpi-academy-mvp
+  pull_request:
+    branches:
+      - main
+      - implementation/kpi-academy-mvp
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check assets/js/app.js
+          node --check assets/js/kpi-engine.js
+          node --check assets/js/calculator.js
+          node --check tests/kpi-engine.test.js
+          node --check tests/markdown-renderer.test.js
+      - name: Run KPI calculation tests
+        run: node tests/kpi-engine.test.js
+      - name: Run lesson Markdown renderer tests
+        run: node tests/markdown-renderer.test.js
