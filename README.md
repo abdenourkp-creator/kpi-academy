@@ -25,6 +25,8 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [x] Full source lesson files BM-001 through BM-032 migrated from KPI Academy Notion pages
 - [x] Lesson list and in-app reader (first-pass Markdown rendering)
 - [ ] Browser runtime and visual QA
+- [x] Automated Markdown renderer regression tests (tables, alignment rows, headings, emphasis, lists, line breaks, HTML escaping)
+- [x] GitHub Actions QA workflow for JavaScript syntax, KPI engine tests, and Markdown renderer tests
 - [ ] RTL/LTR and mobile accessibility QA
 - [x] Deterministic 15-KPI calculation engine; Node.js runtime tests executed (16 calculation cases + 12 validation cases passed)
 - [ ] Full browser UI interaction and visual QA (headless Chromium launch did not complete in the current environment)
