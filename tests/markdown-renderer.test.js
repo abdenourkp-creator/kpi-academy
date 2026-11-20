@@ -57,7 +57,7 @@ const escapedPipe = render("Level: Foundation \\| Chapter: Numerical Foundations
 assert.match(withoutLtrIsolation(escapedPipe), /Foundation \| Chapter/);
 
 const lineBreak = render("First line<br />Second line");
-assert.match(withoutLtrIsolation(lineBreak), /First line Second line/);
+assert.match(withoutLtrIsolation(lineBreak), /First line<br>Second line/);
 
 const escaped = render("User input: <img src=x onerror=alert(1)>");
 assert.doesNotMatch(escaped, /<img/);
