@@ -69,6 +69,15 @@
           !["in-progress", "completed"].includes(progress.status)) {
         return { ok: false, reason: "invalid-lesson-progress" };
       }
+      if (progress.status === "completed") {
+        const evidence = state.lessonEvidence[code];
+        const hasLedgerEntry = state.xpTransactions.some(tx => tx.sourceId === code);
+        if (!isObject(evidence) ||
+            ["interactiveLab", "professionalChallenge", "fieldChecklist", "learnerAttested"].some(key => evidence[key] !== true) ||
+            !hasLedgerEntry) {
+          return { ok: false, reason: "completed-lesson-without-evidence-or-xp" };
+        }
+      }
     }
 
     for (const [code, evidence] of Object.entries(state.lessonEvidence)) {
@@ -79,16 +88,20 @@
       }
     }
 
+    const attemptIds = new Set();
     for (const attempt of state.assessmentAttempts) {
       if (!isObject(attempt) || !ASSESSMENT_IDS.has(attempt.assessmentId) ||
-          typeof attempt.attemptId !== "string" || !Number.isInteger(attempt.score) ||
-          attempt.score < 0 || attempt.score > 100 ||
+          typeof attempt.attemptId !== "string" || attemptIds.has(attempt.attemptId) ||
+          !Number.isInteger(attempt.score) || attempt.score < 0 || attempt.score > 100 ||
           typeof attempt.passed !== "boolean" || attempt.passed !== (attempt.score >= PASS_THRESHOLD) ||
           !Number.isInteger(attempt.questionCount) || attempt.questionCount < 1 ||
           !Number.isInteger(attempt.correctCount) || attempt.correctCount < 0 ||
-          attempt.correctCount > attempt.questionCount || !isObject(attempt.answers)) {
+          attempt.correctCount > attempt.questionCount ||
+          attempt.score !== Math.round((attempt.correctCount / attempt.questionCount) * 100) ||
+          !isObject(attempt.answers)) {
         return { ok: false, reason: "invalid-assessment-attempt" };
       }
+      attemptIds.add(attempt.attemptId);
     }
 
     return { ok: true };
@@ -259,7 +272,10 @@
     const reviewedAnswers = {};
     for (const question of assessment.questions) {
       if (!question || typeof question.id !== "string" || seen.has(question.id) ||
-          !Array.isArray(question.options) || typeof question.correctOption !== "string") {
+          !Array.isArray(question.options) || question.options.length < 2 ||
+          typeof question.correctOption !== "string" ||
+          !question.options.some(option => option && option.id === question.correctOption) ||
+          new Set(question.options.map(option => option && option.id)).size !== question.options.length) {
         return { ok: false, reason: "invalid-question-definition" };
       }
       seen.add(question.id);
