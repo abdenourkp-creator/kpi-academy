@@ -172,10 +172,16 @@
       if (fill) fill.style.width = (ids.length / total * 100) + "%";
       if (bar) bar.setAttribute("aria-valuenow", String(ids.length));
       const insight = container.querySelector("[data-insight]");
-      if (insight && ids.length === total) {
-        insight.textContent = correct === total
-          ? "أحسنت. أجبت عن المهام الخمس بشكل صحيح. الخطوة الأهم الآن: اشرح لماذا لا تكفي نسبة واحدة للحكم على أداء المطعم."
-          : "أكملت التحقق من المهام. راجع التفسيرات في الإجابات التي أخطأت فيها، ثم أعد المحاولة لترسيخ الفكرة.";
+      if (insight) {
+        if (ids.length === 0) {
+          insight.textContent = "ابدأ بالمهمة الأولى. لا تتعجل: حدّد دائماً ما الذي تقيسه، ثم اختر المقام المناسب.";
+        } else if (ids.length === total) {
+          insight.textContent = correct === total
+            ? "أحسنت. أجبت عن المهام الخمس بشكل صحيح. الخطوة الأهم الآن: اشرح لماذا لا تكفي نسبة واحدة للحكم على أداء المطعم."
+            : "أكملت التحقق من المهام. راجع التفسيرات في الإجابات التي أخطأت فيها، ثم أعد المحاولة لترسيخ الفكرة.";
+        } else {
+          insight.textContent = "تقدم جيد. واصل المهمة التالية، ولا تكتفِ بالرقم؛ اقرأ تفسير كل نتيجة واربطها بقاعدة المقارنة الصحيحة.";
+        }
       }
     }
 
