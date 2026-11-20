@@ -22,7 +22,12 @@ for (const assessment of all) {
   for (const question of assessment.questions) {
     assert.ok(question.id && question.prompt && Array.isArray(question.options));
     assert.equal(question.options.length, 4, question.id + " must provide four options");
+    assert.ok(question.options.every(option => typeof option.label === "string" && option.label.trim()),
+      question.id + " options must have non-empty labels");
     assert.equal(new Set(question.options.map(option => option.id)).size, 4);
+    const optionLabels = question.options.map(option => option.label.trim().toLowerCase());
+    assert.equal(new Set(optionLabels).size, optionLabels.length,
+      question.id + " must not repeat an answer label");
     assert.ok(question.options.some(option => option.id === question.correctOption), question.id + " answer key must exist");
     assert.ok(question.explanation, question.id + " must explain the answer");
     assert.ok(!questionIds.has(question.id), question.id + " must be globally unique");
