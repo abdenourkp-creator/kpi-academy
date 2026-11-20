@@ -29,6 +29,7 @@ jobs:
           node --check assets/js/lesson-experience.js
           node --check assets/js/analytics-lab.js
           node --check assets/js/management-simulator.js
+          node --check assets/js/study-tools.js
           node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
@@ -38,6 +39,8 @@ jobs:
           node --check tests/lesson-experience.test.js
           node --check tests/browser-smoke.test.js
           node --check tests/visual-assets.test.js
+          node --check tests/management-simulator.test.js
+          node --check tests/study-tools.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
       - name: Run lesson Markdown renderer tests
@@ -52,8 +55,10 @@ jobs:
         run: node tests/lesson-experience.test.js
       - name: Run Analytics Lab tests
         run: node tests/analytics-lab.test.js
-      - name: Run Management Simulator shell tests
+      - name: Run Management Simulator scenario tests
         run: node tests/management-simulator.test.js
+      - name: Run personal study tools tests
+        run: node tests/study-tools.test.js
       - name: Run visual asset registry tests
         run: node tests/visual-assets.test.js
 
