@@ -93,6 +93,8 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 
 ## Visual resource status
 
+The 20 November visual-design pass adds an illustrated dashboard hero, three original module illustrations, and eight inline chapter maps for Business Mathematics. Chapter maps are explanatory visual summaries of the existing approved chapter topics; they do not create new lessons or assessment content. The dashboard and module illustrations are registered as VIS-007 through VIS-010 in `data/visual-assets.json`.
+
 | Asset | Status |
 |---|---|
 | VIS-001 Food Cost | Integrated in BM-005; browser and screenshot reviewed |
@@ -102,7 +104,7 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 | VIS-005 Inventory Turnover | Registered; placement depends on approved detailed Restaurant KPIs curriculum |
 | VIS-006 RevPASH | Registered; placement depends on approved detailed Restaurant KPIs curriculum |
 
-No external photography was downloaded or added. No asset was placed merely to decorate a screen.
+No external photography was downloaded or added. The new visual system uses original SVG illustrations and inline SVG chapter maps, designed to explain concepts and orient learners rather than decorate screens.
 
 ## Analytics Lab data provenance
 
