@@ -128,6 +128,7 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
     await page.locator(".lesson-visual-card").waitFor();
     await page.locator(".ka-lesson-toc").waitFor();
+    assert.ok(await page.locator(".ka-lesson-section").count() >= 8, "lesson sections must be grouped into semantic reading panels");
     assert.ok(await page.locator(".ka-lesson-navigation a").count() >= 1, "lesson navigation must expose a next or previous lesson link");
     assert.match(await page.locator(".lesson-visual-copy").textContent(), /9,000 MAD.*30,000 MAD.*30%/);
     assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"));
@@ -159,6 +160,7 @@ function startServer() {
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
     await page.locator("#lessonProgressPanel").waitFor();
+    assert.ok(await page.locator(".ka-formula-block").count() > 0, "standalone formulas must be visually distinguished");
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
     await page.locator("#completeLessonButton").click();
     assert.match(await page.locator("#lessonEvidenceFeedback").textContent(), /أكمل العناصر الأربعة/);

@@ -101,6 +101,32 @@ async function lessonView(code){
         sectionHeadings.forEach((heading,index)=>{const id="lesson-section-"+(index+1);heading.id=id;const link=document.createElement("a");link.href="#"+id;link.textContent=heading.textContent;tocLinks.appendChild(link);});
         toc.appendChild(tocLinks);lessonBody.insertBefore(toc,lessonBody.firstChild);
       }
+      sectionHeadings.forEach(heading=>{
+        const label=heading.textContent.trim();
+        let kind="content";
+        if(/الموقف التجاري|لغز/.test(label))kind="mystery";
+        else if(/أخطاء شائعة/.test(label))kind="mistakes";
+        else if(/التحدي المهني/.test(label))kind="challenge";
+        else if(/التقييم/.test(label))kind="assessment";
+        else if(/قائمة التحقق/.test(label))kind="checklist";
+        else if(/مختبر|تدريب تطبيقي/.test(label))kind="lab";
+        else if(/مثال|حالة/.test(label))kind="worked";
+        else if(/إدارة|التقرير التنفيذي/.test(label))kind="insight";
+        const parent=heading.parentNode,section=document.createElement("section");
+        section.className="ka-lesson-section ka-lesson-section--"+kind;
+        section.setAttribute("aria-labelledby",heading.id);
+        parent.insertBefore(section,heading);section.appendChild(heading);
+        let node=section.nextSibling;
+        while(node&&!(node.nodeType===1&&node.tagName==="H2")){
+          const next=node.nextSibling;section.appendChild(node);node=next;
+        }
+        section.querySelectorAll("p").forEach(paragraph=>{
+          const value=paragraph.textContent.trim();
+          if(value.length<160&&!/[\\u0600-\\u06FF]/.test(value)&&/[=×÷]/.test(value)&&/^[A-Za-z0-9\\s.,%()+\\-×÷=/:]+$/.test(value)){
+            paragraph.classList.add("ka-formula-block");paragraph.setAttribute("dir","ltr");
+          }
+        });
+      });
     }
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
