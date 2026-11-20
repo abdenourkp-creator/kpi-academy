@@ -60,7 +60,7 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 - data/hospitality-accounting-scope.json — six approved scope areas; detailed chapter/lesson structure is not specified.
 - data/kpi-registry.json — 15 approved KPI definitions, formulas, inputs, units, and periods.
 - data/assessments/business-mathematics.json — eight chapter assessments and one final practical assessment; 50 questions total.
-- data/visual-assets.json — six original SVG visual resources.
+- data/visual-assets.json — ten original SVG visual resources (VIS-001 through VIS-010).
 
 ### JavaScript modules
 
@@ -71,13 +71,16 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 - assets/js/learning-ui.js — progress, assessment and learner controls.
 - assets/js/lesson-experience.js — BM-005 interactive lab.
 - assets/js/analytics-lab.js — sample period analytics and chart interaction.
-- assets/js/management-simulator.js — reusable scenario workspace shell.
+- assets/js/management-simulator.js — three synthetic decision scenarios with a five-stage workspace.
+- assets/js/study-tools.js — bookmarks, notes, glossary, spaced review, skill tree and badges.
 
 ### CSS
 
 - assets/css/styles.css — application shell, dashboard, module, calculator, analytics, simulator, lesson and responsive design system.
 - assets/css/lesson-experience.css — interactive lesson experience.
 - assets/css/visual-learning.css — visual learning components.
+- assets/css/study-tools.css — personal study companion and progress visuals.
+- assets/css/simulator.css — management decision scenario interface.
 
 ### Tests and automation
 
@@ -89,6 +92,7 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 - tests/lesson-experience.test.js
 - tests/analytics-lab.test.js
 - tests/management-simulator.test.js
+- tests/study-tools.test.js
 - tests/visual-assets.test.js
 - tests/browser-smoke.test.js
 - tests/visual-capture.js
@@ -113,9 +117,9 @@ No external photography was downloaded or added. The new visual system uses orig
 
 The Analytics Lab uses three explicitly synthetic educational periods. Gross Profit, Gross Profit Margin, Labor Cost %, Prime Cost, and Prime Cost % are calculated using the existing KPIEngine. It does not connect to POS, actual restaurant records, or a live trading dataset. No external benchmarks are fabricated.
 
-## Management Simulator dependency
+## Management Simulator content provenance
 
-The reusable interface has five stages: Business Context, Available Evidence, Management Decision, Possible Consequences, and Reflection & Feedback. The controlling sources reviewed specify three scenarios as MVP scope but do not contain complete approved scenario manuscripts, datasets, answer choices, consequence rules, or feedback criteria. The simulator therefore has no active scenario and awards no XP.
+The simulator includes three explicitly synthetic educational cases: Food Cost increase, Beverage Cost variance, and Labor Cost pressure. Figures and choices are instructional examples, not sourced restaurant benchmarks or live records. Each case presents evidence limits and explanatory feedback. The simulator awards no XP and writes no official grades.
 
 ## Preservation guarantees
 
