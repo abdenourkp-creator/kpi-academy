@@ -24,7 +24,7 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 | BM-005 interactive lab | Five interactive learning tasks; existing calculation and feedback logic retained | A |
 | KPI Calculator (#calculator) | Existing deterministic KPI calculator; formulas and validation behavior preserved | A |
 | Analytics Lab (#analytics) | Functional educational comparison using synthetic data and KPIEngine | A |
-| Management Simulator (#simulator) | Reusable five-stage workspace; scenario content not yet approved or authored | D |
+| Management Simulator (#simulator) | Three clearly labelled synthetic decision cases; five-stage workspace; no XP or official grading | A |
 | Progress (#progress) | Learning dashboard, assessments, attempt history, backup/restore/reset | A |
 | Assessment routes | Eight chapter exams and final practical assessment; pass/retake behavior retained | A |
 | Admin content panel | Not implemented | E |
@@ -39,6 +39,9 @@ The transformation upgrades the existing Vanilla JavaScript application in place
 - Mobile navigation toggle and module-card navigation.
 - Lesson table of contents, in-lesson anchor navigation, and previous/next lesson links.
 - BM-005 visual and five-task interactive lab.
+- Personal study companion: lesson bookmarks, local notes, foundation glossary, and 1–3–7 day review scheduling.
+- Dashboard skill tree for eight Business Mathematics chapters and four progress-derived achievement badges; no extra XP ledger.
+- Three synthetic Management Simulator cases with selectable decisions and explanatory feedback; clearly separated from official assessment and XP.
 - Evidence-gated lesson completion and idempotent XP awards.
 - Chapter and final assessments, pass threshold, retry behavior, best/latest scores.
 - Backup export, restore validation, and progress persistence.
@@ -128,13 +131,15 @@ The reusable interface has five stages: Business Context, Available Evidence, Ma
 ## Remaining work and honest limitations
 
 1. Full keyboard, screen-reader, color-contrast, and exhaustive Arabic/English mixed-direction accessibility audit.
-2. Review of all screens at every screenshot breakpoint beyond automated overflow checks.
-3. Detailed Hospitality Accounting curriculum and assessment design, pending approved source material.
-4. Detailed Restaurant KPIs curriculum, pending approved source material.
-5. Three complete Management Simulator scenario manuscripts and decision/feedback rules.
-6. Exact lesson placements for VIS-002 through VIS-006 after their target curricula are approved.
-7. Admin content panel.
-8. PDF certificate generation (and any external credential claims).
-9. Authentication, server-side progress verification, cloud sync, and production deployment.
+2. Expand glossary coverage beyond the initial foundation vocabulary using reviewed source-backed definitions.
+3. Add approved real-world task worksheets and downloadable practice resources.
+4. Review of all screens at every screenshot breakpoint beyond automated overflow checks.
+5. Detailed Hospitality Accounting curriculum and assessment design, pending approved source material.
+6. Detailed Restaurant KPIs curriculum, pending approved source material.
+7. Review and approval of synthetic Management Simulator cases before treating them as formal curriculum.
+8. Exact lesson placements for VIS-002 through VIS-006 after their target curricula are approved.
+9. Admin content panel.
+10. PDF certificate generation (and any external credential claims).
+11. Authentication, server-side progress verification, cloud sync, and production deployment.
 
 The product must not imply that any of these pending items is operational.
