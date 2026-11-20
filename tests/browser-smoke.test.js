@@ -124,6 +124,8 @@ function startServer() {
       "interactive practice must not award XP or change completion rules");
     await page.locator("[data-reset]").click();
     assert.equal(await page.locator("[data-score]").textContent(), "0/5", "lab reset must clear only the temporary exercise state");
+    assert.match(await page.locator("[data-insight]").textContent(), /ابدأ بالمهمة الأولى/,
+      "lab reset must restore the initial guidance message");
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
     await page.locator("#lessonProgressPanel").waitFor();
