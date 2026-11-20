@@ -34,3 +34,11 @@ All six are original SVG creations, with no third-party image license required. 
 - Openverse: use the specific source record and verify the original license and attribution before downloading.
 
 No external photograph is marked VERIFIED or DOWNLOADED in this release. This is intentional: no specific image record has yet passed an individual rights and source audit.
+
+
+## Current integration update — 2026-11-20
+
+- VIS-001 Food Cost SVG: integrated into BM-005, using the lesson's exact worked percentage values; responsive layout and accessible alt text added.
+- Learner dashboard: live chapter progress chart added from local learning-engine state.
+- VIS-002 through VIS-006 remain registered, pending approved lesson mapping.
+- External photography has not been acquired; no unverified stock image is included.
