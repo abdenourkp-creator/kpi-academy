@@ -27,6 +27,8 @@ jobs:
           node --check assets/js/learning-engine.js
           node --check assets/js/learning-ui.js
           node --check assets/js/lesson-experience.js
+          node --check assets/js/analytics-lab.js
+          node --check assets/js/management-simulator.js
           node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
@@ -48,6 +50,10 @@ jobs:
         run: node tests/assessment-catalog.test.js
       - name: Run interactive lesson experience tests
         run: node tests/lesson-experience.test.js
+      - name: Run Analytics Lab tests
+        run: node tests/analytics-lab.test.js
+      - name: Run Management Simulator shell tests
+        run: node tests/management-simulator.test.js
       - name: Run visual asset registry tests
         run: node tests/visual-assets.test.js
 

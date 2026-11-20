@@ -1,0 +1,12 @@
+const assert=require("node:assert/strict");
+global.window=global;
+require("../assets/js/management-simulator.js");
+const api=global.KPI_SIMULATOR;
+assert.ok(api);
+assert.equal(api.stages.length,5);
+assert.deepEqual(api.stages.map(x=>x.id),["context","evidence","decision","consequence","reflection"]);
+const view=api.view();
+assert.match(view,/السيناريوهات لم تعتمد بعد/);
+assert.match(view,/لا يتم تسجيل نتيجة أو تقدم أو XP/);
+assert.doesNotMatch(view,/scenario-[0-9]+/);
+console.log("Management Simulator shell passed: five reusable stages and explicit missing-content dependency; no scenario or XP fabricated.");
