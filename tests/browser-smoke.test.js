@@ -62,7 +62,11 @@ function startServer() {
     await failurePage.route("**/data/assessments/business-mathematics.json", route => {
       if (failOnce) {
         failOnce = false;
-        route.abort();
+        route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: JSON.stringify({ error: "simulated assessment catalog outage" })
+        });
       } else {
         route.continue();
       }
