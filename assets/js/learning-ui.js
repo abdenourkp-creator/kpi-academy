@@ -89,9 +89,20 @@
     const data = ENGINE.getDashboard();
     const lessonProgress = pct(data.completedLessons, data.totalLessons);
     const assessmentProgress = pct(data.passedAssessments, data.totalAssessments);
-    return '<section class="learning-hero"><div class="learning-hero-copy"><span class="eyebrow">LEARNING ENGINE · FOUNDATION</span><h2>تقدمك مبني على الإنجاز، لا على فتح الصفحات.</h2><p>كل نقطة وكل حالة نجاح لها سجل واضح يمكنك مراجعته واستعادته.</p></div><div class="learning-hero-metrics"><div><strong>' + data.earnedXp.toLocaleString("en-US") + '</strong><span>XP earned</span></div><div><strong>' + data.passedAssessments + '/9</strong><span>Assessments passed</span></div></div></section><section class="learning-mini-grid"><article class="learning-mini-card"><span>الدروس المكتملة</span><strong>' + data.completedLessons + ' / 32</strong><div class="learning-progress-track"><i style="width:' + lessonProgress + '%"></i></div></article><article class="learning-mini-card"><span>الاختبارات المجتازة</span><strong>' + data.passedAssessments + ' / 9</strong><div class="learning-progress-track"><i style="width:' + assessmentProgress + '%"></i></div></article><article class="learning-mini-card"><span>رصيد XP</span><strong>' + data.earnedXp.toLocaleString("en-US") + ' / 2,880</strong><div class="learning-progress-track"><i style="width:' + pct(data.earnedXp, data.availableXp) + '%"></i></div></article></section>';
+    const lessons = curriculum ? curriculum.chapters.flatMap(chapter => chapter.lessons) : [];
+    const inProgress = lessons.map(lesson => ({ lesson, state: ENGINE.getLessonProgress(lesson.code).progress }))
+      .filter(item => item.state && item.state.status === "in-progress")
+      .sort((a, b) => (b.state.updatedAt || "").localeCompare(a.state.updatedAt || ""));
+    const candidate = inProgress.length ? inProgress[0].lesson :
+      lessons.find(lesson => {
+        const state = ENGINE.getLessonProgress(lesson.code).progress;
+        return !state || state.status !== "completed";
+      });
+    const resumeBlock = candidate
+      ? '<section class="learning-resume"><div><span class="eyebrow">CONTINUE LEARNING</span><h3>' + esc(candidate.title) + '</h3><p>' + esc(candidate.code) + ' · ' + (inProgress.length ? "تابع من حيث توقفت" : "الدرس التالي المقترح") + '</p></div><a href="#lesson-' + esc(candidate.code) + '" class="primary-action">متابعة الدرس ←</a></section>'
+      : '<section class="learning-resume complete"><div><span class="eyebrow">LESSONS COMPLETE</span><h3>أكملت دروس Business Mathematics الـ32.</h3><p>راجع الاختبارات الفصلية والاختبار النهائي لاستيفاء شروط الإكمال.</p></div><a href="#progress" class="primary-action">عرض الاختبارات ←</a></section>';
+    return '<section class="learning-hero"><div class="learning-hero-copy"><span class="eyebrow">LEARNING ENGINE · FOUNDATION</span><h2>تقدمك مبني على الإنجاز، لا على فتح الصفحات.</h2><p>كل نقطة وكل حالة نجاح لها سجل واضح يمكنك مراجعته واستعادته.</p></div><div class="learning-hero-metrics"><div><strong>' + data.earnedXp.toLocaleString("en-US") + '</strong><span>XP earned</span></div><div><strong>' + data.passedAssessments + '/9</strong><span>Assessments passed</span></div></div></section>' + resumeBlock + '<section class="learning-mini-grid"><article class="learning-mini-card"><span>الدروس المكتملة</span><strong>' + data.completedLessons + ' / 32</strong><div class="learning-progress-track"><i style="width:' + lessonProgress + '%"></i></div></article><article class="learning-mini-card"><span>الاختبارات المجتازة</span><strong>' + data.passedAssessments + ' / 9</strong><div class="learning-progress-track"><i style="width:' + assessmentProgress + '%"></i></div></article><article class="learning-mini-card"><span>رصيد XP</span><strong>' + data.earnedXp.toLocaleString("en-US") + ' / 2,880</strong><div class="learning-progress-track"><i style="width:' + pct(data.earnedXp, data.availableXp) + '%"></i></div></article></section>';
   }
-
   function lessonPanel(code) {
     const current = ENGINE.getLessonProgress(code);
     const completed = current.progress && current.progress.status === "completed";
