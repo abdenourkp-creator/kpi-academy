@@ -73,6 +73,20 @@ jobs:
         run: /tmp/kpi-playwright/node_modules/.bin/playwright install --with-deps chromium
       - name: Run end-to-end browser smoke test
         run: NODE_PATH=/tmp/kpi-playwright/node_modules node tests/browser-smoke.test.js
+      - name: Extract verified pre-redesign baseline
+        run: |
+          git fetch --depth=1 origin d464104ee9511e3567d485d74c7152a8d3b38a25
+          mkdir -p /tmp/kpi-baseline
+          git archive d464104ee9511e3567d485d74c7152a8d3b38a25 | tar -x -C /tmp/kpi-baseline
+      - name: Capture before and after visual screens
+        run: NODE_PATH=/tmp/kpi-playwright/node_modules node tests/visual-capture.js /tmp/kpi-baseline
+      - name: Upload visual comparison screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpi-academy-before-after-visuals
+          path: test-results/visual-capture/
+          if-no-files-found: error
+          retention-days: 14
 
   package:
     needs: [verify, browser]
