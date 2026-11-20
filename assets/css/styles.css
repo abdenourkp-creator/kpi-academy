@@ -265,5 +265,5 @@ body{background:var(--ka-bg);color:var(--ka-text);font-family:Inter,"Noto Sans A
 .ka-lesson-section--assessment{background:#FAFBFD}
 .ka-lesson-section--checklist{background:#F5FAF7;border-inline-start:3px solid var(--ka-success)}
 .ka-lesson-section--insight{background:#F7F9FC;border-inline-start:3px solid #8AAAC3}
-.ka-formula-block{direction:ltr!important;text-align:center!important;unicode-bidi:isolate;padding:12px 15px;margin:13px 0;border:1px solid #DCEAF5;border-radius:9px;background:#F1F7FC;color:#17324D;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.ka-formula-block{display:block;direction:ltr!important;text-align:center!important;unicode-bidi:isolate;padding:12px 15px;margin:13px 0;border:1px solid #DCEAF5;border-radius:9px;background:#F1F7FC;color:#17324D;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:700;overflow-wrap:anywhere}
 @media(max-width:600px){.ka-lesson-section{padding:14px;margin:14px 0}.ka-lesson-section>h2{font-size:15px}.ka-formula-block{font-size:12px;padding:10px}}
