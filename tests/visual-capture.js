@@ -11,6 +11,7 @@ const routes=[
  {id:"dashboard",hash:"#dashboard",wait:".page-content"},
  {id:"modules",hash:"#modules",wait:".page-content"},
  {id:"module-detail",hash:"#module-business-mathematics",wait:".chapter-panel"},
+ {id:"restaurant-kpi-registry",hash:"#module-restaurant-kpis",wait:".page-content"},
  {id:"lesson-reader",hash:"#lesson-BM-005",wait:".lesson-reader"},
  {id:"kpi-calculator",hash:"#calculator",wait:"#kpiForm"},
  {id:"analytics-lab",hash:"#analytics",wait:"#analyticsChart"},
@@ -39,12 +40,12 @@ async function capture(browser,root,label,viewport,routesToCapture){
  try{
   await capture(browser,baselineRoot,"before",{width:1365,height:900},routes);
   await capture(browser,currentRoot,"after",{width:1365,height:900},routes);
-  const mobileRoutes=routes.filter(x=>["dashboard","lesson-reader","kpi-calculator","analytics-lab","management-simulator"].includes(x.id));
+  const mobileRoutes=routes.filter(x=>["dashboard","module-detail","restaurant-kpi-registry","lesson-reader","kpi-calculator","analytics-lab","management-simulator"].includes(x.id));
   await capture(browser,currentRoot,"after",{width:390,height:844},mobileRoutes);
   const files=[];
   function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,item.name);if(item.isDirectory())walk(full);else files.push(full);}}
   walk(output);
-  if(files.length!==21)throw new Error("Expected 21 screenshots, captured "+files.length);
+  if(files.length!==25)throw new Error("Expected 25 screenshots, captured "+files.length);
   console.log("Visual capture complete: "+files.length+" before/after desktop and after mobile screenshots.");
  }finally{await browser.close();}
 })();

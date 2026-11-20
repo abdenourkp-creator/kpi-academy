@@ -9,13 +9,15 @@
 - Module and chapter navigation: `modulesView()` and `moduleDetail()`.
 - Business Mathematics lesson reader: `lessonView(code)` loads lesson Markdown via each lesson's `sourcePath`.
 - BM-005 interactive learning lab is mounted by `KPI_LESSON_EXPERIENCE`.
-- Analytics, simulator, and some KPI destinations remain placeholders; do not claim dashboard visualizations are live until data-driven charts are implemented.
+- KPI Calculator: existing deterministic calculator, with the 15-entry registry and calculation behavior preserved.
+- Analytics Lab: functional period comparison using an explicitly synthetic educational dataset and the existing KPI Engine; not connected to live restaurant data.
+- Management Simulator: reusable five-stage shell; approved scenario manuscripts are still a content dependency.
 
 ## Resource placement map
 
 | Resource | Where | When | Why | Status |
 |---|---|---|---|---|
-| Food Cost calculation | Business Mathematics → BM-005, after Hospitality Applications and before Worked Case | Reinforce Part ÷ Whole × 100 using the lesson's own 9,000 / 30,000 = 30% example | Make denominator choice visible before interpretation | Integrated; CI/browser verification pending |
+| Food Cost calculation | Business Mathematics → BM-005, after Hospitality Applications and before Worked Case | Reinforce Part ÷ Whole × 100 using the lesson's own 9,000 / 30,000 = 30% example | Make denominator choice visible before interpretation | Integrated; browser smoke and screenshot reviewed |
 | Prime Cost composition | Restaurant KPIs → Prime Cost concept | Before worked example | Show Food COGS + Beverage COGS + Labor Cost | Registered; placement pending |
 | Gross Profit flow | Hospitality Accounting → Gross Profit | During concept explanation | Clarify Net Sales − COGS | Registered; placement pending |
 | Break-even concept | Restaurant KPIs → Break-even Sales | Before or during worked example | Distinguish loss, break-even, and profit zones | Registered; placement pending |
@@ -27,6 +29,18 @@
 - The learner dashboard now renders an eight-row chapter completion chart from `KPI_LEARNING_ENGINE.getLessonProgress()` and the official Business Mathematics curriculum.
 - This is learner progress, not restaurant trading performance. It uses actual locally stored lesson states and does not modify XP, assessment, or completion rules.
 - Executive, Restaurant Performance, Cost Control, and Inventory dashboards remain specifications only because no operational restaurant dataset or live data feed exists.
+
+## Analytics Lab implementation status
+
+- Three synthetic periods are explicitly disclosed as educational sample data.
+- Gross Profit, Gross Profit Margin, Labor Cost %, Prime Cost, and Prime Cost % are calculated through KPIEngine.
+- Metric selection updates a horizontal comparison chart and its formula/interpretation/limitations. A source table displays the calculated values.
+- No actual restaurant performance or external benchmarks are represented.
+
+## Management Simulator implementation status
+
+- A reusable five-stage interface exists: Business Context, Available Evidence, Management Decision, Possible Consequences, Reflection & Feedback.
+- The approved MVP scope mentions three scenarios, but the controlling sources reviewed do not contain complete approved scenario manuscripts. The interface therefore displays a clear content dependency and awards no XP.
 
 ## Dashboard specifications — planned, not implemented
 
@@ -50,6 +64,6 @@ All charts must be rendered from application data and official KPI Registry defi
 
 ## Visual integration record
 
-- BM-005 Food Cost diagram: integrated using the exact values in section 2 of the lesson (9,000 MAD / 30,000 MAD = 30%). The diagram is positioned before the worked case and includes an Arabic learning objective and descriptive alt text.
+- BM-005 Food Cost diagram: integrated using the exact values in section 2 of the lesson (9,000 MAD / 30,000 MAD = 30%). The diagram is positioned before the worked case and includes an Arabic learning objective and descriptive alt text. Browser smoke and desktop/mobile screenshot review completed.
 - Other five diagrams remain registered but are not inserted: exact lesson placements in Hospitality Accounting and Restaurant KPIs are not supported by an approved detailed curriculum yet.
 - Photography: no external photo has been added. Repository file actions available in this workflow support text assets; no photo binary was downloaded or verified, so none is represented as licensed/acquired.

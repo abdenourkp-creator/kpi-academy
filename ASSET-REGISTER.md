@@ -17,14 +17,14 @@
 
 | ID | Asset | Local path | Intended use | Status |
 |---|---|---|---|---|
-| VIS-001 | Food Cost calculation | `assets/diagrams/restaurant-kpis/food-cost-calculation.svg` | Food Cost concept/explanation | DOWNLOADED · REGISTERED |
+| VIS-001 | Food Cost calculation | `assets/diagrams/restaurant-kpis/food-cost-calculation.svg` | Food Cost concept/explanation | DOWNLOADED · REGISTERED · INTEGRATED · BROWSER/SCREENSHOT VERIFIED |
 | VIS-002 | Prime Cost composition | `assets/diagrams/restaurant-kpis/prime-cost-composition.svg` | Prime Cost composition lesson | DOWNLOADED · REGISTERED |
 | VIS-003 | Gross Profit flow | `assets/diagrams/hospitality-accounting/gross-profit-flow.svg` | Gross Profit explanation | DOWNLOADED · REGISTERED |
 | VIS-004 | Break-even concept | `assets/diagrams/restaurant-kpis/break-even-concept.svg` | Break-even worked example | DOWNLOADED · REGISTERED |
 | VIS-005 | Inventory Turnover flow | `assets/diagrams/restaurant-kpis/inventory-turnover-flow.svg` | Inventory Turnover explanation | DOWNLOADED · REGISTERED |
 | VIS-006 | RevPASH visual | `assets/diagrams/restaurant-kpis/revpash-visual.svg` | RevPASH explanation | DOWNLOADED · REGISTERED |
 
-All six are original SVG creations, with no third-party image license required. They use illustrative currency-neutral values. They are not yet marked INTEGRATED because no lesson renderer placement has been implemented or browser-verified in this phase.
+All six are original SVG creations, with no third-party image license required. They use illustrative currency-neutral values. VIS-001 is integrated into BM-005 and verified in browser smoke plus screenshot review. VIS-002 through VIS-006 remain registered but are not integrated because their exact lesson placements depend on detailed curricula that are not yet approved.
 
 ## External source policy
 
@@ -38,7 +38,7 @@ No external photograph is marked VERIFIED or DOWNLOADED in this release. This is
 
 ## Current integration update — 2026-11-20
 
-- VIS-001 Food Cost SVG: integrated into BM-005, using the lesson's exact worked percentage values; responsive layout and accessible alt text added.
+- VIS-001 Food Cost SVG: integrated into BM-005, using the lesson's exact worked percentage values; responsive layout and accessible alt text added. Browser smoke and before/after screenshot review completed.
 - Learner dashboard: live chapter progress chart added from local learning-engine state.
 - VIS-002 through VIS-006 remain registered, pending approved lesson mapping.
 - External photography has not been acquired; no unverified stock image is included.

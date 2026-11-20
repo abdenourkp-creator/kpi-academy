@@ -22,7 +22,7 @@
       "screen": "KPI explanation section",
       "purpose": "Explain numerator, denominator, multiplication by 100, and interpretation.",
       "integrationStatus": "INTEGRATED_BM-005",
-      "verificationStatus": "INTEGRATION_ADDED_PENDING_CI"
+      "verificationStatus": "BROWSER_SMOKE_AND_SCREENSHOT_REVIEWED"
     },
     {
       "id": "VIS-002",
