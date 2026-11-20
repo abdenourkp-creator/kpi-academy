@@ -132,6 +132,7 @@ function startServer() {
     await failurePage.close();
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
+    await page.locator(".ka-chapter-visual.compact svg").waitFor();
     assert.equal(await page.locator(".ka-chapter-visual.compact svg").count(), 1, "lesson must include its chapter visual anchor");
     await page.locator(".lesson-visual-card").waitFor();
     await page.locator(".ka-lesson-toc").waitFor();
