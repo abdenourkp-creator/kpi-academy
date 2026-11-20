@@ -49,8 +49,13 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
     await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
     assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
+    assert.equal(await page.locator(".ka-module-art img").count(), 3, "all modules must have visual illustrations");
+    assert.equal(await page.locator(".ka-welcome-visual img").evaluate(img => img.complete && img.naturalWidth > 0), true, "dashboard hero illustration must load");
+    assert.equal(await page.locator(".ka-module-art img").evaluateAll(imgs => imgs.every(img => img.complete && img.naturalWidth > 0)), true, "module illustrations must load");
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
+    await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
+    assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
     await page.locator(".ka-kpi-registry-list").waitFor();
     assert.equal(await page.locator(".ka-kpi-registry-item").count(), 15, "Restaurant KPIs module must render the exact approved registry, not invented curriculum");
@@ -126,6 +131,7 @@ function startServer() {
     await failurePage.close();
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
+    assert.equal(await page.locator(".ka-chapter-visual.compact svg").count(), 1, "lesson must include its chapter visual anchor");
     await page.locator(".lesson-visual-card").waitFor();
     await page.locator(".ka-lesson-toc").waitFor();
     await page.locator(".ka-lesson-toc-links a").first().click();
