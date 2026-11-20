@@ -180,3 +180,24 @@
 .learning-resume .primary-action{width:auto;white-space:nowrap;padding:10px 14px;font-size:10px}
 .learning-resume.complete{background:#F8FCF9;border-color:#B9DDCC}
 @media(max-width:600px){.learning-resume{display:block}.learning-resume .primary-action{width:100%;margin-top:12px}}
+
+/* Arabic-first language and bidirectional typography */
+html[lang="ar"], body, .app-shell, .main-area, .page-content { direction: rtl; }
+body { text-align: right; }
+.lesson-reader, .lesson-body, .lesson-body p, .lesson-body li,
+.lesson-body h1, .lesson-body h2, .lesson-body h3,
+.module-card, .content-card, .page-heading, .assessment-intro,
+.quiz-question, .quiz-review-item { direction: rtl; text-align: right; }
+.ltr-term, [dir="ltr"], .lesson-meta, .module-number, .lesson-code,
+.lesson-xp, .formula-panel, .result-number, .result-details dd {
+  direction: ltr; unicode-bidi: isolate;
+}
+.ltr-term { display: inline-block; white-space: normal; }
+.lesson-body .ltr-term { color: #244E70; font-weight: 600; }
+.lesson-body code, .lesson-body pre, .lesson-body .formula,
+.lesson-body .math, .lesson-body .katex { direction: ltr; unicode-bidi: isolate; text-align: left; }
+.lesson-body table { direction: rtl; }
+.lesson-body th, .lesson-body td { unicode-bidi: plaintext; }
+.lesson-body .table-scroll { direction: rtl; }
+.lesson-meta { justify-content: flex-start; }
+.eyebrow { letter-spacing: 0; }
