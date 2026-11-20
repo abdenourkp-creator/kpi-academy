@@ -128,6 +128,9 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
     await page.locator(".lesson-visual-card").waitFor();
     await page.locator(".ka-lesson-toc").waitFor();
+    await page.locator(".ka-lesson-toc-links a").first().click();
+    await page.locator(".lesson-reader").waitFor();
+    assert.equal(await page.locator(".lesson-reader").count(), 1, "section navigation must not route away from the active lesson");
     assert.ok(await page.locator(".ka-lesson-section").count() >= 8, "lesson sections must be grouped into semantic reading panels");
     assert.ok(await page.locator(".ka-lesson-navigation a").count() >= 1, "lesson navigation must expose a next or previous lesson link");
     assert.match(await page.locator(".lesson-visual-copy").textContent(), /9,000 MAD.*30,000 MAD.*30%/);
