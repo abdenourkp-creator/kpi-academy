@@ -171,7 +171,7 @@
 
   function progressView() {
     if (!catalog || !curriculum) {
-      loadCatalog();
+      if (!loadPromise && !loadError) loadCatalog();
       const message = loadError
         ? '<div class="empty-card"><h2>تعذر تحميل بيانات التقييم</h2><p>' + esc(loadError) + '</p><button class="primary-action" id="retryLearningCatalog">إعادة المحاولة</button></div>'
         : '<div class="loading-state">جارٍ تجهيز سجل التعلم…</div>';
