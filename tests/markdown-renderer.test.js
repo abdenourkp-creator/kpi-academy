@@ -9,11 +9,13 @@ function extract(startMarker, endMarker) {
   assert.ok(start >= 0 && end > start, "Could not extract " + startMarker);
   return appSource.slice(start, end).trim();
 }
+const labelMapSource = extract("const AR_TITLES=", "\nfunction arLabel");
+const labelSource = extract("function arLabel(value){", "\nwindow.KPI_AR_LABEL");
 const escSource = extract("function esc(s){", "\nfunction fmt");
 const fmtSource = extract("function fmt(s){", "\nfunction markdownHtml");
 const rendererSource = extract("function markdownHtml(md){", "\nasync function lessonView");
 const rendererFactory = new Function(
-  escSource + "\n" + fmtSource + "\n" + rendererSource + "\nreturn markdownHtml;"
+  labelMapSource + "\n" + labelSource + "\n" + escSource + "\n" + fmtSource + "\n" + rendererSource + "\nreturn markdownHtml;"
 );
 const render = rendererFactory();
 const withoutLtrIsolation = html => html.replace(/<span class="ltr-term"[^>]*>(.*?)<\/span>/g, "$1");
