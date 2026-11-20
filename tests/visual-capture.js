@@ -41,11 +41,11 @@ async function capture(browser,root,label,viewport,routesToCapture){
   await capture(browser,baselineRoot,"before",{width:1365,height:900},routes);
   await capture(browser,currentRoot,"after",{width:1365,height:900},routes);
   const mobileRoutes=routes.filter(x=>["dashboard","module-detail","restaurant-kpi-registry","lesson-reader","kpi-calculator","analytics-lab","management-simulator"].includes(x.id));
-  await capture(browser,currentRoot,"after",{width:390,height:844},mobileRoutes);
+  for(const width of [360,390,430,768,1024]) await capture(browser,currentRoot,"after",{width,height:width<=430?844:900},mobileRoutes);
   const files=[];
   function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,item.name);if(item.isDirectory())walk(full);else files.push(full);}}
   walk(output);
-  if(files.length!==25)throw new Error("Expected 25 screenshots, captured "+files.length);
+  if(files.length!==53)throw new Error("Expected 53 screenshots, captured "+files.length);
   console.log("Visual capture complete: "+files.length+" before/after desktop and after mobile screenshots.");
  }finally{await browser.close();}
 })();

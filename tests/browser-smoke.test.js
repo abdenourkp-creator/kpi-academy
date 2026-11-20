@@ -250,6 +250,18 @@ function startServer() {
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
       "final assessment options must fit a mobile viewport");
 
+
+    const responsiveWidths = [360, 390, 430, 768, 1024, 1366];
+    const responsiveRoutes = ["#dashboard", "#modules", "#module-restaurant-kpis", "#lesson-BM-001", "#calculator", "#analytics", "#simulator"];
+    for (const width of responsiveWidths) {
+      await page.setViewportSize({ width, height: width <= 430 ? 844 : 900 });
+      for (const route of responsiveRoutes) {
+        await page.goto("http://127.0.0.1:" + port + "/" + route, { waitUntil: "networkidle" });
+        const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+        assert.equal(hasOverflow, false, route + " must not overflow at " + width + "px");
+      }
+    }
+
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
     console.log("Browser smoke passed: dashboard load state and assessment retry, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");
     await context.close();
