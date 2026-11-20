@@ -26,11 +26,13 @@ jobs:
           node --check assets/js/calculator.js
           node --check assets/js/learning-engine.js
           node --check assets/js/learning-ui.js
+          node --check assets/js/lesson-experience.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
           node --check tests/content-integrity.test.js
           node --check tests/learning-engine.test.js
           node --check tests/assessment-catalog.test.js
+          node --check tests/lesson-experience.test.js
           node --check tests/browser-smoke.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
@@ -42,6 +44,8 @@ jobs:
         run: node tests/learning-engine.test.js
       - name: Run assessment catalog tests
         run: node tests/assessment-catalog.test.js
+      - name: Run interactive lesson experience tests
+        run: node tests/lesson-experience.test.js
 
   browser:
     needs: verify
