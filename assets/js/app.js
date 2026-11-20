@@ -26,10 +26,10 @@ function moduleDetail(id){const m=modules.find(x=>x.id===id);if(!m)return module
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 function fmt(s){const value=s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,"<em>$1</em>").replace(/\`([^\`]+)\`/g,"<code>$1</code>").replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/g,"<strong>$1</strong>").replace(/&lt;br\s*\/?&gt;/g,"<br>");return value.replace(/(<[^>]*>|[^<]+)/g,part=>part.charAt(0)==="<"?part:part.replace(/[A-Za-z][A-Za-z0-9%+./-]*(?:\s+[A-Za-z][A-Za-z0-9%+./-]*){0,4}/g,match=>'<span class="ltr-term" lang="en" dir="ltr">'+match+'</span>'));}
 function markdownHtml(md){
- const source=md.replace(/<b>/gi,"**").replace(/<\/b>/gi,"**").replace(/<br\s*\/?>/gi,"\n");
+ const source=md.replace(/<b>/gi,"**").replace(/<\/b>/gi,"**").replace(/<br\s*\/?>/gi,"\uE000");
  const lines=source.split(/\r?\n/);
  let html="",paragraph=[],lists=[],tableRows=[];
- const flushParagraph=()=>{if(paragraph.length){html+="<p>"+fmt(esc(paragraph.join(" ")).replace(/\\\|/g,"|"))+"</p>";paragraph=[];}};
+ const flushParagraph=()=>{if(paragraph.length){html+="<p>"+fmt(esc(paragraph.join(" ")).replace(/\\\|/g,"|")).replace(/\uE000/g,"<br>")+"</p>";paragraph=[];}};
  const closeLists=()=>{while(lists.length){const item=lists.pop();html+="</li></"+item.type+">";}};
  const splitCells=row=>row.trim().replace(/^\|/,"").replace(/\|$/,"").split(/(?<!\\)\|/).map(cell=>cell.trim().replace(/\\\|/g,"|"));
  const flushTable=()=>{if(!tableRows.length)return;const rows=tableRows.map(splitCells).filter(cells=>!cells.every(cell=>/^:?-{3,}:?$/.test(cell)));if(rows.length){html+='<div class="table-scroll" role="region" aria-label="جدول تعليمي" tabindex="0"><table><thead><tr>'+rows[0].map(cell=>'<th scope="col">'+fmt(esc(cell))+'</th>').join("")+'</tr></thead><tbody>'+rows.slice(1).map(row=>"<tr>"+row.map(cell=>"<td>"+fmt(esc(cell))+"</td>").join("")+"</tr>").join("")+'</tbody></table></div>';}tableRows=[];};
