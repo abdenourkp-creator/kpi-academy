@@ -28,7 +28,8 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [ ] RTL/LTR and mobile accessibility QA
 - [x] Deterministic 15-KPI calculation engine; Node.js runtime tests executed (16 calculation cases + 12 validation cases passed)
 - [ ] Full browser UI interaction and visual QA (headless Chromium launch did not complete in the current environment)
-- [ ] Hospitality Accounting detailed curriculum
+- [x] Hospitality Accounting scope view migrated from the controlling Notion specification (six approved scope areas; no invented chapters/lessons)
+- [ ] Hospitality Accounting detailed curriculum and assessment design (source outline not yet defined)
 - [ ] Restaurant KPIs detailed curriculum
 - [ ] Eight chapter assessments and final practical exam
 - [ ] Evidence-based XP ledger and local progress persistence
