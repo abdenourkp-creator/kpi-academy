@@ -59,3 +59,23 @@ jobs:
         run: /tmp/kpi-playwright/node_modules/.bin/playwright install --with-deps chromium
       - name: Run end-to-end browser smoke test
         run: NODE_PATH=/tmp/kpi-playwright/node_modules node tests/browser-smoke.test.js
+
+  package:
+    needs: [verify, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Assemble static test build
+        run: |
+          mkdir -p dist
+          cp index.html TESTING.md dist/
+          cp -r assets data content dist/
+          tar -czf kpi-academy-test-build.tar.gz -C dist .
+      - name: Upload test build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpi-academy-test-build
+          path: kpi-academy-test-build.tar.gz
+          if-no-files-found: error
+          retention-days: 14
