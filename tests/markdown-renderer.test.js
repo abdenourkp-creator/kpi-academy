@@ -27,7 +27,7 @@ const table = render([
   "| Juice | 12 | 15.00 | 180.00 |",
   "| Subtotal |  |  | 384.00 |"
 ].join("\n"));
-assert.match(withoutLtrIsolation(table), /<th>Item<\/th>/);
+assert.match(withoutLtrIsolation(table), /<th scope="col">Item<\/th>/);
 assert.match(withoutLtrIsolation(table), /<td>Water<\/td>/);
 assert.match(table, /<td>384\.00<\/td>/);
 assert.doesNotMatch(table, /<td>---<\/td>/);
@@ -38,7 +38,7 @@ const aligned = render([
   "| :--- | ---: |",
   "| Food Cost | 28% |"
 ].join("\n"));
-assert.match(withoutLtrIsolation(aligned), /<th>KPI<\/th>/);
+assert.match(withoutLtrIsolation(aligned), /<th scope="col">KPI<\/th>/);
 assert.match(aligned, /<td>28%<\/td>/);
 assert.doesNotMatch(aligned, /:---|---:/);
 
@@ -53,7 +53,7 @@ assert.match(withoutLtrIsolation(lists), /<ol><li>Verify source<\/li><li>Reconci
 
 const nested = render("- Main control\n  - Check the source\n  - Verify the unit\n    1. Match the invoice\n    2. Reconcile the POS\n- Final control");
 assert.match(withoutLtrIsolation(nested), /<ul><li>Main control<ul><li>Check the source<\/li><li>Verify the unit<ol><li>Match the invoice<\/li><li>Reconcile the POS<\/li><\/ol><\/li><\/ul><\/li><li>Final control<\/li><\/ul>/);
-const escapedPipe = render("Level: Foundation \\\\| Chapter: Numerical Foundations");
+const escapedPipe = render("Level: Foundation \\| Chapter: Numerical Foundations");
 assert.match(withoutLtrIsolation(escapedPipe), /Foundation \| Chapter/);
 
 const lineBreak = render("First line<br />Second line");
