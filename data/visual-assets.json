@@ -17,9 +17,9 @@
       "attribution": "Not required",
       "resolution": "960x300 SVG viewBox",
       "localPath": "assets/diagrams/restaurant-kpis/food-cost-calculation.svg",
-      "module": "Restaurant KPIs",
-      "chapterOrLesson": "Food Cost Percentage — exact lesson mapping pending curriculum audit",
-      "screen": "KPI explanation section",
+      "module": "Business Mathematics",
+      "chapterOrLesson": "BM-005 — Understanding Percentages",
+      "screen": "Lesson visual card before the worked case",
       "purpose": "Explain numerator, denominator, multiplication by 100, and interpretation.",
       "integrationStatus": "INTEGRATED_BM-005",
       "verificationStatus": "BROWSER_SMOKE_AND_SCREENSHOT_REVIEWED"

@@ -7,7 +7,7 @@
 
 - Main dashboard: `dashboard()` in `assets/js/app.js`.
 - Module and chapter navigation: `modulesView()` and `moduleDetail()`.
-- Business Mathematics lesson reader: `lessonView(code)` loads lesson Markdown via each lesson's `sourcePath`.
+- Business Mathematics lesson reader: `lessonView(code)` loads the original Markdown via each lesson's `sourcePath`, then groups sections by pedagogical purpose, adds a section index, highlights standalone formulas, and preserves previous/next navigation.
 - BM-005 interactive learning lab is mounted by `KPI_LESSON_EXPERIENCE`.
 - KPI Calculator: existing deterministic calculator, with the 15-entry registry and calculation behavior preserved.
 - Analytics Lab: functional period comparison using an explicitly synthetic educational dataset and the existing KPI Engine; not connected to live restaurant data.

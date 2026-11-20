@@ -24,7 +24,7 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [x] Dashboard learning summary with Continue Learning action, real earned XP and passed-assessment progress
 - [x] Business Mathematics 8-chapter / 32-lesson manifest
 - [x] Full source lesson files BM-001 through BM-032 migrated from KPI Academy Notion pages
-- [x] Structured lesson reader with section navigation, previous/next lesson links, nested Markdown lists, tables, bold/italic/inline code, explicit line breaks, and safe HTML escaping
+- [x] Structured lesson reader with semantic learning panels, formula blocks, section navigation, previous/next lesson links, nested Markdown lists, tables, bold/italic/inline code, explicit line breaks, and safe HTML escaping
 - [x] Playwright browser smoke: dashboard, lesson evidence gates, XP award, exam pass/retake, backup export/restore, and no uncaught runtime errors
 - [x] Initial desktop/mobile screenshot review of dashboard, modules, lesson reader, calculator, Analytics Lab, simulator, and progress
 - [ ] Comprehensive accessibility audit (keyboard, screen reader, contrast, and full RTL/LTR review)
