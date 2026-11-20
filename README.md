@@ -19,6 +19,8 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - GitHub Pages planned; deployment not yet configured
 
 ## Current implementation status
+
+See [Product Audit & Transformation Record](docs/PRODUCT-AUDIT.md) for the screen inventory, source/data map, interaction audit, feature classifications, preservation guarantees, and remaining dependencies.
 - [x] Responsive application shell and Arabic RTL navigation
 - [x] Premium learner dashboard and three-module discovery experience, driven by actual local learning progress
 - [x] Dashboard learning summary with Continue Learning action, real earned XP and passed-assessment progress
