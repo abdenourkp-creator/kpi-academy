@@ -180,7 +180,7 @@ function startServer() {
     const visualLessons = ["BM-001","BM-002","BM-003","BM-004","BM-005","BM-006","BM-007","BM-008","BM-009","BM-010","BM-011","BM-012","BM-013","BM-014","BM-015","BM-016","BM-017","BM-018","BM-019","BM-020","BM-021","BM-022","BM-023","BM-024","BM-025","BM-026","BM-027","BM-028","BM-029","BM-030","BM-031","BM-032"];
     for (const code of visualLessons) {
       await page.goto("http://127.0.0.1:" + port + "/#lesson-" + code, { waitUntil: "networkidle" });
-      const visual = page.locator(".ka-lesson-visual-card img");
+      const visual = page.locator(".lesson-visual-card img");
       await visual.waitFor();
       assert.ok(await visual.getAttribute("alt"), code + " visual must have meaningful alternative text");
       await visual.evaluate(img => img.decode());
