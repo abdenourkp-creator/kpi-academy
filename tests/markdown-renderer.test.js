@@ -54,4 +54,19 @@ const escaped = render("User input: <img src=x onerror=alert(1)>");
 assert.doesNotMatch(escaped, /<img/);
 assert.match(escaped, /&lt;img/);
 
-console.log("Markdown renderer tests passed: 7 groups (tables, aligned separators, headings, emphasis, lists, line breaks, HTML escaping).");
+const lessonDir = path.join(__dirname, "../content/business-mathematics/lessons");
+const lessonFiles = fs.readdirSync(lessonDir).filter(name => /^BM-\d{3}\.md$/.test(name)).sort();
+assert.equal(lessonFiles.length, 32, "the complete Business Mathematics lesson set must be present");
+let totalSourceCharacters = 0;
+let renderedTables = 0;
+for (const file of lessonFiles) {
+  const source = fs.readFileSync(path.join(lessonDir, file), "utf8");
+  totalSourceCharacters += source.length;
+  const html = render(source);
+  assert.ok(html.length > 0, file + " must render non-empty content");
+  assert.doesNotMatch(html, /<td>\s*:?-{3,}:?\s*<\/td>/, file + " must not expose Markdown table separators");
+  assert.equal((html.match(/<table>/g) || []).length, (html.match(/<\/table>/g) || []).length, file + " table tags must balance");
+  renderedTables += (html.match(/<table>/g) || []).length;
+}
+assert.ok(totalSourceCharacters > 20000, "lesson source set appears unexpectedly truncated");
+console.log("Markdown renderer tests passed: 7 feature groups + all " + lessonFiles.length + " lesson files (" + totalSourceCharacters + " source characters; " + renderedTables + " tables rendered).");
