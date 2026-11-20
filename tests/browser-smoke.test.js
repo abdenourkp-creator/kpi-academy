@@ -54,6 +54,23 @@ function startServer() {
     await page.waitForFunction(() => !!window.KPI_LEARNING_ENGINE && !!window.KPI_LEARNING_UI);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
 
+
+    await page.goto("http://127.0.0.1:" + port + "/#analytics", { waitUntil: "networkidle" });
+    await page.getByRole("heading", { name: "مختبر التحليل" }).waitFor();
+    await page.locator(".ka-sample-notice").waitFor();
+    assert.equal(await page.locator(".ka-analytics-table tbody tr").count(), 3, "analytics must show three clearly labelled educational sample periods");
+    await page.locator("#analyticsMetric").selectOption("laborCost");
+    assert.match(await page.locator(".ka-analytics-explanation").textContent(), /Included Labor Cost/);
+    assert.match(await page.locator(".ka-analytics-chart svg").getAttribute("aria-label"), /Labor Cost/);
+
+    await page.goto("http://127.0.0.1:" + port + "/#simulator", { waitUntil: "networkidle" });
+    await page.getByRole("heading", { name: "محاكاة الإدارة" }).waitFor();
+    await page.locator(".ka-simulator-empty").waitFor();
+    await page.locator('[data-simulator-stage="decision"]').click();
+    assert.equal(await page.locator('[data-simulator-stage="decision"]').getAttribute("aria-selected"), "true");
+    assert.match(await page.locator("#simulatorStageDetail").textContent(), /Management Decision/);
+    assert.match(await page.locator(".ka-simulator-note").textContent(), /لا توجد حالة نشطة/);
+
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
     assert.equal(await page.locator(".assessment-card").count(), 9);
@@ -203,6 +220,10 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, "dashboard visual chart must fit mobile width");
+    await page.goto("http://127.0.0.1:" + port + "/#analytics", { waitUntil: "networkidle" });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, "analytics table must remain within the mobile viewport");
+    await page.goto("http://127.0.0.1:" + port + "/#simulator", { waitUntil: "networkidle" });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, "simulator workspace must fit mobile width");
     await page.goto("http://127.0.0.1:" + port + "/#progress", { waitUntil: "networkidle" });
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
     assert.equal(overflow, false, "progress view must not overflow horizontally on a mobile viewport");
