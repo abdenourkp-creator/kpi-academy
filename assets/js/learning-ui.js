@@ -87,6 +87,7 @@
 
   function dashboardSummary() {
     if (!ENGINE) return "";
+    if (!curriculum && !loadPromise && !loadError) loadCatalog();
     if (!curriculum) {
       return '<section class="learning-resume"><div><span class="eyebrow">LEARNING ENGINE</span><h3>جارٍ تحميل خريطة الدروس…</h3><p>لن نعرض نسبة إكمال قبل التحقق من بيانات المنهج.</p></div></section>';
     }
@@ -328,8 +329,6 @@
       });
     });
   }
-
-  loadCatalog();
 
   root.KPI_LEARNING_UI = Object.freeze({
     dashboardSummary,
