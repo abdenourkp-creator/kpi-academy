@@ -26,7 +26,8 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 - [x] Lesson list and in-app reader (first-pass Markdown rendering)
 - [ ] Browser runtime and visual QA
 - [ ] RTL/LTR and mobile accessibility QA
-- [x] Deterministic 15-KPI calculation engine and test source (16 calculation cases + 12 validation cases; runtime execution pending)
+- [x] Deterministic 15-KPI calculation engine; Node.js runtime tests executed (16 calculation cases + 12 validation cases passed)
+- [ ] Full browser UI interaction and visual QA (headless Chromium launch did not complete in the current environment)
 - [ ] Hospitality Accounting detailed curriculum
 - [ ] Restaurant KPIs detailed curriculum
 - [ ] Eight chapter assessments and final practical exam
