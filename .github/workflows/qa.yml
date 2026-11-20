@@ -27,6 +27,7 @@ jobs:
           node --check assets/js/learning-engine.js
           node --check assets/js/learning-ui.js
           node --check assets/js/lesson-experience.js
+          node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
           node --check tests/content-integrity.test.js
