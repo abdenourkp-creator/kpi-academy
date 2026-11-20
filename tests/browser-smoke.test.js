@@ -55,6 +55,8 @@ function startServer() {
     assert.equal(await page.locator(".ka-module-art img").evaluateAll(imgs => imgs.every(img => img.complete && img.naturalWidth > 0)), true, "module illustrations must load");
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
+    assert.equal(await page.locator(".st-skill-node").count(), 8, "dashboard must render the eight-chapter skill tree");
+    assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
     await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
     assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
