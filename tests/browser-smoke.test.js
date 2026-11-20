@@ -47,7 +47,8 @@ function startServer() {
     page.on("pageerror", error => failures.push(error.message));
 
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
-    await page.getByRole("heading", { name: "حوّل الأرقام إلى قرارات إدارية." }).waitFor();
+    await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
+    assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
     await page.waitForFunction(() => !!window.KPI_LEARNING_ENGINE && !!window.KPI_LEARNING_UI);
@@ -105,6 +106,8 @@ function startServer() {
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
     await page.locator(".lesson-visual-card").waitFor();
+    await page.locator(".ka-lesson-toc").waitFor();
+    assert.ok(await page.locator(".ka-lesson-navigation a").count() >= 1, "lesson navigation must expose a next or previous lesson link");
     assert.match(await page.locator(".lesson-visual-copy").textContent(), /9,000 MAD.*30,000 MAD.*30%/);
     assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"));
     assert.equal((await page.request.get("http://127.0.0.1:" + port + "/assets/diagrams/restaurant-kpis/food-cost-calculation.svg")).status(), 200);
