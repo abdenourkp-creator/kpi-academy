@@ -58,22 +58,20 @@ function startServer() {
     assert.match(await page.locator(".learning-resume").textContent(), /BM-001|جارٍ تحميل خريطة الدروس/);
 
     const failurePage = await context.newPage();
-    let failOnce = true;
-    await failurePage.route("**/data/assessments/business-mathematics.json", route => {
-      if (failOnce) {
-        failOnce = false;
-        route.fulfill({
-          status: 503,
-          contentType: "application/json",
-          body: JSON.stringify({ error: "simulated assessment catalog outage" })
-        });
-      } else {
-        route.continue();
-      }
+    await failurePage.addInitScript(() => {
+      const originalFetch = window.fetch.bind(window);
+      let failOnce = true;
+      window.fetch = (input, init) => {
+        const url = String(input);
+        if (failOnce && url.includes("data/assessments/business-mathematics.json")) {
+          failOnce = false;
+          return Promise.reject(new TypeError("simulated assessment catalog network failure"));
+        }
+        return originalFetch(input, init);
+      };
     });
     await failurePage.goto("http://127.0.0.1:" + port + "/#progress", { waitUntil: "networkidle" });
     await failurePage.getByRole("heading", { name: "تعذر تحميل بيانات التقييم" }).waitFor();
-    await failurePage.unroute("**/data/assessments/business-mathematics.json");
     await failurePage.locator("#retryLearningCatalog").click();
     await failurePage.waitForFunction(() => document.querySelectorAll(".assessment-card").length === 9);
     await failurePage.close();
