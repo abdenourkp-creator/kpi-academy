@@ -21,20 +21,24 @@ Knowledge Modules → Chapters → Lessons → Practical Activities → Assessme
 ## Current implementation status
 - [x] Responsive application shell and Arabic RTL navigation
 - [x] Dashboard and three-module overview
+- [x] Dashboard learning summary with Continue Learning action, real earned XP and passed-assessment progress
 - [x] Business Mathematics 8-chapter / 32-lesson manifest
 - [x] Full source lesson files BM-001 through BM-032 migrated from KPI Academy Notion pages
 - [x] Lesson list and in-app reader (first-pass Markdown rendering)
-- [ ] Browser runtime and visual QA for learner progress, assessment flows, and lesson evidence controls
+- [x] Playwright browser smoke: dashboard, lesson evidence gates, XP award, exam pass/retake, backup export/restore, and no uncaught runtime errors
+- [ ] Full visual design review and comprehensive accessibility audit
 - [x] Automated Markdown renderer regression tests (tables, alignment rows, headings, emphasis, lists, line breaks, HTML escaping) across all 32 source lessons
 - [x] Curriculum integrity tests for approved module IDs, chapter/lesson totals, XP ceiling, Accounting scope boundaries, and all 15 KPI definitions
 - [x] GitHub Actions QA workflow for JavaScript syntax, KPI engine tests, Markdown renderer tests, curriculum integrity, learning-state rules, and assessment-bank integrity
-- [ ] RTL/LTR and mobile accessibility QA
+- [x] Mobile overflow smoke at 390px for progress, lesson reader, and final exam; RTL page and LTR lesson metadata verified
+- [ ] Full keyboard, screen-reader, contrast, and RTL/LTR accessibility audit
 - [x] Deterministic 15-KPI calculation engine; Node.js runtime tests executed (16 calculation cases + 12 validation cases passed)
-- [ ] Full browser UI interaction and visual QA (headless Chromium launch did not complete in the current environment)
+- [x] Automated browser interaction smoke via Playwright / Chromium on GitHub Actions
+- [ ] Comprehensive screenshot-based visual acceptance across device sizes and language directions
 - [x] Hospitality Accounting scope view migrated from the controlling Notion specification (six approved scope areas; no invented chapters/lessons)
 - [ ] Hospitality Accounting detailed curriculum and assessment design (source outline not yet defined)
 - [ ] Restaurant KPIs detailed curriculum
-- [x] Eight chapter assessments and integrated final practical exam (50 source-derived / curriculum-based questions; 80% pass threshold)
+- [x] Eight chapter assessments and integrated final practical exam (50 source-derived / curriculum-based scenario questions; 80% pass threshold; final set remains subject to academic review)
 - [x] Versioned local learning state with lesson evidence, idempotent 90-XP awards, and an auditable XP transaction ledger
 - [x] Assessment attempts with unlimited retakes and retained best/latest scores; 80% passing rules and certificate eligibility gate
 - [x] Local backup export/restore with schema and XP-ledger validation
