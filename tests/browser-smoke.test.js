@@ -81,11 +81,7 @@ function startServer() {
     assert.equal(await page.locator(".assessment-score strong").textContent(), "100%");
 
     const failedAnswers = exam.questions.map(q => ({ q, wrong: q.options.find(o => o.id !== q.correctOption).id }));
-    for (const item of failedAnswers) {
-      await page.locator("#retryAssessment").click().catch(() => {});
-      break;
-    }
-    await page.goto("http://127.0.0.1:" + port + "/#assessment-" + exam.id, { waitUntil: "networkidle" });
+    await page.locator("#retryAssessment").click();
     for (const item of failedAnswers) {
       await page.locator('input[name="' + item.q.id + '"][value="' + item.wrong + '"]').check();
     }
