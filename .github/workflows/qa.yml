@@ -24,12 +24,20 @@ jobs:
           node --check assets/js/app.js
           node --check assets/js/kpi-engine.js
           node --check assets/js/calculator.js
+          node --check assets/js/learning-engine.js
+          node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
           node --check tests/content-integrity.test.js
+          node --check tests/learning-engine.test.js
+          node --check tests/assessment-catalog.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
       - name: Run lesson Markdown renderer tests
         run: node tests/markdown-renderer.test.js
       - name: Run curriculum and registry integrity tests
         run: node tests/content-integrity.test.js
+      - name: Run learning engine tests
+        run: node tests/learning-engine.test.js
+      - name: Run assessment catalog tests
+        run: node tests/assessment-catalog.test.js
