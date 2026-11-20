@@ -42,7 +42,7 @@ assert.doesNotMatch(aligned, /:---|---:/);
 
 const prose = render("## Business Controls\n\nReview **every invoice** before posting.");
 assert.match(withoutLtrIsolation(prose), /<h2>Business Controls<\/h2>/);
-assert.match(prose, /<strong>every invoice<\/strong>/);
+assert.match(withoutLtrIsolation(prose), /<strong>every invoice<\/strong>/);
 
 const lists = render("- First control\n- Second control\n\n1. Verify source\n2. Reconcile POS");
 assert.match(withoutLtrIsolation(lists), /<ul><li>First control<\/li><li>Second control<\/li><\/ul>/);
