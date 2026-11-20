@@ -34,6 +34,7 @@ jobs:
           node --check tests/assessment-catalog.test.js
           node --check tests/lesson-experience.test.js
           node --check tests/browser-smoke.test.js
+          node --check tests/visual-assets.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
       - name: Run lesson Markdown renderer tests
@@ -46,6 +47,8 @@ jobs:
         run: node tests/assessment-catalog.test.js
       - name: Run interactive lesson experience tests
         run: node tests/lesson-experience.test.js
+      - name: Run visual asset registry tests
+        run: node tests/visual-assets.test.js
 
   browser:
     needs: verify
