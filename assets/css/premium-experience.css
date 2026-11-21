@@ -212,3 +212,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 }
 @media(max-width:390px){.calc-grid{grid-template-columns:1fr}.mobile-brand small{display:none}.ka-product-facts strong{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.ka-welcome:after{display:none}}
+
+
+/* Accessibility and interaction polish */
+.skip-link{
+ position:fixed;top:10px;right:10px;z-index:1000;
+ transform:translateY(-160%);padding:11px 16px;border-radius:10px;
+ background:#F0C66C;color:#102033;font-weight:800;
+ box-shadow:0 8px 28px rgba(0,0,0,.35)
+}
+.skip-link:focus{transform:translateY(0);outline:3px solid #42D8F5;outline-offset:3px}
+:focus-visible{outline:2px solid #52DDF7;outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed}
+@media(prefers-reduced-motion:reduce){
+ html:focus-within{scroll-behavior:auto}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
