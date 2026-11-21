@@ -79,6 +79,8 @@ jobs:
         run: node tests/analytics-lab.test.js
       - name: Run Management Simulator scenario tests
         run: node tests/management-simulator.test.js
+      - name: Run Live Venue signature simulation tests
+        run: node tests/live-venue.test.js
       - name: Run personal study tools tests
         run: node tests/study-tools.test.js
       - name: Run visual asset registry tests
