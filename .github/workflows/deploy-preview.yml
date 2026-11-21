@@ -1,29 +1,14 @@
-name: Deploy KPI Academy Preview
+name: Deploy KPI Academy Preview (Disabled During Product Audit)
 
 on:
-  push:
-    branches:
-      - implementation/kpi-academy-mvp
   workflow_dispatch:
 
-permissions:
-  contents: write
-
-concurrency:
-  group: pages-preview
-  cancel-in-progress: true
-
+# Deployment is intentionally disabled while KPI Academy is under product review.
+# Keep this workflow file and its history; do not publish to gh-pages.
 jobs:
-  deploy:
+  deployment-disabled:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout preview branch
-        uses: actions/checkout@v4
-
-      - name: Publish static application to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: .
-          force_orphan: true
+      - name: Confirm deployment is disabled
+        run: echo "Deployment is disabled during the product audit."
