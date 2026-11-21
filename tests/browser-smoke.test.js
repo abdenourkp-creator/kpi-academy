@@ -231,6 +231,7 @@ function startServer() {
     await page.waitForFunction(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp === 90);
     assert.equal(await page.locator(".lesson-status").textContent(), "مكتمل");
 
+    const xpBeforeBm002 = await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp);
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-002", { waitUntil: "networkidle" });
     await page.locator(".bm002-lab").waitFor();
     assert.equal(await page.locator(".bm002-task").count(), 7, "BM-002 must render seven arithmetic and decision tasks");
@@ -250,7 +251,7 @@ function startServer() {
     await page.locator('[data-check="management-action"]').click();
     assert.match(await page.locator('[data-task="management-action"] .bm002-feedback').textContent(), /قرار مهني صحيح/);
     assert.match(await page.locator(".bm002-note").textContent(), /اكتمل المختبر بنجاح/);
-    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), xpBeforeBm002,
       "BM-002 practice must not award XP or bypass lesson evidence requirements");
     await page.locator(".lesson-visual-card img").waitFor();
     assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"), "BM-002 lesson visual must have alternative text");
