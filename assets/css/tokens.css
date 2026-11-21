@@ -1,0 +1,8 @@
+:root{
+ --ka-bg:#061321;--ka-bg-deep:#030d18;--ka-surface:rgba(12,34,53,.88);--ka-glass-1:rgba(255,255,255,.04);--ka-glass-2:rgba(255,255,255,.08);--ka-glass-3:rgba(255,255,255,.12);--ka-border:rgba(255,255,255,.10);--ka-border-blue:rgba(87,166,220,.22);
+ --ka-text:#F3F7FC;--ka-muted:rgba(235,243,251,.72);--ka-faint:rgba(235,243,251,.58);
+ --ka-gold:#D9A84E;--ka-gold-bright:#F2C879;--ka-blue:#1E7BE8;--ka-cyan:#19B5F0;--ka-success:#2ECC8F;--ka-warning:#F5B942;--ka-danger:#F2616B;
+ --ka-radius-sm:16px;--ka-radius-md:20px;--ka-radius-lg:28px;--ka-space-1:4px;--ka-space-2:8px;--ka-space-3:12px;--ka-space-4:16px;--ka-space-6:24px;--ka-space-8:32px;
+ --ka-font-ar:Tahoma,Arial,sans-serif;--ka-font-latin:Inter,Arial,sans-serif;--ka-text-xs:12px;--ka-text-sm:14px;--ka-text-md:16px;--ka-text-lg:18px;--ka-text-xl:22px;--ka-text-2xl:28px;--ka-text-display:36px;
+ --ka-shadow-glow:0 0 28px rgba(25,181,240,.16);--ka-gold-glow:0 0 18px rgba(217,168,78,.16);
+}
