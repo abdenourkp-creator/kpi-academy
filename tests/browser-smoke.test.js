@@ -138,6 +138,23 @@ function startServer() {
     assert.deepEqual(recoveryPageErrors, [], "catalog failure and recovery must not cause uncaught page errors");
     await failurePage.close();
 
+    await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-004", { waitUntil: "networkidle" });
+    await page.locator("#bm004LabMount .bm004-lab").waitFor();
+    assert.equal(await page.locator(".bm004-task").count(), 10, "BM-004 must render ten source-aligned interactive tasks");
+    await page.locator('[data-task="round-half-up"] [data-answer]').fill("4.45");
+    await page.locator('[data-check="round-half-up"]').click();
+    assert.match(await page.locator('[data-task="round-half-up"] .bm004-feedback').textContent(), /صحيح/);
+    await page.locator('[data-task="recipe-exact"] [data-answer]').fill("24.84");
+    await page.locator('[data-check="recipe-exact"]').click();
+    assert.match(await page.locator('[data-task="recipe-exact"] .bm004-feedback').textContent(), /صحيح/);
+    await page.locator('[data-task="policy"] input[value="b"]').check();
+    await page.locator('[data-check="policy"]').click();
+    assert.match(await page.locator('[data-task="policy"] .bm004-feedback').textContent(), /صحيح/);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+      "BM-004 practice must not award XP or change learning completion rules");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "BM-004 interactive lab must fit a mobile viewport");
+
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-005", { waitUntil: "networkidle" });
     await page.locator(".ka-chapter-visual.compact svg").waitFor();
     assert.equal(await page.locator(".ka-chapter-visual.compact svg").count(), 1, "lesson must include its chapter visual anchor");
