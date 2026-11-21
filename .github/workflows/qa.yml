@@ -4,6 +4,7 @@ permissions:
   contents: read
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - implementation/kpi-academy-mvp
@@ -150,7 +151,7 @@ jobs:
 
 
   deploy-preview:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/implementation/kpi-academy-mvp'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/implementation/kpi-academy-mvp'
     needs: [verify, browser, package]
     runs-on: ubuntu-latest
     permissions:
