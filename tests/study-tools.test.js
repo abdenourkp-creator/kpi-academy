@@ -18,3 +18,11 @@ assert.match(widget,/ممارس منضبط/);
 assert.match(widget,/قارئ التقييم/);
 assert.equal(store.has("kpi-academy.learning.v1"),false,"study tools must not modify the official learning engine storage key");
 console.log("Personal study tools passed: glossary, skill tree, evidence-derived badges, separate storage namespace and dashboard review summary.");
+
+assert.equal(api.flashcardMarkup().includes("15 TERMS"),true,"lesson companion must render active-recall cards");
+assert.equal(api.recordTerm("Food COGS",true),true,"known glossary terms must be classifiable");
+assert.equal(api.recordTerm("Unknown term",true),false,"unknown terms must not enter the recall deck");
+assert.equal(api.recordTerm("Food COGS",false),true,"a term can move from mastered to revisit");
+assert.equal(api.flashcardMarkup().includes("15 TERMS"),true);
+assert.equal(store.has("kpi-academy.learning.v1"),false,"flashcard classifications must remain separate from official XP and progress");
+console.log("Active recall flashcards passed: term validation, mastery/revisit classification and isolated study storage.");
