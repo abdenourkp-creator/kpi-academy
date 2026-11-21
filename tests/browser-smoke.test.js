@@ -272,8 +272,13 @@ function startServer() {
     assert.match(await page.locator(".bm002-note").textContent(), /اكتمل المختبر بنجاح/);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), xpBeforeBm002,
       "BM-002 practice must not award XP or bypass lesson evidence requirements");
-    await page.locator(".lesson-visual-card img").waitFor();
-    assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"), "BM-002 lesson visual must have alternative text");
+    const bm002Visual = page.locator(".lesson-visual-card img");
+    await bm002Visual.waitFor({ state: "attached" });
+    await bm002Visual.scrollIntoViewIfNeeded();
+    await bm002Visual.waitFor({ state: "visible" });
+    assert.ok(await bm002Visual.getAttribute("alt"), "BM-002 lesson visual must have alternative text");
+    await bm002Visual.evaluate(img => img.decode());
+    assert.ok(await bm002Visual.evaluate(img => img.naturalWidth > 0), "BM-002 lesson visual must load successfully");
 
     const xpBeforeBm003 = await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp);
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-003", { waitUntil: "networkidle" });
@@ -297,7 +302,12 @@ function startServer() {
     assert.match(await page.locator(".bm003-footer").textContent(), /اكتمل التدريب/);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), xpBeforeBm003,
       "BM-003 practice must not award XP or bypass lesson evidence requirements");
-    await page.locator(".lesson-visual-card img").waitFor();
+    const bm003Visual = page.locator(".lesson-visual-card img");
+    await bm003Visual.waitFor({ state: "attached" });
+    await bm003Visual.scrollIntoViewIfNeeded();
+    await bm003Visual.waitFor({ state: "visible" });
+    await bm003Visual.evaluate(img => img.decode());
+    assert.ok(await bm003Visual.evaluate(img => img.naturalWidth > 0), "BM-003 lesson visual must load successfully");
     await page.setViewportSize({ width: 390, height: 844 });
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
       "BM-003 lesson and lab must fit a mobile viewport");
