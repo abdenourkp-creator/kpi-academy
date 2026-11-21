@@ -2,7 +2,7 @@
 "use strict";
 const DIMENSIONS = Object.freeze(["guest", "profit", "flow", "team"]);
 const EFFECTS = Object.freeze({
-  overbook: { id:"overbook-backlog", delay:2, dimension:"flow", amount:-7, title:"تراكم ضغط المطبخ", detail:"قبول كل الطاولات دون ضبط القدرة التشغيلية خلق طابوراً متأخراً؛ الأثر ظهر الآن لا عند اتخاذ القرار." },
+  overbook: { id:"overbook-backlog", delay:3, dimension:"flow", amount:-7, title:"تراكم ضغط المطبخ", detail:"قبول كل الطاولات دون ضبط القدرة التشغيلية خلق طابوراً متأخراً؛ الأثر ظهر الآن لا عند اتخاذ القرار." },
   overload: { id:"team-fatigue", delay:2, dimension:"team", amount:-8, title:"إجهاد الفريق", detail:"تحميل الفريق كل المحطات دون إعادة تصميم العمل خفّض قدرته على الاستجابة." },
   supplierGamble: { id:"supplier-trust", delay:2, dimension:"guest", amount:-8, title:"فقدان ثقة الضيف", detail:"بيع صنف غير مضمون أدى إلى إلغاء أو انتظار غير مبرر." },
   ignoreWaste: { id:"waste-variance", delay:2, dimension:"profit", amount:-9, title:"انحراف تكلفة غير معالج", detail:"تجاهل إشارة الهدر سمح باستمرار فرق الاستهلاك حتى الإغلاق." },
