@@ -235,7 +235,7 @@ async function lessonView(code){
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
     }
-    if(["BM-006","BM-007","BM-008"].includes(code)&&window.KPI_PERCENTAGE_LABS){window.KPI_PERCENTAGE_LABS.mount(code,document.getElementById("percentageLabMount"));}
+    if(["BM-006","BM-007","BM-008","BM-009"].includes(code)&&window.KPI_PERCENTAGE_LABS){window.KPI_PERCENTAGE_LABS.mount(code,document.getElementById("percentageLabMount"));}
     if(window.KPI_STUDY_TOOLS)window.KPI_STUDY_TOOLS.mountLesson(code,arLabel(lesson.title),document.getElementById("studyToolsMount"));
     if(window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.mountLessonPanel(code);
   }catch(error){
