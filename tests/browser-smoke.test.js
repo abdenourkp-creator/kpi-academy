@@ -48,7 +48,16 @@ function startServer() {
     page.on("pageerror", error => failures.push(error.message));
 
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
+    await page.setViewportSize({ width: 390, height: 844 });
+    const menuButton = page.locator("#menuToggle");
+    await menuButton.click();
+    assert.equal(await menuButton.getAttribute("aria-expanded"), "true", "mobile menu must expose its expanded state");
+    await page.keyboard.press("Escape");
+    assert.equal(await menuButton.getAttribute("aria-expanded"), "false", "Escape must close the mobile menu");
+    await page.setViewportSize({ width: 1365, height: 900 });
     await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
+    assert.equal(await page.locator(".skip-link").getAttribute("href"), "#main-content", "keyboard users must have a skip link to the main landmark");
+    assert.equal(await page.locator("#main-content").getAttribute("tabindex"), "-1", "the main landmark must be programmatically focusable");
     assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
     assert.equal(await page.locator(".ka-module-art img").count(), 3, "all modules must have visual illustrations");
     assert.equal(await page.locator(".ka-welcome-visual img").evaluate(img => img.complete && img.naturalWidth > 0), true, "dashboard hero illustration must load");
