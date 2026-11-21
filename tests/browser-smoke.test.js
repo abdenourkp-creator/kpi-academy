@@ -188,6 +188,22 @@ function startServer() {
     }
 
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
+    await page.locator(".bm001-lab").waitFor();
+    assert.equal(await page.locator(".bm001-task").count(), 5, "BM-001 must render five guided practice tasks");
+    await page.locator('[data-task="unit-difference"] input').fill("0.45");
+    await page.locator('[data-check="unit-difference"]').click();
+    assert.match(await page.locator('[data-task="unit-difference"] .bm001-feedback').textContent(), /إجابة صحيحة/);
+    await page.locator('[data-task="quantity-impact"] input').fill("270");
+    await page.locator('[data-check="quantity-impact"]').click();
+    await page.locator('[data-task="annual-impact"] input').fill("14040");
+    await page.locator('[data-check="annual-impact"]').click();
+    await page.locator('[data-task="unit-validation"] input[value="b"]').check();
+    await page.locator('[data-check="unit-validation"]').click();
+    await page.locator('[data-task="source-validation"] input[value="c"]').check();
+    await page.locator('[data-check="source-validation"]').click();
+    assert.match(await page.locator(".bm001-complete").textContent(), /أكملت المختبر بنجاح/);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+      "BM-001 lab must not bypass the existing XP evidence requirements");
     await page.locator(".st-panel").waitFor();
     assert.equal(await page.locator(".st-term").count(), 15, "lesson must expose the foundation glossary");
     await page.locator("#stGlossarySearch").fill("Food Cost");
