@@ -165,6 +165,15 @@ async function lessonView(code){
         lessonContent=markdownHtml(markdown.slice(0,labHeading.index))+labMount+markdownHtml(markdown.slice(mistakesHeading.index));
       }
     }
+    // The percentage-lab replacement rebuilds lessonContent from Markdown.
+    // Reinsert its visual anchor afterwards so the lab mount cannot discard it.
+    if(["BM-006","BM-007","BM-008","BM-009"].includes(code)&&lessonVisuals[code]){
+      const visual=lessonVisuals[code];
+      const position=markdown.indexOf(visual.before);
+      const figure=lessonVisualFigure(code);
+      if(position>=0)lessonContent=markdownHtml(markdown.slice(0,position))+figure+markdownHtml(markdown.slice(position));
+      else lessonContent=figure+lessonContent;
+    }
     const allLessons=businessMath.chapters.flatMap(item=>item.lessons);
     const lessonIndex=allLessons.findIndex(item=>item.code===code);
     const previousLesson=lessonIndex>0?allLessons[lessonIndex-1]:null;
