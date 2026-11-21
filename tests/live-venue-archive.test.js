@@ -29,11 +29,16 @@ assert.equal(archive.list().length,5,"archive must retain at most five completed
 assert.equal(archive.list()[0].id,"six");
 assert.equal(archive.list().some(item=>item.id==="one"),false,"oldest shifts must be evicted first");
 assert.equal(archiveApi.validSnapshot({}),false);
+const malformed=snapshot("malformed");malformed.decisions[4].eventIndex=1;
+assert.equal(archiveApi.validSnapshot(malformed),false,"decision history must contain all six events in exact order");
+const duplicateStorage=memoryStorage(JSON.stringify([snapshot("same"),snapshot("same")]));
+assert.equal(archiveApi.createArchive(duplicateStorage).list().length,1,"duplicate session IDs in legacy storage must be deduplicated");
 
 const corrupt=memoryStorage("{broken-json");
 const corruptArchive=archiveApi.createArchive(corrupt);
 assert.deepEqual(corruptArchive.list(),[],"corrupt storage must degrade to an empty archive");
 assert.equal(corruptArchive.save(snapshot("recovered")).saved,true,"a later valid save must recover from corrupt storage");
+assert.equal(corruptArchive.isPersistent(),true,"malformed JSON must not be confused with unavailable storage");
 assert.equal(JSON.parse(corrupt.raw()).length,1);
 
 const unavailable=memoryStorage(null,true,false);
