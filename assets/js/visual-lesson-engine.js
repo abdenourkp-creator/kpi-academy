@@ -26,7 +26,7 @@
     const sections = [];
     let current = null;
     lines.forEach(line => {
-      const heading = line.match(/^#{1,3}\s+(.+?)\s*$/);
+      const heading = line.match(/^#{2,3}\s+(.+?)\s*$/);
       if (heading) {
         if (current) sections.push(current);
         current = { title: plainText(heading[1]), body: [] };
