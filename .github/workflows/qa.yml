@@ -27,6 +27,7 @@ jobs:
           node --check assets/js/learning-engine.js
           node --check assets/js/learning-ui.js
           node --check assets/js/lesson-experience.js
+          node --check assets/js/bm001-lab.js
           node --check assets/js/analytics-lab.js
           node --check assets/js/management-simulator.js
           node --check assets/js/study-tools.js
@@ -37,6 +38,7 @@ jobs:
           node --check tests/learning-engine.test.js
           node --check tests/assessment-catalog.test.js
           node --check tests/lesson-experience.test.js
+          node --check tests/bm001-lab.test.js
           node --check tests/browser-smoke.test.js
           node --check tests/visual-assets.test.js
           node --check tests/management-simulator.test.js
@@ -53,6 +55,8 @@ jobs:
         run: node tests/assessment-catalog.test.js
       - name: Run interactive lesson experience tests
         run: node tests/lesson-experience.test.js
+      - name: Run BM-001 guided lab tests
+        run: node tests/bm001-lab.test.js
       - name: Run Analytics Lab tests
         run: node tests/analytics-lab.test.js
       - name: Run Management Simulator scenario tests
