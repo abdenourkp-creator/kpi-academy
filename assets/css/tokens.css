@@ -2,7 +2,7 @@
  --ka-bg:#061321;--ka-bg-deep:#030d18;--ka-surface:rgba(12,34,53,.88);--ka-glass-1:rgba(255,255,255,.04);--ka-glass-2:rgba(255,255,255,.08);--ka-glass-3:rgba(255,255,255,.12);--ka-border:rgba(255,255,255,.10);--ka-border-blue:rgba(87,166,220,.22);
  --ka-text:#F3F7FC;--ka-muted:rgba(235,243,251,.72);--ka-faint:rgba(235,243,251,.58);
  --ka-gold:#D9A84E;--ka-gold-bright:#F2C879;--ka-blue:#1E7BE8;--ka-cyan:#19B5F0;--ka-success:#2ECC8F;--ka-warning:#F5B942;--ka-danger:#F2616B;
- --ka-overlay:rgba(0,0,0,.60);--ka-overlay-strong:rgba(0,0,0,.78);--ka-backdrop:rgba(3,14,25,.96);
+ --ka-bg-radial:rgba(22,75,111,.20);--ka-overlay:rgba(0,0,0,.60);--ka-overlay-strong:rgba(0,0,0,.78);--ka-backdrop:rgba(3,14,25,.96);
  --ka-ink:#071522;--ka-ink-soft:#102033;--ka-ink-panel:#102a40;--ka-gold-deep:#B77A27;--ka-avatar-start:#294c69;--ka-avatar-end:#10283c;
  --ka-card-start:rgba(17,48,72,.88);--ka-card-end:rgba(7,25,41,.92);--ka-sidebar:rgba(5,19,33,.96);--ka-topbar:rgba(5,19,33,.90);--ka-drawer:rgba(4,17,30,.98);
  --ka-focus:var(--ka-gold-bright);--ka-selection:rgba(25,181,240,.32);--ka-blue-border:rgba(25,181,240,.45);--ka-blue-soft:rgba(25,181,240,.09);--ka-blue-active:rgba(25,181,240,.22);--ka-blue-active-start:rgba(30,123,232,.20);--ka-blue-active-end:rgba(25,181,240,.08);--ka-gold-active:rgba(242,200,121,.85);
