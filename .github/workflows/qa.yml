@@ -29,6 +29,7 @@ jobs:
           node --check assets/js/lesson-experience.js
           node --check assets/js/bm001-lab.js
           node --check assets/js/bm002-lab.js
+          node --check assets/js/bm003-lab.js
           node --check assets/js/analytics-lab.js
           node --check assets/js/management-simulator.js
           node --check assets/js/study-tools.js
@@ -41,6 +42,7 @@ jobs:
           node --check tests/lesson-experience.test.js
           node --check tests/bm001-lab.test.js
           node --check tests/bm002-lab.test.js
+          node --check tests/bm003-lab.test.js
           node --check tests/browser-smoke.test.js
           node --check tests/visual-assets.test.js
           node --check tests/management-simulator.test.js
@@ -61,6 +63,8 @@ jobs:
         run: node tests/bm001-lab.test.js
       - name: Run BM-002 arithmetic lab tests
         run: node tests/bm002-lab.test.js
+      - name: Run BM-003 order of operations lab tests
+        run: node tests/bm003-lab.test.js
       - name: Run Analytics Lab tests
         run: node tests/analytics-lab.test.js
       - name: Run Management Simulator scenario tests
