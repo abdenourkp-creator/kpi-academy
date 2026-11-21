@@ -89,6 +89,8 @@ function startServer() {
     await page.locator(".lv-event").waitFor();
     assert.equal(await page.locator(".lv-choice").count(), 3, "Live Venue must present three trade-off decisions for the first shift event");
     assert.match(await page.locator(".lv-live").textContent(), /SIMULATION LIVE/);
+    assert.equal(await page.evaluate(() => localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")), null,
+      "a newly started incomplete shift must not be persisted");
     for (let turn = 0; turn < 6; turn++) {
       assert.equal(await page.locator(".lv-choice").count(), 3, "each event must offer three operational trade-offs");
       await page.locator(".lv-choice").nth(turn === 0 ? 1 : 0).click();
@@ -97,8 +99,6 @@ function startServer() {
           "a delayed operating consequence must appear after the configured decision interval");
       }
     }
-    assert.equal(await page.evaluate(() => localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")), null,
-      "an incomplete shift must not be persisted");
     await page.getByRole("heading", { name: "هذه هي بصمتك الإدارية." }).waitFor();
     assert.equal(await page.locator(".lv-history-row").count(), 6, "debrief must reconstruct all six decisions");
     assert.match(await page.locator(".lv-debrief").textContent(), /المحاكاة تعليمية افتراضية/);
