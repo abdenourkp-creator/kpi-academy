@@ -1,0 +1,14 @@
+"use strict";
+const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm");
+const window={};vm.runInNewContext(fs.readFileSync("assets/js/bm004-lab.js","utf8"),{window});
+const lab=window.KPI_BM004_LAB;assert.ok(lab);assert.equal(lab.taskCount,10);
+for(const [id,value] of [["round-half-up","4.45"],["round-down","4.44"],["round-up","4.45"],["one-decimal","9.9"],["cumulative","25"],["recipe-exact","24.84"],["recipe-rounded","24.86"],["batch-impact","20"]])assert.equal(lab.evaluate(id,value).correct,true,id+" should be correct");
+assert.equal(lab.evaluate("round-vs-truncate","a").correct,true);
+assert.equal(lab.evaluate("round-vs-truncate","b").correct,false);
+assert.equal(lab.evaluate("policy","b").correct,true);
+assert.equal(lab.evaluate("policy","a").correct,false);
+assert.equal(lab.evaluate("round-half-up","").valid,false);
+assert.equal(lab.evaluate("round-half-up","4,45").correct,true,"decimal comma input should be accepted");
+assert.equal(lab.evaluate("round-half-up","4.450 MAD").valid,false,"unit text must not be accepted as numeric input");
+assert.equal(lab.evaluate("missing","1").valid,false);
+console.log("BM-004 tests passed: conventional rounding, decimal places, truncation distinction, cumulative impact, recipe costing, batch impact and policy decision.");
