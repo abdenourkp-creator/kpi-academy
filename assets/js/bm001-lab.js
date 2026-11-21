@@ -50,8 +50,8 @@
           '<div class="bm001-task-list">' + tasks.map(task => {
             const result = state[task.id];
             const control = task.type === "number"
-              ? '<label class="bm001-answer"><span>إجابتك · ' + task.unit + '</span><input type="number" step="any" inputmode="decimal" data-answer placeholder="اكتب النتيجة" aria-label="' + escapeHtml(task.title) + '"></label>'
-              : '<fieldset class="bm001-options"><legend>اختر الإجابة الأنسب</legend>' + task.options.map(option => '<label><input type="radio" name="bm001-' + task.id + '" value="' + option[0] + '" data-answer><span>' + escapeHtml(option[1]) + '</span></label>').join("") + '</fieldset>';
+              ? '<label class="bm001-answer"><span>إجابتك · ' + task.unit + '</span><input type="number" step="any" inputmode="decimal" data-answer value="' + escapeHtml(result && result.answer != null ? result.answer : "") + '" placeholder="اكتب النتيجة" aria-label="' + escapeHtml(task.title) + '"></label>'
+              : '<fieldset class="bm001-options"><legend>اختر الإجابة الأنسب</legend>' + task.options.map(option => '<label><input type="radio" name="bm001-' + task.id + '" value="' + option[0] + '" data-answer' + (result && result.answer === option[0] ? ' checked' : '') + '><span>' + escapeHtml(option[1]) + '</span></label>').join("") + '</fieldset>';
             const feedback = result ? '<div class="bm001-feedback ' + (result.correct ? 'is-correct' : 'is-incorrect') + '" role="status"><strong>' + (result.correct ? 'إجابة صحيحة' : 'راجع إجابتك') + '</strong><span>' + escapeHtml(result.message) + '</span><p>' + escapeHtml(result.explanation) + '</p></div>' : '';
             return '<article class="bm001-task" data-task="' + task.id + '"><div class="bm001-task-title"><span>' + escapeHtml(task.title) + '</span><small>' + (task.type === "number" ? 'حساب' : 'تحقق واتخاذ قرار') + '</small></div><p>' + escapeHtml(task.prompt) + '</p>' + control + '<div class="bm001-actions"><button type="button" data-check="' + task.id + '">تحقق من الإجابة</button><button type="button" data-reset="' + task.id + '" class="bm001-reset">إعادة المحاولة</button></div>' + feedback + '</article>';
           }).join("") + '</div>' +
@@ -62,8 +62,8 @@
         const card = button.closest("[data-task]");
         const selected = task.type === "number" ? card.querySelector("[data-answer]").value : (card.querySelector("[data-answer]:checked") || {}).value;
         const result = evaluate(task.id, selected);
-        if (result.valid && result.correct) state[task.id] = result;
-        else state[task.id] = Object.assign({}, result, { correct:false, explanation:result.explanation || task.explanation });
+        if (result.valid && result.correct) state[task.id] = Object.assign({}, result, { answer:selected });
+        else state[task.id] = Object.assign({}, result, { answer:selected, correct:false, explanation:result.explanation || task.explanation });
         render();
       }));
       container.querySelectorAll("[data-reset]").forEach(button => button.addEventListener("click", () => { delete state[button.dataset.reset]; render(); }));
