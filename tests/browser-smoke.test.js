@@ -147,12 +147,12 @@ function startServer() {
     assert.deepEqual(recoveryPageErrors, [], "catalog failure and recovery must not cause uncaught page errors");
     await failurePage.close();
 
-    for (const code of ["BM-006","BM-007","BM-008"]) {
+    for (const code of ["BM-006","BM-007","BM-008","BM-009"]) {
       await page.goto("http://127.0.0.1:" + port + "/#lesson-" + code, { waitUntil: "networkidle" });
       await page.locator("#percentageLabMount .pl-lab").waitFor();
       assert.equal(await page.locator(".pl-task").count(), 5, code + " must render five source-aligned interactive tasks");
       const first = page.locator(".pl-task").first();
-      await first.locator("[data-answer]").fill(code === "BM-006" ? "600" : code === "BM-007" ? "800" : "25");
+      await first.locator("[data-answer]").fill(code === "BM-006" ? "600" : code === "BM-007" ? "800" : code === "BM-008" ? "25" : "3");
       await first.locator("[data-check]").click();
       assert.match(await first.locator("[data-feedback]").textContent(), /إجابة صحيحة/);
       assert.equal(await page.locator(".pl-lab-disclaimer").count(), 1);
