@@ -34,6 +34,7 @@ jobs:
           node --check assets/js/bm004-lab.js
           node --check assets/js/analytics-lab.js
           node --check assets/js/management-simulator.js
+          node --check assets/js/live-venue-engine.js
           node --check assets/js/live-venue.js
           node --check assets/js/study-tools.js
           node --check assets/js/learning-ui.js
