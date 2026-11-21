@@ -208,7 +208,7 @@ function startServer() {
     await page.locator('[data-check="interpretation"]').click();
 
     assert.equal(await page.locator("[data-score]").textContent(), "5/5");
-    assert.equal(await page.locator('[role="progressbar"]').getAttribute("aria-valuenow"), "5");
+    assert.equal(await page.getByRole("progressbar", { name: "تقدم المختبر" }).getAttribute("aria-valuenow"), "5");
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
       "interactive practice must not award XP or change completion rules");
     await page.locator("[data-reset]").click();
