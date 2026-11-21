@@ -91,7 +91,11 @@ function startServer() {
     assert.match(await page.locator(".lv-live").textContent(), /SIMULATION LIVE/);
     for (let turn = 0; turn < 6; turn++) {
       assert.equal(await page.locator(".lv-choice").count(), 3, "each event must offer three operational trade-offs");
-      await page.locator(".lv-choice").nth(turn % 3).click();
+      await page.locator(".lv-choice").nth(turn === 0 ? 1 : 0).click();
+      if (turn === 1) {
+        assert.match(await page.locator("#lvConsequences").textContent(), /تراكم ضغط المطبخ/,
+          "a delayed operating consequence must appear after the configured decision interval");
+      }
     }
     await page.getByRole("heading", { name: "هذه هي بصمتك الإدارية." }).waitFor();
     assert.equal(await page.locator(".lv-history-row").count(), 6, "debrief must reconstruct all six decisions");
