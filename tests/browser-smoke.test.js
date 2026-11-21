@@ -92,7 +92,7 @@ function startServer() {
     for (let turn = 0; turn < 6; turn++) {
       assert.equal(await page.locator(".lv-choice").count(), 3, "each event must offer three operational trade-offs");
       await page.locator(".lv-choice").nth(turn === 0 ? 1 : 0).click();
-      if (turn === 1) {
+      if (turn === 2) {
         assert.match(await page.locator("#lvConsequences").textContent(), /تراكم ضغط المطبخ/,
           "a delayed operating consequence must appear after the configured decision interval");
       }
