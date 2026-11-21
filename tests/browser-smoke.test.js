@@ -190,6 +190,10 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-001", { waitUntil: "networkidle" });
     await page.locator(".bm001-lab").waitFor();
     assert.equal(await page.locator(".bm001-task").count(), 5, "BM-001 must render five guided practice tasks");
+    await page.locator('[data-task="unit-difference"] input').fill("0.40");
+    await page.locator('[data-check="unit-difference"]').click();
+    assert.equal(await page.locator('[data-task="unit-difference"] input').inputValue(), "0.40",
+      "incorrect answers must remain visible so learners can revise their reasoning");
     await page.locator('[data-task="unit-difference"] input').fill("0.45");
     await page.locator('[data-check="unit-difference"]').click();
     assert.match(await page.locator('[data-task="unit-difference"] .bm001-feedback').textContent(), /إجابة صحيحة/);
