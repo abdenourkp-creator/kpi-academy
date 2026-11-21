@@ -27,6 +27,7 @@ jobs:
           node --check assets/js/learning-engine.js
           node --check assets/js/learning-ui.js
           node --check assets/js/lesson-experience.js
+          node --check assets/js/percentage-labs.js
           node --check assets/js/bm001-lab.js
           node --check assets/js/bm002-lab.js
           node --check assets/js/bm003-lab.js
@@ -41,6 +42,7 @@ jobs:
           node --check tests/learning-engine.test.js
           node --check tests/assessment-catalog.test.js
           node --check tests/lesson-experience.test.js
+          node --check tests/percentage-labs.test.js
           node --check tests/bm001-lab.test.js
           node --check tests/bm002-lab.test.js
           node --check tests/bm003-lab.test.js
@@ -61,6 +63,8 @@ jobs:
         run: node tests/assessment-catalog.test.js
       - name: Run interactive lesson experience tests
         run: node tests/lesson-experience.test.js
+      - name: Run percentage lesson labs tests
+        run: node tests/percentage-labs.test.js
       - name: Run BM-001 guided lab tests
         run: node tests/bm001-lab.test.js
       - name: Run BM-002 arithmetic lab tests
