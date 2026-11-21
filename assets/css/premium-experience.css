@@ -1,0 +1,214 @@
+/* KPI Academy — premium hospitality intelligence experience
+   Additive visual layer. Preserves existing learning, assessment and calculation logic. */
+:root{
+ --blue:#19BDEB;--navy:#06182B;--light-blue:#0C2A43;--soft-blue:#123C5B;
+ --bg:#061321;--surface:#0B2033;--text:#EAF3FC;--muted:#9CB1C4;--border:rgba(129,177,211,.22);
+ --success:#19C987;--warning:#E7B95C;--error:#F06E78;--radius:20px;
+ --shadow:0 18px 48px rgba(0,0,0,.28);
+ color-scheme:dark;
+}
+html,body{background:#061321;color:var(--text)}
+body{background:radial-gradient(ellipse at 80% -10%,rgba(20,91,135,.28),transparent 40%),linear-gradient(160deg,#071827 0%,#04111F 70%,#061827 100%);min-height:100vh}
+.app-shell{background:transparent}
+.sidebar{background:rgba(5,19,33,.94);border-left:1px solid var(--border);backdrop-filter:blur(18px)}
+.brand{border-bottom-color:var(--border)}
+.brand-mark{background:linear-gradient(145deg,#EFC66C,#A96C25);color:#101B28;box-shadow:0 0 24px rgba(231,185,92,.2)}
+.brand strong{color:#F5F8FC}.brand small{color:#8EA8BD}
+.nav-label{color:#6F8CA4}
+.nav-link{color:#B5C7D7;border:1px solid transparent}
+.nav-link:hover{background:rgba(30,176,222,.08);color:#fff}
+.nav-link.active{background:linear-gradient(100deg,rgba(19,185,230,.16),rgba(19,185,230,.035));border-color:rgba(26,192,237,.25);color:#62DFFF;box-shadow:inset -3px 0 #18C5F0}
+.sidebar-note{background:rgba(255,255,255,.035);border-color:var(--border);color:#91A9BD}
+.version{color:#6D879D}
+.main-area{background:transparent}
+.topbar{background:rgba(5,18,31,.82);border-bottom:1px solid var(--border);backdrop-filter:blur(18px);color:#C9D8E5}
+.breadcrumb,.breadcrumb strong{color:#B8CCDD}.crumb-separator{color:#58758E}
+.topbar-meta{color:#8FA9BE}.topbar-meta .status-dot{background:#24C995;box-shadow:0 0 10px #24C995}
+.page-content{width:min(1240px,100%);padding-top:30px}
+.footer{border-color:var(--border);color:#6D879D}
+.eyebrow{color:#5CD7F5;letter-spacing:1px}
+.page-heading h1,.section-title{color:#F1F6FB}
+.page-heading p{color:#9CB1C4}
+.welcome-panel,.ka-welcome,.learning-hero{background:linear-gradient(120deg,rgba(7,28,47,.98),rgba(12,47,72,.92));border:1px solid rgba(82,169,215,.32);color:#F5F9FD;box-shadow:0 18px 45px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.05)}
+.welcome-panel h1,.ka-welcome h1,.learning-hero-copy h2{color:#F4F8FC}
+.welcome-panel p,.ka-welcome p,.learning-hero-copy p{color:#A9BED0}
+.welcome-panel .eyebrow{color:#E8C16E}
+.ka-welcome{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);align-items:center;gap:24px;padding:clamp(22px,4vw,42px);border-radius:26px;overflow:hidden;margin-bottom:18px}
+.ka-welcome:after{content:"";position:absolute;inset:auto -100px -180px auto;width:360px;height:360px;border:1px solid rgba(31,190,237,.16);border-radius:50%;box-shadow:0 0 0 32px rgba(31,190,237,.025),0 0 0 64px rgba(31,190,237,.02);pointer-events:none}
+.ka-welcome-copy{position:relative;z-index:1}
+.ka-welcome-copy h1{font-size:clamp(28px,4vw,48px);line-height:1.3;margin:12px 0}
+.ka-welcome-copy h1 span{color:#E9BD66}
+.ka-welcome-copy p{font-size:14px;max-width:560px}
+.ka-welcome-visual{position:relative;z-index:1}
+.ka-welcome-visual img{display:block;width:100%;border-radius:20px;border:1px solid rgba(119,190,226,.26);box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.ka-hero-primary,.primary-action{background:linear-gradient(110deg,#10BFEA,#0879CF);color:#fff;border:1px solid rgba(119,231,255,.38);box-shadow:0 8px 25px rgba(0,168,225,.22);border-radius:13px}
+.ka-hero-primary:hover,.primary-action:hover{background:linear-gradient(110deg,#29D6F5,#0B8DE4);filter:brightness(1.04)}
+.ka-hero-note{color:#8EAFC6}
+.ka-product-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 28px}
+.ka-product-facts>div{display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;border:1px solid var(--border);border-radius:15px;background:rgba(9,31,50,.72)}
+.ka-product-facts strong{font-size:21px;color:#EBC36F;direction:ltr}
+.ka-product-facts span{font-size:10px;color:#9FB5C8}
+.ka-learning-section,.ka-modules-section,.ka-learning-route,.ka-method{margin:28px 0}
+.ka-section-heading h2{color:#F0F6FC;font-size:21px}
+.ka-section-heading p{color:#93AFC4}
+.ka-text-link,.text-link{color:#52D6F5}
+.learning-hero{border-radius:20px}
+.learning-hero-copy h2{font-size:18px}
+.learning-hero-metrics strong{color:#EAC16C}
+.learning-hero-metrics span{color:#91AFC4}
+.learning-resume{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px;margin:14px 0;border:1px solid rgba(36,186,232,.3);border-radius:18px;background:linear-gradient(110deg,rgba(8,38,60,.96),rgba(8,28,46,.94))}
+.learning-resume h3{color:#F5F8FB}.learning-resume p{color:#9CB5C9}
+.learning-mini-card,.stat-card,.module-card,.content-card,.empty-card,.chapter-panel,.calc-form,.calc-result,.assessment-card,.progress-chapter,.certificate-panel,.backup-panel{background:linear-gradient(145deg,rgba(13,39,61,.96),rgba(7,25,42,.97));border:1px solid var(--border);color:#E8F1F8;box-shadow:var(--shadow)}
+.learning-mini-card>span,.learning-mini-card>strong{color:#C9D9E6}
+.learning-mini-card>strong{color:#EBC16A}
+.learning-progress-track{background:#18364F}.learning-progress-track i{background:linear-gradient(90deg,#087FCE,#27D9F4);box-shadow:0 0 14px rgba(27,190,240,.35)}
+.chapter-progress-heading h3,.progress-section-heading h2{color:#EDF5FB}
+.chapter-progress-heading p,.progress-section-heading p{color:#91A9BD}
+.chapter-progress-total,.progress-section-heading>strong{color:#5DD8F5}
+.chapter-progress-row,.progress-chapter summary{background:rgba(12,37,58,.82);border-color:var(--border)}
+.chapter-progress-label strong,.progress-chapter summary strong{color:#E4EEF6}
+.chapter-progress-label span,.progress-chapter summary small{color:#91A9BD}
+.module-card h3,.content-card h2,.chapter-panel h2,.empty-card h2{color:#F0F6FB}
+.module-card p,.content-card p,.empty-card p{color:#A1B6C8}
+.module-icon{background:rgba(25,190,235,.12);color:#5BDCF7}
+.module-card:hover{border-color:rgba(36,194,240,.55);box-shadow:0 16px 36px rgba(0,0,0,.3),0 0 24px rgba(14,173,222,.1)}
+.tag{background:rgba(230,190,103,.13);color:#EAC574;border:1px solid rgba(230,190,103,.22)}
+.ka-route-grid article{background:linear-gradient(145deg,#0D2A43,#081B2D);border:1px solid var(--border);border-radius:17px}
+.ka-route-grid strong{color:#EDF5FC}.ka-route-grid small{color:#91A9BE}.ka-route-symbol{color:#28C9F2}
+.ka-method{padding:22px;border:1px solid rgba(228,188,99,.25);border-radius:18px;background:linear-gradient(110deg,rgba(48,39,24,.3),rgba(9,29,46,.8))}
+.ka-method p strong{color:#E9C16C}.ka-method>span:last-child{color:#A7BACB}
+.page-heading h1{color:#F1F6FB}
+.chapter-panel{padding:22px}
+.lesson-row{border-color:var(--border);color:#D8E5EF}
+.lesson-row:hover{background:rgba(28,178,223,.08)}
+.lesson-name{color:#DDEAF4}.lesson-code{color:#56D8F5}.lesson-xp{color:#DAB96D}
+.lesson-reader{background:transparent;border:0;box-shadow:none;padding:0;max-width:100%}
+.ka-lesson-heading{position:relative;overflow:hidden;padding:clamp(22px,4vw,38px);margin:0 0 18px;border:1px solid rgba(65,171,220,.34);border-radius:24px;background:linear-gradient(110deg,rgba(7,27,45,.96),rgba(11,44,67,.94));box-shadow:var(--shadow)}
+.ka-lesson-heading:after{content:"";position:absolute;width:240px;height:240px;left:-70px;top:-100px;border:1px solid rgba(36,197,240,.16);border-radius:50%;box-shadow:0 0 0 28px rgba(36,197,240,.035),0 0 0 56px rgba(36,197,240,.025)}
+.ka-lesson-heading h1{position:relative;z-index:1;color:#F4F8FC;font-size:clamp(25px,3vw,36px);margin:13px 0 7px}
+.ka-lesson-heading p{position:relative;z-index:1;color:#A7BED0;margin:0}
+.lesson-meta{position:relative;z-index:1;color:#A6BED0}
+.lesson-meta span:first-child{color:#F0C36A;font-weight:800}
+.lesson-toolbar{margin-bottom:14px}
+.lesson-body{color:#D4E1EB;background:transparent}
+.lesson-body h2{color:#F0F5FA;border-color:var(--border)}
+.lesson-body h3{color:#EAC16B}
+.lesson-body strong{color:#F2F7FC}
+.lesson-body p,.lesson-body li{color:#C1D1DE}
+.lesson-body table{color:#DCE7F0}
+.lesson-body th{background:#123B59;color:#EAF6FD;border-color:var(--border)}
+.lesson-body td{border-color:var(--border)}
+.ka-lesson-toc,.ka-lesson-section,.lesson-visual-card,.lesson-progress-panel{background:linear-gradient(145deg,rgba(12,38,59,.96),rgba(7,24,40,.97));border:1px solid var(--border);border-radius:18px;color:#DCE8F1}
+.ka-lesson-toc{padding:15px 18px}
+.ka-lesson-toc strong{color:#EAC16B}
+.ka-lesson-toc a{color:#70DDF6}
+.ka-lesson-section{padding:20px;margin:14px 0}
+.ka-lesson-section--challenge,.ka-lesson-section--mystery{border-color:rgba(231,185,92,.32)}
+.ka-lesson-section--lab{border-color:rgba(32,193,238,.45);box-shadow:0 0 25px rgba(17,167,218,.08)}
+.lesson-visual-card{overflow:hidden}
+.lesson-visual-copy h3{color:#EBC16A}
+.lesson-visual-copy p{color:#B6C9D8}
+.lesson-end{border-color:var(--border)}
+.lesson-end p{color:#91AABD}
+.ka-lesson-navigation a{background:#0B2A43;border:1px solid var(--border);color:#E6F0F8}
+.ka-lesson-navigation small{color:#8EAEC3}
+.ka-lesson-navigation strong{color:#F0F5FA}
+.lesson-progress-panel{padding:22px;margin:20px 0}
+.lesson-progress-head h2{color:#F2F6FA}
+.lesson-progress-head p,.evidence-item small,.lesson-xp-rule{color:#9FB4C6}
+.evidence-item{background:rgba(255,255,255,.035);border-color:var(--border)}
+.evidence-item strong{color:#DDEAF3}
+.lesson-status{background:rgba(23,196,137,.12);color:#51D9A5}
+.lesson-lab{background:linear-gradient(145deg,#0C2B44,#071A2B);border-color:rgba(42,188,235,.32);color:#E7F1F8;box-shadow:var(--shadow)}
+.le-hero h3,.le-task-card h4{color:#F1F6FB}
+.le-hero p,.le-question,.le-answer-row>label,.le-options legend{color:#AFC3D3}
+.le-score,.le-data-grid>div,.le-progress,.le-task-card{background:rgba(4,19,33,.8);border-color:var(--border)}
+.le-score strong,.le-data-grid strong{color:#F0C36A}
+.le-data-grid span,.le-score span,.le-progress-copy span{color:#91AABD}
+.le-progress-track{background:#1B3A52}
+.le-formula{background:#102F49;color:#83E4F9}
+.le-option{background:#0A2439;border-color:var(--border);color:#D7E4EE}
+.le-option:has(input:checked){background:rgba(19,180,226,.13);border-color:#24BDEB}
+.le-insight{background:rgba(22,177,220,.09);border-color:rgba(22,177,220,.25);color:#BFEAF7}
+.calc-form,.calc-result{border-radius:18px}
+.calc-section{border-color:var(--border)}
+.calc-section h2,.calc-field{color:#E2ECF4}
+.calc-field small{color:#8FAABD}
+.calc-field input,.calc-field select{background:#071B2D;border-color:#34536D;color:#F2F7FB}
+.formula-panel{background:#102F49;color:#8DE6FA}
+.result-success h2,.result-details h3{color:#F0F5FA}
+.result-number{color:#5DE0B2;border-color:var(--border)}
+.result-details dt,.result-foot{color:#94AFC2}
+.result-details dd{color:#E5EFF6}
+.result-empty,.result-empty>h2{color:#9CB4C8}
+.assessment-card h3{color:#F1F6FA}
+.assessment-card p,.assessment-card-meta{color:#9BB1C3}
+.assessment-badge{background:#17364F;color:#B9CDDC}
+.assessment-badge.passed{background:rgba(25,201,135,.14);color:#5DDFAD}
+.progress-lesson-link{border-color:var(--border)}
+.progress-lesson-link strong{color:#E1ECF4}
+.progress-lesson-link em{color:#9BB1C3}
+.certificate-panel h2,.backup-panel h2{color:#F1F6FB}
+.certificate-panel p,.certificate-panel small,.backup-panel p{color:#A2B8C9}
+.notice{background:rgba(225,177,79,.1);border-color:rgba(225,177,79,.25);color:#EBC879}
+.empty-card{color:#E4EEF6}
+.mobile-brand{display:none}
+.mobile-bottom-nav{display:none}
+.icon-button{color:#EAF4FB}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #41D8F6;outline-offset:3px}
+@media(max-width:1050px){.ka-welcome{grid-template-columns:1fr .8fr}.page-content{padding:25px 24px}}
+@media(max-width:720px){
+ body{padding-bottom:76px}
+ .sidebar{transform:translateX(105%);background:rgba(4,17,29,.98)}
+ .main-area{margin:0}
+ .topbar{height:64px;padding:0 14px;gap:10px;justify-content:space-between}
+ .mobile-menu{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--border);border-radius:12px;color:#EAF5FC;background:rgba(255,255,255,.04)}
+ .mobile-brand{display:flex;align-items:center;gap:8px;margin-inline:auto;min-width:0}
+ .mobile-brand-mark{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:linear-gradient(145deg,#F0C66C,#A96C25);color:#17202A;font-weight:900}
+ .mobile-brand strong{display:block;font:700 12px Georgia,serif;letter-spacing:.7px;color:#F6F8FA;white-space:nowrap}
+ .mobile-brand small{display:block;color:#91AFC4;font-size:8px;line-height:1.2}
+ .breadcrumb{display:none}
+ .topbar-meta{font-size:0;margin:0}
+ .topbar-meta .status-dot{width:8px;height:8px}
+ .page-content{padding:17px 13px 28px}
+ .footer{display:none}
+ .ka-welcome{grid-template-columns:1fr;padding:22px 18px;border-radius:20px;gap:15px}
+ .ka-welcome-copy h1{font-size:29px}
+ .ka-welcome-copy p{font-size:12px}
+ .ka-welcome-visual img{max-height:170px;object-fit:cover}
+ .ka-product-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px}
+ .ka-product-facts>div{justify-content:flex-start;padding:11px}
+ .ka-product-facts strong{font-size:18px}
+ .ka-product-facts span{font-size:9px}
+ .ka-section-heading h2{font-size:18px}
+ .learning-hero{display:block;padding:18px}
+ .learning-hero-metrics{justify-content:space-around;margin-top:16px;padding-top:13px;border-top:1px solid var(--border)}
+ .learning-hero-metrics strong{font-size:20px}
+ .learning-resume{display:block;padding:16px}
+ .learning-resume .primary-action{display:block;margin-top:12px;text-align:center}
+ .learning-mini-grid{grid-template-columns:1fr;gap:8px}
+ .learning-mini-card{padding:12px}
+ .ka-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ka-module-grid{grid-template-columns:1fr}
+ .module-card{min-height:unset}
+ .page-heading{align-items:flex-start}
+ .page-heading h1{font-size:23px}
+ .lesson-reader{padding:0}
+ .ka-lesson-heading{padding:20px 17px;border-radius:19px}
+ .ka-lesson-heading h1{font-size:25px}
+ .lesson-body{font-size:13px}
+ .ka-lesson-section{padding:15px}
+ .lesson-lab{padding:14px}
+ .le-data-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .le-hero{display:block}
+ .le-score{display:inline-grid;margin-top:10px}
+ .calc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .calc-form,.calc-result{padding:14px}
+ .mobile-bottom-nav{position:fixed;z-index:40;inset:auto 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:7px 5px calc(7px + env(safe-area-inset-bottom));background:rgba(4,17,29,.96);border-top:1px solid rgba(106,169,207,.26);backdrop-filter:blur(20px);box-shadow:0 -10px 30px rgba(0,0,0,.22)}
+ .mobile-bottom-link{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:5px 2px;border-radius:10px;color:#8DA8BC;font-size:9px}
+ .mobile-bottom-link .nav-icon{font-size:19px;width:auto;line-height:1.2}
+ .mobile-bottom-link.active{background:rgba(26,185,229,.1);color:#EBC36F;box-shadow:inset 0 2px #EBC36F}
+ .mobile-bottom-link.active .nav-icon{filter:drop-shadow(0 0 6px rgba(235,195,111,.5))}
+}
+@media(max-width:390px){.calc-grid{grid-template-columns:1fr}.mobile-brand small{display:none}.ka-product-facts strong{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.ka-welcome:after{display:none}}
