@@ -231,6 +231,30 @@ function startServer() {
     await page.waitForFunction(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp === 90);
     assert.equal(await page.locator(".lesson-status").textContent(), "مكتمل");
 
+    await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-002", { waitUntil: "networkidle" });
+    await page.locator(".bm002-lab").waitFor();
+    assert.equal(await page.locator(".bm002-task").count(), 7, "BM-002 must render seven arithmetic and decision tasks");
+    await page.locator('[data-task="sales-total"] input').fill("4000");
+    await page.locator('[data-check="sales-total"]').click();
+    assert.equal(await page.locator('[data-task="sales-total"] input').inputValue(), "4000",
+      "incorrect BM-002 answers must remain visible for revision");
+    await page.locator('[data-task="sales-total"] input').fill("4075");
+    await page.locator('[data-check="sales-total"]').click();
+    assert.match(await page.locator('[data-task="sales-total"] .bm002-feedback').textContent(), /إجابة صحيحة/);
+    for (const [id, answer] of [["report-gap","1200"],["line-revenue","1530"],["average-check","150"],["cogs","13000"],["water-variance","-2"]]) {
+      await page.locator('[data-task="' + id + '"] input').fill(answer);
+      await page.locator('[data-check="' + id + '"]').click();
+      assert.match(await page.locator('[data-task="' + id + '"] .bm002-feedback').textContent(), /إجابة صحيحة/, id + " must validate");
+    }
+    await page.locator('[data-task="management-action"] input[value="c"]').check();
+    await page.locator('[data-check="management-action"]').click();
+    assert.match(await page.locator('[data-task="management-action"] .bm002-feedback').textContent(), /قرار مهني صحيح/);
+    assert.match(await page.locator(".bm002-note").textContent(), /اكتمل المختبر بنجاح/);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+      "BM-002 practice must not award XP or bypass lesson evidence requirements");
+    await page.locator(".lesson-visual-card img").waitFor();
+    assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"), "BM-002 lesson visual must have alternative text");
+
     const bank = JSON.parse(fs.readFileSync(path.join(root, "data/assessments/business-mathematics.json"), "utf8"));
     const exam = bank.chapterAssessments[0];
     await page.goto("http://127.0.0.1:" + port + "/#assessment-" + exam.id, { waitUntil: "networkidle" });
