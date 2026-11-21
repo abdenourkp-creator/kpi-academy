@@ -39,7 +39,7 @@ function createArchive(storage){
     let raw;
     try{raw=target.getItem(STORAGE_KEY);}
     catch(error){readable=false;persistent=false;return clone(memory);}
-    if(raw===null){memory=[];persistent=true;return [];}
+    if(raw===null){if(!persistent)return clone(memory);memory=[];persistent=true;return [];}
     let parsed;
     try{parsed=JSON.parse(raw);}
     catch(error){memory=[];persistent=true;return [];}
