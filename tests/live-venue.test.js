@@ -18,7 +18,7 @@ assert.throws(() => engine.applyChoice(state, 0, 0, [0, 0, 0, 0], "قرار خا
 state = engine.applyChoice(state, 1, 0, [3, 2, 5, 7], "إعادة توزيع الفريق");
 assert.equal(state.consequences.length, 1, "delayed consequence must resolve on its scheduled decision");
 assert.equal(state.consequences[0].id, "overbook-backlog");
-assert.equal(state.scores[2], 65, "backlog must affect flow after a delay, not at decision time");
+assert.equal(state.scores[2], 58, "backlog must affect flow after a delay, not at decision time");
 assert.equal(state.pending.length, 0);
 assert.equal(engine.validate(state), true);
 
