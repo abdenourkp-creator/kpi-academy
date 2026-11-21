@@ -15,7 +15,7 @@ const routes=[
  {id:"lesson-reader",hash:"#lesson-BM-005",wait:".lesson-reader"},
  {id:"kpi-calculator",hash:"#calculator",wait:"#kpiForm"},
  {id:"analytics-lab",hash:"#analytics",wait:"#analyticsChart"},
- {id:"management-simulator",hash:"#simulator",wait:".ka-simulator-panel"},
+ {id:"management-simulator",hash:"#simulator",wait":".lv-shell, .ka-simulator-panel"},
  {id:"progress-assessments",hash:"#progress",wait:".progress-section"}
 ];
 async function capture(browser,root,label,viewport,routesToCapture){
@@ -29,6 +29,11 @@ async function capture(browser,root,label,viewport,routesToCapture){
    const dir=path.join(output,label,viewport.width+"x"+viewport.height);
    fs.mkdirSync(dir,{recursive:true});
    await page.screenshot({path:path.join(dir,route.id+".png"),fullPage:true,animations:"disabled"});
+   if(label==="after"&&route.id==="management-simulator"&&await page.locator(".lv-choice").count()===3){
+    for(let turn=0;turn<6;turn++)await page.locator(".lv-choice").first().click();
+    await page.getByRole("heading",{name:"هذه هي بصمتك الإدارية."}).waitFor();
+    await page.screenshot({path:path.join(dir,"live-venue-debrief.png"),fullPage:true,animations:"disabled"});
+   }
   }
   await context.close();
  }finally{server.close();}
@@ -45,7 +50,7 @@ async function capture(browser,root,label,viewport,routesToCapture){
   const files=[];
   function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,item.name);if(item.isDirectory())walk(full);else files.push(full);}}
   walk(output);
-  if(files.length!==53)throw new Error("Expected 53 screenshots, captured "+files.length);
+  if(files.length!==59)throw new Error("Expected 59 screenshots, captured "+files.length);
   console.log("Visual capture complete: "+files.length+" before/after desktop and after mobile screenshots.");
  }finally{await browser.close();}
 })();
