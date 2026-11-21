@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+<title id="title">Capacity and Utilization</title><desc id="desc">80 seats across two complete sittings provide 160 seat-seatings. 120 used seat-seatings represent 75 percent utilization.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FBF8F0"/><stop offset="1" stop-color="#EEF3F8"/></linearGradient><linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17324D"/><stop offset="1" stop-color="#244F70"/></linearGradient></defs>
+<rect width="960" height="360" rx="24" fill="url(#bg)"/>
+<path d="M0 70H960" stroke="#D8E1E8" stroke-width="1"/>
+<text x="44" y="42" fill="#17324D" font-family="Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="1.5">CAPACITY AND UTILIZATION</text>
+
+<rect x="44" y="100" width="250" height="160" rx="18" fill="#fff" stroke="#D8E1E8"/><text x="169" y="133" text-anchor="middle" fill="#617487" font-family="Arial" font-size="15" font-weight="700">AVAILABLE CAPACITY</text><text x="169" y="185" text-anchor="middle" fill="#17324D" font-family="Arial" font-size="43" font-weight="700">160</text><text x="169" y="220" text-anchor="middle" fill="#617487" font-family="Arial" font-size="16">80 seats × 2 sittings</text>
+<path d="M312 180H355m-10-9 10 9-10 9" fill="none" stroke="#C69A43" stroke-width="5"/>
+<rect x="374" y="100" width="250" height="160" rx="18" fill="#fff" stroke="#D8E1E8"/><text x="499" y="133" text-anchor="middle" fill="#617487" font-family="Arial" font-size="15" font-weight="700">ACTUAL OUTPUT</text><text x="499" y="185" text-anchor="middle" fill="#17324D" font-family="Arial" font-size="43" font-weight="700">120</text><text x="499" y="220" text-anchor="middle" fill="#617487" font-family="Arial" font-size="16">seat-seatings used</text>
+<rect x="655" y="100" width="260" height="160" rx="18" fill="url(#navy)"/><text x="785" y="133" text-anchor="middle" fill="#F6E9C8" font-family="Arial" font-size="15" font-weight="700">UTILIZATION</text><text x="785" y="190" text-anchor="middle" fill="#fff" font-family="Arial" font-size="48" font-weight="700">75%</text><text x="785" y="222" text-anchor="middle" fill="#D8E4EC" font-family="Arial" font-size="15">120 ÷ 160 × 100</text>
+<rect x="44" y="282" width="871" height="30" rx="9" fill="#E7EDF2"/><rect x="44" y="282" width="653" height="30" rx="9" fill="#4C9B8D"/><text x="480" y="303" text-anchor="middle" fill="#17324D" font-family="Arial" font-size="13" font-weight="700">75% USED  •  25% UNUSED CAPACITY (IN THIS SIMPLIFIED EXAMPLE)</text>
+<text x="916" y="335" text-anchor="end" fill="#6D7D8A" font-family="Arial,sans-serif" font-size="11" letter-spacing="1">KPI ACADEMY · VISUAL LEARNING</text>
+</svg>

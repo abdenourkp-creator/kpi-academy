@@ -1,0 +1,81 @@
+name: KPI Academy QA
+
+on:
+  push:
+    branches:
+      - implementation/kpi-academy-mvp
+  pull_request:
+    branches:
+      - main
+      - implementation/kpi-academy-mvp
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: |
+          node --check assets/js/app.js
+          node --check assets/js/kpi-engine.js
+          node --check assets/js/calculator.js
+          node --check assets/js/learning-engine.js
+          node --check assets/js/learning-ui.js
+          node --check tests/kpi-engine.test.js
+          node --check tests/markdown-renderer.test.js
+          node --check tests/content-integrity.test.js
+          node --check tests/learning-engine.test.js
+          node --check tests/assessment-catalog.test.js
+          node --check tests/browser-smoke.test.js
+      - name: Run KPI calculation tests
+        run: node tests/kpi-engine.test.js
+      - name: Run lesson Markdown renderer tests
+        run: node tests/markdown-renderer.test.js
+      - name: Run curriculum and registry integrity tests
+        run: node tests/content-integrity.test.js
+      - name: Run learning engine tests
+        run: node tests/learning-engine.test.js
+      - name: Run assessment catalog tests
+        run: node tests/assessment-catalog.test.js
+
+  browser:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install isolated Playwright runtime
+        run: npm install --prefix /tmp/kpi-playwright --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: /tmp/kpi-playwright/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run end-to-end browser smoke test
+        run: NODE_PATH=/tmp/kpi-playwright/node_modules node tests/browser-smoke.test.js
+
+  package:
+    needs: [verify, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Assemble static test build
+        run: |
+          mkdir -p dist
+          cp index.html TESTING.md dist/
+          cp -r assets data content dist/
+          tar -czf kpi-academy-test-build.tar.gz -C dist .
+      - name: Upload test build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kpi-academy-test-build
+          path: kpi-academy-test-build.tar.gz
+          if-no-files-found: error
+          retention-days: 14
