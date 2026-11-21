@@ -35,6 +35,7 @@ jobs:
           node --check assets/js/analytics-lab.js
           node --check assets/js/management-simulator.js
           node --check assets/js/live-venue-engine.js
+          node --check assets/js/live-venue-archive.js
           node --check assets/js/live-venue.js
           node --check assets/js/study-tools.js
           node --check assets/js/learning-ui.js
@@ -53,6 +54,7 @@ jobs:
           node --check tests/visual-assets.test.js
           node --check tests/management-simulator.test.js
           node --check tests/live-venue.test.js
+          node --check tests/live-venue-archive.test.js
           node --check tests/study-tools.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
@@ -82,6 +84,8 @@ jobs:
         run: node tests/management-simulator.test.js
       - name: Run Live Venue signature simulation tests
         run: node tests/live-venue.test.js
+      - name: Run Live Venue archive and comparison tests
+        run: node tests/live-venue-archive.test.js
       - name: Run personal study tools tests
         run: node tests/study-tools.test.js
       - name: Run visual asset registry tests
