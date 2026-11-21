@@ -38,7 +38,6 @@ jobs:
           node --check assets/js/live-venue-archive.js
           node --check assets/js/live-venue.js
           node --check assets/js/study-tools.js
-          node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
           node --check tests/markdown-renderer.test.js
           node --check tests/content-integrity.test.js
@@ -51,6 +50,7 @@ jobs:
           node --check tests/bm003-lab.test.js
           node --check tests/bm004-lab.test.js
           node --check tests/browser-smoke.test.js
+          node --check tests/visual-capture.js
           node --check tests/visual-assets.test.js
           node --check tests/management-simulator.test.js
           node --check tests/live-venue.test.js
