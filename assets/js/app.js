@@ -158,8 +158,8 @@ async function lessonView(code){
       else lessonContent=figure+lessonContent;
     }
     if(["BM-006","BM-007","BM-008"].includes(code)){
-      const labHeading=markdown.match(/^## \\d+\\. Interactive Lab/m);
-      const mistakesHeading=markdown.match(/^## \\d+\\. Common Mistakes/m);
+      const labHeading=markdown.match(/^## \d+\. Interactive Lab/m);
+      const mistakesHeading=markdown.match(/^## \d+\. Common Mistakes/m);
       if(labHeading&&mistakesHeading&&mistakesHeading.index>labHeading.index){
         const labMount='<div id="percentageLabMount" aria-label="مختبر النسب المئوية التفاعلي"></div>';
         lessonContent=markdownHtml(markdown.slice(0,labHeading.index))+labMount+markdownHtml(markdown.slice(mistakesHeading.index));
@@ -235,6 +235,7 @@ async function lessonView(code){
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
     }
+    if(["BM-006","BM-007","BM-008"].includes(code)&&window.KPI_PERCENTAGE_LABS){window.KPI_PERCENTAGE_LABS.mount(code,document.getElementById("percentageLabMount"));}
     if(window.KPI_STUDY_TOOLS)window.KPI_STUDY_TOOLS.mountLesson(code,arLabel(lesson.title),document.getElementById("studyToolsMount"));
     if(window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.mountLessonPanel(code);
   }catch(error){
