@@ -32,13 +32,13 @@ function normalize(items){
   return clean;
 }
 function createArchive(storage){
-  let target=storage,memory=[],persistent=true;
+  let target=storage,memory=[],persistent=true,readable=true;
   if(arguments.length===0){try{target=root.localStorage;}catch(error){target=null;persistent=false;}}
   function read(){
     if(!target){persistent=false;return clone(memory);}
     let raw;
     try{raw=target.getItem(STORAGE_KEY);}
-    catch(error){persistent=false;return clone(memory);}
+    catch(error){readable=false;persistent=false;return clone(memory);}
     if(raw===null){memory=[];persistent=true;return [];}
     let parsed;
     try{parsed=JSON.parse(raw);}
@@ -51,7 +51,7 @@ function createArchive(storage){
   function write(items){
     memory=normalize(items);
     if(!target){persistent=false;return false;}
-    try{target.setItem(STORAGE_KEY,JSON.stringify(memory));persistent=true;return true;}
+    try{target.setItem(STORAGE_KEY,JSON.stringify(memory));persistent=readable;return readable;}
     catch(error){persistent=false;return false;}
   }
   function save(snapshot){
