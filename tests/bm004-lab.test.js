@@ -9,6 +9,8 @@ assert.equal(lab.evaluate("policy","b").correct,true);
 assert.equal(lab.evaluate("policy","a").correct,false);
 assert.equal(lab.evaluate("round-half-up","").valid,false);
 assert.equal(lab.evaluate("round-half-up","4,45").correct,true,"decimal comma input should be accepted");
+assert.equal(lab.evaluate("round-half-up","4.451").correct,false,"nearby but incorrectly rounded answers must not pass");
+assert.equal(lab.evaluate("round-down","4.441").correct,false,"precision tolerance must not accept a wrong rounded value");
 assert.equal(lab.evaluate("round-half-up","4.450 MAD").valid,false,"unit text must not be accepted as numeric input");
 assert.equal(lab.evaluate("missing","1").valid,false);
 console.log("BM-004 tests passed: conventional rounding, decimal places, truncation distinction, cumulative impact, recipe costing, batch impact and policy decision.");
