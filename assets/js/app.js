@@ -157,7 +157,7 @@ async function lessonView(code){
       if(position>=0)lessonContent=markdownHtml(markdown.slice(0,position))+figure+markdownHtml(markdown.slice(position));
       else lessonContent=figure+lessonContent;
     }
-    if(["BM-006","BM-007","BM-008"].includes(code)){
+    if(["BM-006","BM-007","BM-008","BM-009"].includes(code)){
       const labHeading=markdown.match(/^## \d+\. Interactive Lab/m);
       const mistakesHeading=markdown.match(/^## \d+\. Common Mistakes/m);
       if(labHeading&&mistakesHeading&&mistakesHeading.index>labHeading.index){
