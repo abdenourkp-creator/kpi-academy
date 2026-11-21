@@ -85,8 +85,8 @@ function startServer() {
     assert.match(await page.locator(".ka-analytics-chart svg").getAttribute("aria-label"), /Labor Cost/);
 
     await page.goto("http://127.0.0.1:" + port + "/#simulator", { waitUntil: "networkidle" });
-    await page.getByRole("heading", { name: "محاكاة الإدارة" }).waitFor();
-    await page.locator(".ka-sim-scenario-grid").waitFor();
+    await page.getByRole("heading", { name: /THE LIVE VENUE/ }).waitFor();
+    await page.locator(".lv-event").waitFor();
     assert.equal(await page.locator(".lv-choice").count(), 3, "Live Venue must present three trade-off decisions for the first shift event");
     assert.match(await page.locator(".lv-live").textContent(), /SIMULATION LIVE/);
     for (let turn = 0; turn < 6; turn++) {
