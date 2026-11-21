@@ -111,6 +111,12 @@ function startServer() {
     assert.equal(await page.locator(".lv-memory-list article").count(), 2, "second completed shift must be retained");
     assert.equal(await page.locator(".lv-delta-grid article").count(), 4, "shift comparison must report all four dimensions");
     assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")).length), 2);
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "Live Venue debrief and archive must fit a 390px mobile viewport");
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0,
+      "Live Venue shifts must remain isolated from learning XP");
+    await page.setViewportSize({ width: 1365, height: 900 });
     
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
