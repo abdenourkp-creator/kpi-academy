@@ -15,7 +15,7 @@ const routes=[
  {id:"lesson-reader",hash:"#lesson-BM-005",wait:".lesson-reader"},
  {id:"kpi-calculator",hash:"#calculator",wait:"#kpiForm"},
  {id:"analytics-lab",hash:"#analytics",wait:"#analyticsChart"},
- {id:"management-simulator",hash:"#simulator",wait":".lv-shell, .ka-simulator-panel"},
+ {id:"management-simulator",hash:"#simulator",wait:".lv-shell, .ka-simulator-panel"},
  {id:"progress-assessments",hash:"#progress",wait:".progress-section"}
 ];
 async function capture(browser,root,label,viewport,routesToCapture){
