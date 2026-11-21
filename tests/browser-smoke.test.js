@@ -256,6 +256,33 @@ function startServer() {
     await page.locator(".lesson-visual-card img").waitFor();
     assert.ok(await page.locator(".lesson-visual-card img").getAttribute("alt"), "BM-002 lesson visual must have alternative text");
 
+    const xpBeforeBm003 = await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp);
+    await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-003", { waitUntil: "networkidle" });
+    await page.locator(".bm003-lab").waitFor();
+    assert.equal(await page.locator(".bm003-task").count(), 10, "BM-003 must render ten order-of-operations tasks");
+    await page.locator('[data-task="priority"] input').fill("160");
+    await page.locator('[data-check="priority"]').click();
+    assert.equal(await page.locator('[data-task="priority"] input').inputValue(), "160",
+      "incorrect BM-003 answers must remain visible for revision");
+    await page.locator('[data-task="priority"] input').fill("140");
+    await page.locator('[data-check="priority"]').click();
+    assert.match(await page.locator('[data-task="priority"] .bm003-feedback').textContent(), /حساب صحيح/);
+    for (const [id, answer] of [["parentheses","300"],["equal-precedence","27"],["division-first","180"],["bracketed-division","46.67"],["cocktail-cost","14"],["average-check","196.67"],["beverage-cost","30"],["inverse-check","29500"]]) {
+      await page.locator('[data-task="' + id + '"] input').fill(answer);
+      await page.locator('[data-check="' + id + '"]').click();
+      assert.match(await page.locator('[data-task="' + id + '"] .bm003-feedback').textContent(), /حساب صحيح/, id + " must validate");
+    }
+    await page.locator('[data-task="formula-choice"] input[value="b"]').check();
+    await page.locator('[data-check="formula-choice"]').click();
+    assert.match(await page.locator('[data-task="formula-choice"] .bm003-feedback').textContent(), /اختيار صحيح/);
+    assert.match(await page.locator(".bm003-footer").textContent(), /اكتمل التدريب/);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), xpBeforeBm003,
+      "BM-003 practice must not award XP or bypass lesson evidence requirements");
+    await page.locator(".lesson-visual-card img").waitFor();
+    await page.setViewportSize({ width: 390, height: 844 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "BM-003 lesson and lab must fit a mobile viewport");
+
     const bank = JSON.parse(fs.readFileSync(path.join(root, "data/assessments/business-mathematics.json"), "utf8"));
     const exam = bank.chapterAssessments[0];
     await page.goto("http://127.0.0.1:" + port + "/#assessment-" + exam.id, { waitUntil: "networkidle" });
