@@ -1,0 +1,1 @@
+(function(w){w.KPI=w.KPI||{};w.KPI.i18n=w.KPI.i18n||{};w.KPI.i18n.ar={dir:"rtl",strings:{home:"الرئيسية",modules:"الوحدات",tools:"الأدوات",progress:"تقدمي",more:"المزيد",analytics:"مختبر التحليل",simulator:"محاكاة الإدارة",settings:"الإعدادات",admin:"الإدارة",menu:"فتح القائمة",notifications:"الإشعارات",academy:"الأكاديمية"}};})(window);
