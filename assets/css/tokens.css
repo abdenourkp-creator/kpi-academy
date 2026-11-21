@@ -6,7 +6,7 @@
  --ka-ink:#071522;--ka-ink-soft:#102033;--ka-ink-panel:#102a40;--ka-gold-deep:#B77A27;--ka-avatar-start:#294c69;--ka-avatar-end:#10283c;
  --ka-card-start:rgba(17,48,72,.88);--ka-card-end:rgba(7,25,41,.92);--ka-sidebar:rgba(5,19,33,.96);--ka-topbar:rgba(5,19,33,.90);--ka-drawer:rgba(4,17,30,.98);
  --ka-focus:var(--ka-gold-bright);--ka-selection:rgba(25,181,240,.32);--ka-blue-border:rgba(25,181,240,.45);--ka-blue-soft:rgba(25,181,240,.09);--ka-blue-active:rgba(25,181,240,.22);--ka-blue-active-start:rgba(30,123,232,.20);--ka-blue-active-end:rgba(25,181,240,.08);--ka-gold-active:rgba(242,200,121,.85);
- --ka-success-glow:rgba(46,204,143,.65);--ka-blue-glow:rgba(25,181,240,.16);--ka-button-glow:rgba(25,181,240,.18);--ka-white-10:rgba(255,255,255,.10);
+ --ka-success-glow:rgba(46,204,143,.65);--ka-blue-glow:rgba(25,181,240,.16);--ka-button-glow:rgba(25,181,240,.18);--ka-white-10:rgba(255,255,255,.10);--ka-white:#fff;--ka-transparent:transparent;
  --ka-radius-sm:16px;--ka-radius-md:20px;--ka-radius-lg:28px;--ka-radius-control:14px;--ka-radius-pill:999px;
  --ka-space-1:4px;--ka-space-2:8px;--ka-space-3:12px;--ka-space-4:16px;--ka-space-6:24px;--ka-space-8:32px;
  --ka-font-ar:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;--ka-font-latin:"IBM Plex Sans",Inter,Arial,sans-serif;
