@@ -87,16 +87,18 @@ function startServer() {
     await page.goto("http://127.0.0.1:" + port + "/#simulator", { waitUntil: "networkidle" });
     await page.getByRole("heading", { name: "محاكاة الإدارة" }).waitFor();
     await page.locator(".ka-sim-scenario-grid").waitFor();
-    assert.equal(await page.locator(".ka-sim-scenario").count(), 3, "simulator must show three clearly labelled synthetic management cases");
-    await page.locator('[data-simulator-stage="decision"]').click();
-    assert.equal(await page.locator('[data-simulator-stage="decision"]').getAttribute("aria-selected"), "true");
-    assert.match(await page.locator("#simulatorStageDetail").textContent(), /Management Decision/i);
-    assert.match(await page.locator(".ka-sim-disclaimer").textContent(), /بيانات تدريبية افتراضية/);
-    assert.match(await page.locator(".ka-sim-footer").textContent(), /لا نقاط ولا تقييم رسمي/);
-    await page.locator('[data-simulator-stage="decision"]').click();
-    await page.locator(".ka-sim-choice").first().click();
-    assert.equal(await page.locator(".ka-sim-feedback").count(), 1);
-
+    assert.equal(await page.locator(".lv-choice").count(), 3, "Live Venue must present three trade-off decisions for the first shift event");
+    assert.match(await page.locator(".lv-live").textContent(), /SIMULATION LIVE/);
+    for (let turn = 0; turn < 6; turn++) {
+      assert.equal(await page.locator(".lv-choice").count(), 3, "each event must offer three operational trade-offs");
+      await page.locator(".lv-choice").nth(turn % 3).click();
+    }
+    await page.getByRole("heading", { name: "هذه هي بصمتك الإدارية." }).waitFor();
+    assert.equal(await page.locator(".lv-history-row").count(), 6, "debrief must reconstruct all six decisions");
+    assert.match(await page.locator(".lv-debrief").textContent(), /المحاكاة تعليمية افتراضية/);
+    await page.locator("[data-live-restart]").click();
+    assert.equal(await page.locator(".lv-choice").count(), 3, "restart must begin a fresh shift");
+    
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
     assert.equal(await page.locator(".assessment-card").count(), 9);
