@@ -198,7 +198,9 @@ function startServer() {
     for (const code of visualLessons) {
       await page.goto("http://127.0.0.1:" + port + "/#lesson-" + code, { waitUntil: "networkidle" });
       const visual = page.locator(".lesson-visual-card img");
-      await visual.waitFor();
+      await visual.waitFor({ state: "attached" });
+      await visual.scrollIntoViewIfNeeded();
+      await visual.waitFor({ state: "visible" });
       assert.ok(await visual.getAttribute("alt"), code + " visual must have meaningful alternative text");
       await visual.evaluate(img => img.decode());
       assert.ok(await visual.evaluate(img => img.naturalWidth > 0), code + " visual SVG must load successfully");
