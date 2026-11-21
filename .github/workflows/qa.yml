@@ -61,6 +61,7 @@ jobs:
           node --check tests/live-venue-archive.test.js
           node --check tests/release-integrity.test.js
           node --check tests/study-tools.test.js
+          node --check tests/bidi.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
       - name: Run lesson Markdown renderer tests
@@ -97,6 +98,8 @@ jobs:
         run: node tests/study-tools.test.js
       - name: Run visual asset registry tests
         run: node tests/visual-assets.test.js
+      - name: Run bidirectional text tests
+        run: node tests/bidi.test.js
 
   browser:
     needs: verify
