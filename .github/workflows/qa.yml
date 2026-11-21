@@ -33,7 +33,8 @@ jobs:
           node --check assets/js/bm003-lab.js
           node --check assets/js/bm004-lab.js
           node --check assets/js/analytics-lab.js
-          node --check assets/js/management-simulator.js\n          node --check assets/js/live-venue.js
+          node --check assets/js/management-simulator.js
+          node --check assets/js/live-venue.js
           node --check assets/js/study-tools.js
           node --check assets/js/learning-ui.js
           node --check tests/kpi-engine.test.js
@@ -49,7 +50,8 @@ jobs:
           node --check tests/bm004-lab.test.js
           node --check tests/browser-smoke.test.js
           node --check tests/visual-assets.test.js
-          node --check tests/management-simulator.test.js\n          node --check tests/live-venue.test.js
+          node --check tests/management-simulator.test.js
+          node --check tests/live-venue.test.js
           node --check tests/study-tools.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
