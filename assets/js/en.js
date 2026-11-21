@@ -1,0 +1,1 @@
+(function(w){w.KPI=w.KPI||{};w.KPI.i18n=w.KPI.i18n||{};w.KPI.i18n.en={dir:"ltr",strings:{home:"Home",modules:"Modules",tools:"Tools",progress:"Progress",more:"More",analytics:"Analytics Lab",simulator:"Management Simulator",settings:"Settings",admin:"Admin",menu:"Open menu",notifications:"Notifications",academy:"Academy"}};})(window);
