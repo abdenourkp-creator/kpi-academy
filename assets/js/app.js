@@ -184,9 +184,12 @@ async function lessonView(code){
     app.innerHTML=
       '<div class="lesson-toolbar"><a class="text-link" href="#module-business-mathematics">← العودة إلى الفصول</a><span class="tag">'+arLabel(chapter.title)+'</span></div>'+
       '<article class="lesson-reader"><div class="ka-lesson-heading"><div class="lesson-meta"><span>'+code+'</span><span>Foundation</span><span>'+lesson.availableXp+' XP متاحة</span></div>'+
-      '<h1>'+arLabel(lesson.title)+'</h1><p>الرياضيات التجارية · الفصل '+String(chapter.number).padStart(2,"0")+' من 8</p></div>'+chapterVisual(chapter,true)+'<div class="lesson-body">'+lessonContent+'</div>'+
+      '<h1>'+arLabel(lesson.title)+'</h1><p>الرياضيات التجارية · الفصل '+String(chapter.number).padStart(2,"0")+' من 8</p></div>'+chapterVisual(chapter,true)+'<div id="visualLessonMount"></div><div class="lesson-body">'+lessonContent+'</div>'+
       '<div class="lesson-end"><p>إكمال الدرس وحده لا يمنح XP. تُمنح النقاط بعد تسجيل أدلة التنفيذ.</p><a class="text-link" href="#module-business-mathematics">العودة إلى قائمة الدروس ↑</a></div>'+lessonNavigation+'</article>'+
       '<div id="studyToolsMount"></div><div id="lessonProgressMount"></div>';
+    if(window.KPI_VISUAL_LESSON_ENGINE){
+      window.KPI_VISUAL_LESSON_ENGINE.mount(document.getElementById("visualLessonMount"),{code,title:lesson.title,markdown:source});
+    }
     const lessonBody=app.querySelector(".lesson-body");
     if(lessonBody){
       const sectionHeadings=Array.from(lessonBody.querySelectorAll("h2"));

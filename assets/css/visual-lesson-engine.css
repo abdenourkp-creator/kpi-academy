@@ -1,0 +1,33 @@
+/* KPI Academy — Visual Lesson Engine foundation */
+.vle-panel{margin:28px 0;padding:clamp(16px,3vw,26px);border:1px solid #DCE6F0;border-radius:20px;background:linear-gradient(145deg,#fff 0%,#F6F9FD 100%);box-shadow:0 14px 36px rgba(23,50,77,.07);direction:rtl}
+.vle-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:17px}
+.vle-eyebrow{font-size:9px;font-weight:800;letter-spacing:1.2px;color:#2477B8;direction:ltr;display:block}
+.vle-heading h2{font-size:19px;color:#17324D;margin:6px 0 3px}
+.vle-heading p{font-size:11px;color:#718096;margin:0}
+.vle-status{flex:0 0 auto;padding:6px 10px;border-radius:99px;background:#E8F5F0;color:#23865B;font-size:8px;font-weight:800;letter-spacing:.7px;direction:ltr}
+.vle-stage{overflow:hidden;border:1px solid #E1EAF2;border-radius:16px;background:#F7FAFE}
+.vle-visual{display:block;width:100%;height:auto;max-height:380px}
+.vle-shapes{transform-origin:480px 250px;animation:vle-enter .75s cubic-bezier(.2,.75,.25,1) both}
+.vle-orbit{transform-origin:480px 250px;animation:vle-orbit 24s linear infinite}
+.vle-scene-copy{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:15px 2px 11px}
+.vle-scene-copy>div{min-width:0}
+.vle-scene-copy span{font-size:9px;color:#2477B8;font-weight:700}
+.vle-scene-copy h3{font-size:15px;color:#17324D;margin:4px 0}
+.vle-scene-copy p{font-size:11px;line-height:1.9;color:#526578;margin:0;max-width:760px}
+.vle-scene-copy>strong{flex:0 0 auto;color:#17324D;font-size:15px;direction:ltr;font-variant-numeric:tabular-nums}
+.vle-progress{height:6px;border-radius:99px;background:#E7EDF3;overflow:hidden}
+.vle-progress i{display:block;height:100%;width:12.5%;background:linear-gradient(90deg,#2477B8,#2B9B91);border-radius:99px;transition:width .25s}
+.vle-timeline{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;margin:13px 0}
+.vle-timeline button{min-width:0;display:grid;gap:3px;padding:7px 4px;border:1px solid #E2EAF1;border-radius:8px;background:#fff;color:#718096;text-align:center;cursor:pointer}
+.vle-timeline button span{font-size:9px;font-weight:800;direction:ltr}
+.vle-timeline button small{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vle-timeline button.is-active{border-color:#9CC3E1;background:#EDF5FB;color:#1D679F}
+.vle-controls{display:flex;justify-content:center;align-items:center;gap:9px}
+.vle-controls button{border:1px solid #DCE5ED;border-radius:9px;background:#fff;color:#526578;padding:9px 15px;font-size:10px;font-weight:700;cursor:pointer}
+.vle-controls .vle-play{background:#17324D;color:#fff;border-color:#17324D;min-width:170px}
+.vle-controls button:focus-visible,.vle-timeline button:focus-visible{outline:3px solid rgba(36,119,184,.25);outline-offset:2px}
+.vle-disclosure{margin:13px 0 0;padding-top:11px;border-top:1px solid #E7EDF3;color:#8997A5;font-size:9px;line-height:1.8}
+@keyframes vle-enter{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes vle-orbit{to{transform:rotate(360deg)}}
+@media(max-width:700px){.vle-heading{display:block}.vle-status{display:inline-block;margin-top:10px}.vle-heading h2{font-size:17px}.vle-timeline{grid-template-columns:repeat(4,minmax(0,1fr))}.vle-scene-copy{gap:8px}.vle-controls{display:grid;grid-template-columns:1fr 1.4fr 1fr}.vle-controls button{padding:10px 5px}.vle-controls .vle-play{min-width:0}}
+@media(prefers-reduced-motion:reduce){.vle-shapes,.vle-orbit{animation:none}.vle-progress i{transition:none}}
