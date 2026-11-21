@@ -116,6 +116,14 @@ async function lessonView(code){
         lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
       }
       lessonContent=lessonVisualFigure(code)+lessonContent;
+    }else if(code==="BM-002"){
+      const labAt=markdown.indexOf("## 10. Interactive Lab");
+      const nextAt=markdown.indexOf("## 11. Common Mistakes");
+      const labMount='<div id="bm002LabMount" aria-label="مختبر العمليات الحسابية ومطابقة الإيراد"></div>';
+      if(labAt>=0&&nextAt>labAt){
+        lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
+      }
+      lessonContent=lessonVisualFigure(code)+lessonContent;
     }else if(code==="BM-005"){
       const diagramAt=markdown.indexOf("## 7. Worked Case");
       const labAt=markdown.indexOf("## 9. Common Mistakes");
@@ -190,6 +198,9 @@ async function lessonView(code){
     }
     if(code==="BM-001"&&window.KPI_BM001_LAB){
       window.KPI_BM001_LAB.mount(document.getElementById("bm001LabMount"));
+    }
+    if(code==="BM-002"&&window.KPI_BM002_LAB){
+      window.KPI_BM002_LAB.mount(document.getElementById("bm002LabMount"));
     }
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
