@@ -244,7 +244,23 @@ async function lessonView(code){
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
     }
-    if(["BM-006","BM-007","BM-008","BM-009"].includes(code)&&window.KPI_PERCENTAGE_LABS){window.KPI_PERCENTAGE_LABS.mount(code,document.getElementById("percentageLabMount"));}
+    if(["BM-006","BM-007","BM-008","BM-009"].includes(code)&&window.KPI_PERCENTAGE_LABS){
+      // Keep the percentage practice mount resilient to lesson-section DOM restructuring.
+      // The Markdown replacement normally creates this node; the fallback restores it
+      // inside the lesson if a renderer change or section wrapper omits the placeholder.
+      let percentageLabMount=document.getElementById("percentageLabMount");
+      if(!percentageLabMount&&lessonBody){
+        percentageLabMount=document.createElement("div");
+        percentageLabMount.id="percentageLabMount";
+        percentageLabMount.setAttribute("aria-label","مختبر النسب المئوية التفاعلي");
+        const mistakesSection=lessonBody.querySelector(".ka-lesson-section--mistakes");
+        if(mistakesSection)mistakesSection.parentNode.insertBefore(percentageLabMount,mistakesSection);
+        else lessonBody.appendChild(percentageLabMount);
+      }
+      if(!percentageLabMount)throw new Error("Percentage lab mount could not be created for "+code);
+      const mounted=window.KPI_PERCENTAGE_LABS.mount(code,percentageLabMount);
+      if(!mounted)throw new Error("Percentage lab failed to mount for "+code);
+    }
     if(window.KPI_STUDY_TOOLS)window.KPI_STUDY_TOOLS.mountLesson(code,arLabel(lesson.title),document.getElementById("studyToolsMount"));
     if(window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.mountLessonPanel(code);
   }catch(error){
