@@ -108,7 +108,14 @@ async function lessonView(code){
     const source=await response.text();
     const markdown=source.replace(/^# .+\n+/, "");
     let lessonContent=markdownHtml(markdown);
-    if(code==="BM-005"){
+    if(code==="BM-001"){
+      const labAt=markdown.indexOf("## 9. Interactive Lab");
+      const nextAt=markdown.indexOf("## 10. Common Mistakes");
+      const labMount='<div id="bm001LabMount" aria-label="مختبر الأعداد التطبيقي"></div>';
+      if(labAt>=0&&nextAt>labAt){
+        lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
+      }
+    }else if(code==="BM-005"){
       const diagramAt=markdown.indexOf("## 7. Worked Case");
       const labAt=markdown.indexOf("## 9. Common Mistakes");
       const diagramFigure='<figure class="lesson-visual-card"><div class="lesson-visual-copy"><span class="eyebrow">رسم توضيحي · Food Cost</span><h3>كيف تتحول المبيعات والتكلفة إلى نسبة؟</h3><p><strong>هدف التعلم:</strong> تحديد الجزء والمقام الصحيحين قبل تفسير النسبة.</p><p>وفق المثال الأصلي في الدرس: 9,000 MAD Food COGS ÷ 30,000 MAD Food Net Sales = 30%. أي أن كل 100 MAD من صافي مبيعات الطعام تقابلها 30 MAD تكلفة طعام.</p></div><img src="assets/diagrams/restaurant-kpis/food-cost-calculation.svg" alt="مخطط حساب تكلفة الطعام بقسمة Food COGS على Food Net Sales وضرب الناتج في 100"></figure>';
@@ -179,6 +186,9 @@ async function lessonView(code){
           paragraph.innerHTML=rendered.join("<br>");
         });
       });
+    }
+    if(code==="BM-001"&&window.KPI_BM001_LAB){
+      window.KPI_BM001_LAB.mount(document.getElementById("bm001LabMount"));
     }
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
