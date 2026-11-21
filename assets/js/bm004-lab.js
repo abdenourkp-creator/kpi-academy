@@ -2,14 +2,14 @@
 "use strict";
 const tasks=[
 {id:"round-half-up",kind:"number",title:"1 · التقريب التقليدي",prompt:"قرّب 4.445 إلى منزلتين عشريتين.",expected:4.45,tolerance:0.000001,unit:""},
-{id:"round-down",kind:"number",title:"2 · الخانة التالية أقل من 5",prompt:"قرّب 4.444 إلى منزلتين عشريتين.",expected:4.44,tolerance:0.001,unit:""},
-{id:"round-up",kind:"number",title:"3 · الخانة التالية 5 أو أكثر",prompt:"قرّب 4.449 إلى منزلتين عشريتين.",expected:4.45,tolerance:0.001,unit:""},
-{id:"one-decimal",kind:"number",title:"4 · تغيير عدد المنازل",prompt:"قرّب 9.876 إلى منزلة عشرية واحدة.",expected:9.9,tolerance:0.001,unit:""},
+{id:"round-down",kind:"number",title:"2 · الخانة التالية أقل من 5",prompt:"قرّب 4.444 إلى منزلتين عشريتين.",expected:4.44,tolerance:0.000001,unit:""},
+{id:"round-up",kind:"number",title:"3 · الخانة التالية 5 أو أكثر",prompt:"قرّب 4.449 إلى منزلتين عشريتين.",expected:4.45,tolerance:0.000001,unit:""},
+{id:"one-decimal",kind:"number",title:"4 · تغيير عدد المنازل",prompt:"قرّب 9.876 إلى منزلة عشرية واحدة.",expected:9.9,tolerance:0.000001,unit:""},
 {id:"round-vs-truncate",kind:"choice",title:"5 · التقريب أم الحذف؟",prompt:"عند معالجة 8.789 إلى منزلتين عشريتين، ما الزوج الصحيح؟",options:[["a","Rounding = 8.79 · Truncation = 8.78"],["b","Rounding = 8.78 · Truncation = 8.79"],["c","كلاهما = 8.79"],["d","كلاهما = 8.78"]],correct:"a",why:"Rounding ينظر إلى الخانة التالية ويرفع عند 5 أو أكثر. Truncation يحذف ما بعد المنزلتين دون رفع."},
-{id:"cumulative",kind:"number",title:"6 · الأثر التراكمي",prompt:"فرق 0.01 MAD في الوحدة تكرر على 2,500 وحدة. احسب الفرق الإجمالي.",expected:25,tolerance:0.001,unit:"MAD"},
-{id:"recipe-exact",kind:"number",title:"7 · تكلفة الوصفة قبل التقريب",prompt:"اجمع القيم الدقيقة: 18.275 + 4.635 + 1.145 + 0.785.",expected:24.84,tolerance:0.001,unit:"MAD"},
-{id:"recipe-rounded",kind:"number",title:"8 · أثر التقريب المبكر",prompt:"قرّب كل مكون في المهمة السابقة إلى منزلتين ثم اجمع: 18.28 + 4.64 + 1.15 + 0.79.",expected:24.86,tolerance:0.001,unit:"MAD"},
-{id:"batch-impact",kind:"number",title:"9 · أثر الفرق على الإنتاج",prompt:"إذا كان الفرق بين الطريقتين 0.02 MAD لكل Cocktail، فما أثره على 1,000 Cocktail؟",expected:20,tolerance:0.001,unit:"MAD"},
+{id:"cumulative",kind:"number",title:"6 · الأثر التراكمي",prompt:"فرق 0.01 MAD في الوحدة تكرر على 2,500 وحدة. احسب الفرق الإجمالي.",expected:25,tolerance:0.000001,unit:"MAD"},
+{id:"recipe-exact",kind:"number",title:"7 · تكلفة الوصفة قبل التقريب",prompt:"اجمع القيم الدقيقة: 18.275 + 4.635 + 1.145 + 0.785.",expected:24.84,tolerance:0.000001,unit:"MAD"},
+{id:"recipe-rounded",kind:"number",title:"8 · أثر التقريب المبكر",prompt:"قرّب كل مكون في المهمة السابقة إلى منزلتين ثم اجمع: 18.28 + 4.64 + 1.15 + 0.79.",expected:24.86,tolerance:0.000001,unit:"MAD"},
+{id:"batch-impact",kind:"number",title:"9 · أثر الفرق على الإنتاج",prompt:"إذا كان الفرق بين الطريقتين 0.02 MAD لكل Cocktail، فما أثره على 1,000 Cocktail؟",expected:20,tolerance:0.000001,unit:"MAD"},
 {id:"policy",kind:"choice",title:"10 · قرار مدير البار",prompt:"ما السياسة الأفضل لتكلفة الوصفات؟",options:[["a","تقريب كل مكون فور إدخاله لتوحيد الأرقام."],["b","الاحتفاظ بالدقة أثناء الحساب الوسيط، ثم التقريب عند العرض أو الفوترة وفق سياسة موحدة."],["c","استخدام Truncation بدلاً من Rounding دائماً."],["d","زيادة المنازل العشرية الظاهرة لرفع Accuracy."]],correct:"b",why:"احتفظ بالدقة أثناء الحسابات الوسيطة، وقرّب عند مرحلة العرض أو الفوترة وفق سياسة واضحة وثابتة. يجب أيضاً توحيد سياسة النظام المالي وExcel وPOS."}
 ];
 function parse(value){const s=String(value==null?"":value).trim();if(!s)return null;const normalized=s.replace(/\s/g,"").replace(",",".");if(!/^-?(?:\d+\.?\d*|\.\d+)$/.test(normalized))return null;const n=Number(normalized);return Number.isFinite(n)?n:null;}
