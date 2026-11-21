@@ -97,11 +97,20 @@ function startServer() {
           "a delayed operating consequence must appear after the configured decision interval");
       }
     }
+    assert.equal(await page.evaluate(() => localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")), null,
+      "an incomplete shift must not be persisted");
     await page.getByRole("heading", { name: "هذه هي بصمتك الإدارية." }).waitFor();
     assert.equal(await page.locator(".lv-history-row").count(), 6, "debrief must reconstruct all six decisions");
     assert.match(await page.locator(".lv-debrief").textContent(), /المحاكاة تعليمية افتراضية/);
+    assert.equal(await page.locator(".lv-memory-list article").count(), 1, "completed shift must be archived once");
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")).length), 1);
     await page.locator("[data-live-restart]").click();
     assert.equal(await page.locator(".lv-choice").count(), 3, "restart must begin a fresh shift");
+    for (let turn = 0; turn < 6; turn++) await page.locator(".lv-choice").first().click();
+    await page.getByRole("heading", { name: "هذه هي بصمتك الإدارية." }).waitFor();
+    assert.equal(await page.locator(".lv-memory-list article").count(), 2, "second completed shift must be retained");
+    assert.equal(await page.locator(".lv-delta-grid article").count(), 4, "shift comparison must report all four dimensions");
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("kpiAcademy.liveVenue.shifts.v1")).length), 2);
     
     await page.locator('a[href="#progress"]').first().click();
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
