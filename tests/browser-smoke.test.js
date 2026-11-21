@@ -246,6 +246,15 @@ function startServer() {
     await page.locator("#stBookmark").click();
     assert.equal(await page.locator("#stBookmark").getAttribute("aria-pressed"), "true");
     await page.locator("#lessonProgressPanel").waitFor();
+    await page.locator("#stFlashCard").waitFor();
+    assert.equal(await page.locator("#stFlashTerm").textContent(), "Part", "lesson flashcards must start from the first glossary term");
+    await page.locator("#stFlashReveal").click();
+    assert.equal(await page.locator("#stFlashAnswer").isVisible(), true, "flashcard answer must reveal on demand");
+    await page.locator("#stFlashKnown").click();
+    assert.equal(await page.locator("#stMasteredCount").textContent(), "1", "mastery classification must update immediately");
+    await page.locator("#stFlashNext").click();
+    assert.equal(await page.locator("#stFlashTerm").textContent(), "Whole", "next flashcard must advance the active recall deck");
+
     assert.ok(await page.locator(".ka-formula-block").count() > 0, "standalone formulas must be visually distinguished");
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
     await page.locator("#completeLessonButton").click();
