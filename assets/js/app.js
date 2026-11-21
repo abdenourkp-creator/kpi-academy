@@ -115,6 +115,7 @@ async function lessonView(code){
       if(labAt>=0&&nextAt>labAt){
         lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
       }
+      lessonContent=lessonVisualFigure(code)+lessonContent;
     }else if(code==="BM-005"){
       const diagramAt=markdown.indexOf("## 7. Worked Case");
       const labAt=markdown.indexOf("## 9. Common Mistakes");
