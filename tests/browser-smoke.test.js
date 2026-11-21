@@ -259,7 +259,7 @@ function startServer() {
     const xpBeforeBm003 = await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp);
     await page.goto("http://127.0.0.1:" + port + "/#lesson-BM-003", { waitUntil: "networkidle" });
     await page.locator(".bm003-lab").waitFor();
-    assert.equal(await page.locator(".bm003-task").count(), 10, "BM-003 must render ten order-of-operations tasks");
+    assert.equal(await page.locator(".bm003-task").count(), 11, "BM-003 must render eleven order-of-operations tasks");
     await page.locator('[data-task="priority"] input').fill("160");
     await page.locator('[data-check="priority"]').click();
     assert.equal(await page.locator('[data-task="priority"] input').inputValue(), "160",
@@ -267,7 +267,7 @@ function startServer() {
     await page.locator('[data-task="priority"] input').fill("140");
     await page.locator('[data-check="priority"]').click();
     assert.match(await page.locator('[data-task="priority"] .bm003-feedback').textContent(), /حساب صحيح/);
-    for (const [id, answer] of [["parentheses","300"],["equal-precedence","27"],["division-first","180"],["bracketed-division","46.67"],["cocktail-cost","14"],["average-check","196.67"],["beverage-cost","30"],["inverse-check","29500"]]) {
+    for (const [id, answer] of [["parentheses","300"],["equal-precedence","27"],["division-first","180"],["bracketed-division","46.67"],["cocktail-cost","14"],["net-sales","29500"],["average-check","196.67"],["beverage-cost","30"],["inverse-check","29500"]]) {
       await page.locator('[data-task="' + id + '"] input').fill(answer);
       await page.locator('[data-check="' + id + '"]').click();
       assert.match(await page.locator('[data-task="' + id + '"] .bm003-feedback').textContent(), /حساب صحيح/, id + " must validate");
