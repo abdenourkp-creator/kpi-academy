@@ -24,5 +24,5 @@ const archiveScript=html.indexOf('src="assets/js/live-venue-archive.js"');
 const venueScript=html.indexOf('src="assets/js/live-venue.js"');
 assert.ok(archiveScript>=0&&venueScript>archiveScript,"archive module must load before Live Venue UI");
 assert.equal((html.match(/<script\b/g)||[]).length,(html.match(/<\/script>/g)||[]).length,"script tags must be balanced");
-assert.equal((html.match(/<link\b/g)||[]).length,(html.match(/>/g)||[]).filter((_,i)=>false).length || (html.match(/<link\b[^>]*>/g)||[]).length,"stylesheet tags must be well formed");
+assert.equal((html.match(/<link\\b/g)||[]).length,(html.match(/<link\\b[^>]*>/g)||[]).length,"stylesheet tags must be well formed");
 console.log("Release integrity passed: HTML structure, unique app mounts, duplicate attributes, local asset references, and Live Venue dependency order.");
