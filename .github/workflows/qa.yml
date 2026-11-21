@@ -1,5 +1,8 @@
 name: KPI Academy QA
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
@@ -144,3 +147,33 @@ jobs:
           path: kpi-academy-test-build.tar.gz
           if-no-files-found: error
           retention-days: 14
+
+
+  deploy-preview:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/implementation/kpi-academy-mvp'
+    needs: [verify, browser, package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout preview source
+        uses: actions/checkout@v4
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Assemble preview site
+        run: |
+          mkdir -p dist
+          cp index.html TESTING.md dist/
+          cp -r assets data content dist/
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy preview
+        id: deployment
+        uses: actions/deploy-pages@v4
