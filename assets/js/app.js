@@ -132,6 +132,14 @@ async function lessonView(code){
         lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
       }
       lessonContent=lessonVisualFigure(code)+lessonContent;
+    }else if(code==="BM-004"){
+      const labAt=markdown.indexOf("## 8. Interactive Lab");
+      const nextAt=markdown.indexOf("## 9. Common Mistakes");
+      const labMount='<div id="bm004LabMount" aria-label="مختبر التقريب والدقة"></div>';
+      if(labAt>=0&&nextAt>labAt){
+        lessonContent=markdownHtml(markdown.slice(0,labAt))+labMount+markdownHtml(markdown.slice(nextAt));
+      }
+      lessonContent=lessonVisualFigure(code)+lessonContent;
     }else if(code==="BM-005"){
       const diagramAt=markdown.indexOf("## 7. Worked Case");
       const labAt=markdown.indexOf("## 9. Common Mistakes");
@@ -212,6 +220,9 @@ async function lessonView(code){
     }
     if(code==="BM-003"&&window.KPI_BM003_LAB){
       window.KPI_BM003_LAB.mount(document.getElementById("bm003LabMount"));
+    }
+    if(code==="BM-004"&&window.KPI_BM004_LAB){
+      window.KPI_BM004_LAB.mount(document.getElementById("bm004LabMount"));
     }
     if(code==="BM-005"&&window.KPI_LESSON_EXPERIENCE){
       window.KPI_LESSON_EXPERIENCE.mount(code,document.getElementById("lessonExperienceMount"));
