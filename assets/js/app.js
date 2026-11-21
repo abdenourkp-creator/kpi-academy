@@ -157,6 +157,14 @@ async function lessonView(code){
       if(position>=0)lessonContent=markdownHtml(markdown.slice(0,position))+figure+markdownHtml(markdown.slice(position));
       else lessonContent=figure+lessonContent;
     }
+    if(["BM-006","BM-007","BM-008"].includes(code)){
+      const labHeading=markdown.match(/^## \\d+\\. Interactive Lab/m);
+      const mistakesHeading=markdown.match(/^## \\d+\\. Common Mistakes/m);
+      if(labHeading&&mistakesHeading&&mistakesHeading.index>labHeading.index){
+        const labMount='<div id="percentageLabMount" aria-label="مختبر النسب المئوية التفاعلي"></div>';
+        lessonContent=markdownHtml(markdown.slice(0,labHeading.index))+labMount+markdownHtml(markdown.slice(mistakesHeading.index));
+      }
+    }
     const allLessons=businessMath.chapters.flatMap(item=>item.lessons);
     const lessonIndex=allLessons.findIndex(item=>item.code===code);
     const previousLesson=lessonIndex>0?allLessons[lessonIndex-1]:null;
