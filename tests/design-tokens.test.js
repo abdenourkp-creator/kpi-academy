@@ -28,9 +28,15 @@ assert.equal(count(/--ka-content\s*:/g, css), 0, "legacy --ka-content declaratio
 assert.equal(count(/--ka-shadow\s*:/g, css), 0, "legacy --ka-shadow declaration must be retired");
 assert.equal(count(/var\(\s*--ka-content(?:\s*,|\s*\))/g, css), 0, "legacy --ka-content references must be retired");
 assert.equal(count(/var\(\s*--ka-shadow(?:\s*,|\s*\))/g, css), 0, "legacy --ka-shadow references must be retired");
+assert.equal(count(/--success\s*:/g, css), 0, "legacy --success declarations must be retired");
+assert.equal(count(/var\(\s*--success\b/g, css), 0, "legacy --success references must be retired");
 
 assert.equal(count(/--ka-layout-content-max-width\s*:/g, css), 1, "content max-width token must have one declaration");
 assert.equal(count(/--ka-elevation-card-hover\s*:/g, css), 1, "card hover elevation token must have one declaration");
+assert.equal(count(/--ka-status-success\s*:/g, css), 1, "status success token must have one canonical declaration");
+assert.match(tokens, /--ka-status-success\s*:\s*#19C987\s*;/, "status success token must preserve the effective premium success value");
+assert.equal(count(/var\(\s*--ka-status-success\s*\)/g, styles), 13, "all 13 legacy success consumers must use the canonical status token");
+assert.match(tokens, /--ka-success\s*:\s*#2ECC8F\s*;/, "the existing canonical success accent must remain unchanged");
 assert.match(tokens, /--ka-layout-content-max-width\s*:\s*1180px\s*;/, "content max-width must preserve 1180px");
 assert.match(
   tokens,
