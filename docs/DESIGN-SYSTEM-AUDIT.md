@@ -14,7 +14,7 @@ The next visual implementation must not be a broad stylesheet reorder or a globa
 ## 1. Confirmed application architecture
 
 - HTML5, CSS3, Vanilla JavaScript, JSON curriculum manifests, Markdown lesson manuscripts.
-- `index.html` loads the app shell and 15 stylesheets.
+- `index.html` loads the app shell and 16 stylesheets.
 - Existing rendering and data logic lives primarily in `assets/js/app.js`, `learning-engine.js`, `learning-ui.js`, and lesson / lab modules.
 - Current feature set includes dashboard, modules, lesson reader, KPI calculator, analytics lab, management simulator, progress and assessments.
 - Preserve existing data, routes, calculations, learner state, XP rules, evidence gates, and curriculum files.
@@ -44,7 +44,7 @@ The next visual implementation must not be a broad stylesheet reorder or a globa
 
 | File | Current responsibility | Audit finding |
 |---|---|---|
-| `styles.css` | Legacy app layout and most page/component styling | 59,955 bytes; 514 lines; approximately 727 parsed selector blocks; legacy light palette plus legacy variables |
+| `styles.css` | Legacy app layout and most page/component styling | 59,955 bytes; 514 lines; 728 parsed selector blocks; legacy light palette plus legacy variables |
 | `premium-experience.css` | Dark hospitality visual override | 16,020 bytes; 231 lines; approximately 223 selector blocks; redefines legacy palette variables and overrides shared page surfaces |
 | `tokens.css` | New design tokens | 89 unique `--ka-*` variables in a single `:root` block; includes colors, surfaces, radii, spacing, typography, shadows, motion, and z-index |
 | `base.css` | Tokenized global base and accessibility foundations | Small and token-based; includes focus-visible and reduced-motion behavior |
@@ -55,7 +55,7 @@ The next visual implementation must not be a broad stylesheet reorder or a globa
 | `study-tools.css` | Study tools and review panels | Contains hard-coded light panels, controls, and borders |
 | `simulator.css` | Management simulator | Contains hard-coded light scenario and feedback panels |
 
-The remaining lab and venue stylesheets require a targeted selector/token inventory before any shared stylesheet is moved or deleted.
+The complete 16-file stylesheet inventory, selector overlap scan, breakpoint list, token collisions, and migration mapping are documented in `docs/STYLE-OWNERSHIP-MAP.md`. No stylesheet order change or CSS migration has been made.
 
 ## 4. Key architectural risks
 
@@ -170,7 +170,21 @@ Images must be planned as content slots, not decorative filler. Each slot needs 
 - [x] Main legacy/premium/tokenized cascade risks identified.
 - [x] Lesson and learning-tool surface inconsistencies identified.
 - [x] Educational image slots, aspect ratios, content purpose, and fallback behavior specified.
-- [ ] Complete selector/token inventory for remaining BM lab and venue stylesheets.
+- [x] Complete selector/token inventory for all 16 loaded stylesheets, including BM labs and venue styles.
 - [ ] Owner review of the design-system specification.
 
 **Decision:** Do not change the stylesheet load order or replace the existing global CSS in this mission. The next focused task is to complete the remaining feature stylesheet inventory and produce the final token migration map before the first visual component is rebuilt.
+
+
+## 9. Latest source audit
+
+The stylesheet count and selector-block count above have been corrected against the current `index.html` and CSS sources. The detailed ownership and token migration deliverable is `docs/STYLE-OWNERSHIP-MAP.md`.
+
+Key verified findings:
+- 16 stylesheets are loaded in `index.html`.
+- `styles.css` contains 728 parsed selector blocks and four `:root` blocks.
+- 233 normalized selector strings are shared by multiple stylesheets.
+- The older `--ka-*` declarations in `styles.css` overlap the newer token namespace in `tokens.css`.
+- The current feature CSS contains substantial hard-coded color usage and fragmented breakpoints.
+
+The next implementation must resolve token ownership without a global stylesheet reorder, then build scoped Home and Lesson page layers while preserving the existing data and interaction engines.
