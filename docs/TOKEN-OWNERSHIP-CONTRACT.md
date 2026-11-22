@@ -1,7 +1,7 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration; 01.8 — Semantic error-state migration  
+**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration; 01.8 — Semantic error-state migration; 01.9 — Secondary-text fallback migration  
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
 **Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
 **Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
@@ -162,7 +162,7 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 1. **Completed in Task 01.5:** migrate `--ka-content` to `--ka-layout-content-max-width:1180px` and `--ka-shadow` to `--ka-elevation-card-hover:0 18px 50px rgba(20,35,59,.08)`; preserve the two content-width consumers and the single module-card hover consumer.
 2. **Completed in Task 01.6:** migrate all 13 `--success` consumers to `--ka-status-success:#19C987`; remove the now-unused `--success` declarations from `styles.css` and `premium-experience.css`. The existing `--ka-success:#2ECC8F` remains unchanged for current canonical consumers.
 3. **Completed in Task 01.8:** migrate all seven `--error` consumers to `--ka-status-error:#F06E78`; remove the obsolete declarations from both legacy root blocks. Keep `--ka-danger:#F2616B` unchanged as a separate accent.
-4. Migrate the remaining direct semantic aliases (`--text`, `--muted`) in small selector groups.
+4. **Completed in Task 01.9:** migrate the `.certificate-panel p` fallback to `--ka-muted`; the later premium selector continues to supply the effective `#A2B8C9` color. Eight direct `--text` references remain for role-by-role review.
 5. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
 6. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
 7. Retire unused legacy tokens only after a repository-wide CSS and JavaScript search.
@@ -263,3 +263,37 @@ No markup, JavaScript, learning content, XP, calculations, learner storage, font
 
 **Next micro-task:** classify the nine direct `--text` consumers by actual text hierarchy and migrate only the lowest-risk secondary-text group; do not globally alias `--text` to `--ka-text` until light-surface consumers and contrast are verified.
 
+
+
+## 12. Task 01.9 — Secondary-text fallback migration
+
+**Status:** Implemented in this task.
+
+### Consumer classification
+
+A scan of all 16 stylesheets linked by the current `index.html` found nine direct `var(--text)` references:
+
+| Consumer | Role | Active later cascade | Decision |
+|---|---|---|---|
+| `body` and `html,body` | Global primary text | Premium root sets `#EAF3FC` | Retain pending root/surface ownership work |
+| `.lesson-name` | Lesson title | Premium sets `#DDEAF4` | Retain; primary content |
+| `.calc-field` | Form label | Premium sets `#E2ECF4` | Retain for a separate form-label task |
+| `.calc-field input,.calc-field select` | Entered values | Premium sets `#F2F7FB` | Retain; interactive data |
+| `.result-details dd` | Calculated output values | Premium sets `#E5EFF6` | Retain; primary result data |
+| `.progress-lesson-link strong` | Lesson title | Premium sets `#E1ECF4` | Retain; primary content |
+| `.certificate-panel p` | Supporting certificate description | Premium group sets `#A2B8C9` | Migrate fallback to `--ka-muted` |
+| `.quiz-option` | Assessment answer text | No dedicated later text override; dark assessment panel | Retain pending explicit contrast review |
+
+The stylesheet order is unchanged. `premium-experience.css` loads after `styles.css`, and its grouped certificate selector continues to set `#A2B8C9`. Therefore changing the earlier fallback declaration from `var(--text)` to `var(--ka-muted)` does not change the active computed certificate-description color.
+
+### Canonical decision
+
+- Changed only the `.certificate-panel p` fallback in `styles.css` from `var(--text)` to `var(--ka-muted)`.
+- Preserved the later premium computed color `#A2B8C9`.
+- Preserved the canonical `--ka-muted:rgba(235,243,251,.72)` value.
+- Reduced direct `var(--text)` references across the 16 loaded stylesheets from nine to eight.
+- Added regression assertions for the migrated selector, the premium override, the canonical muted value, and the remaining-reference count.
+
+No markup, JavaScript, learning content, XP, calculations, learner storage, fonts, stylesheet order, or deployment behavior changed.
+
+**Next micro-task (01.10):** migrate the `.calc-field` fallback to `--ka-text` only after retaining and testing the later premium `#E2ECF4` override. Keep input values, result data, lesson titles, quiz options, and global body text out of that task.
