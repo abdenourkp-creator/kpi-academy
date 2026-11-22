@@ -1,11 +1,11 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration  
+**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration; 01.8 — Semantic error-state migration  
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
 **Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
 **Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
-**Scope:** all 16 stylesheets loaded by the current `index.html`; static CSS custom-property declarations and `var()` references. This task migrates the two low-risk layout/elevation tokens while preserving their effective values; no JavaScript, curriculum, learner-state, XP, calculation, or font-loading behavior is changed.
+**Scope:** all 16 stylesheets loaded by the current `index.html`; static CSS custom-property declarations and `var()` references. This contract records staged token migrations while preserving effective values; no JavaScript, curriculum, learner-state, XP, calculation, or font-loading behavior is changed.
 
 ## 1. Executive decision
 
@@ -124,7 +124,7 @@ The canonical token column identifies the preferred target family. Where the leg
 | `--border` | `--ka-border` / `--ka-border-blue` | Quiet vs emphasized border |
 | `--success` | `--ka-status-success` | Preserve the winning premium cascade value (`#19C987`) without changing the existing `--ka-success` accent (`#2ECC8F`) |
 | `--warning` | `--ka-status-warning` | Preserve the effective premium status value (`#E7B95C`) while keeping the existing `--ka-warning` accent (`#F5B942`) unchanged |
-| `--error` | `--ka-danger` | Preserve semantic state |
+| `--error` | `--ka-status-error` | Preserve the effective premium status value (`#F06E78`); keep `--ka-danger` as a separate accent until its consumers are reviewed |
 | `--radius` | `--ka-radius-md` | Validate component shape before retiring alias |
 | `--shadow` | New `--ka-shadow-card` token | Define a dedicated card elevation token; do not reuse glow / button / drawer shadows |
 
@@ -161,13 +161,14 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 
 1. **Completed in Task 01.5:** migrate `--ka-content` to `--ka-layout-content-max-width:1180px` and `--ka-shadow` to `--ka-elevation-card-hover:0 18px 50px rgba(20,35,59,.08)`; preserve the two content-width consumers and the single module-card hover consumer.
 2. **Completed in Task 01.6:** migrate all 13 `--success` consumers to `--ka-status-success:#19C987`; remove the now-unused `--success` declarations from `styles.css` and `premium-experience.css`. The existing `--ka-success:#2ECC8F` remains unchanged for current canonical consumers.
-3. Migrate the remaining direct semantic aliases (`--text`, `--muted`, `--warning`, `--error`) in small selector groups.
-4. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
-5. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
-6. Retire unused legacy tokens only after a repository-wide CSS and JavaScript search.
-7. Remove duplicate root declarations from `styles.css` after the consumers are migrated.
-8. Keep `premium-experience.css` as a temporary compatibility layer until its page/component ownership has been moved into `dashboard.css`, `lesson-page.css`, or shared primitives.
-9. Do not globally reorder stylesheets during this work. Any future load-order change requires a visual and functional regression pass across the app and labs.
+3. **Completed in Task 01.8:** migrate all seven `--error` consumers to `--ka-status-error:#F06E78`; remove the obsolete declarations from both legacy root blocks. Keep `--ka-danger:#F2616B` unchanged as a separate accent.
+4. Migrate the remaining direct semantic aliases (`--text`, `--muted`) in small selector groups.
+5. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
+6. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
+7. Retire unused legacy tokens only after a repository-wide CSS and JavaScript search.
+8. Remove duplicate root declarations from `styles.css` after the consumers are migrated.
+9. Keep `premium-experience.css` as a temporary compatibility layer until its page/component ownership has been moved into `dashboard.css`, `lesson-page.css`, or shared primitives.
+10. Do not globally reorder stylesheets during this work. Any future load-order change requires a visual and functional regression pass across the app and labs.
 
 ## 8. Acceptance criteria for Mission 01.5
 
@@ -238,4 +239,27 @@ No markup, JavaScript, curriculum, XP, calculation, progress-storage, font, or d
 
 No markup, JavaScript, learning content, XP, calculations, learner storage, font loading, or deployment behavior changed.
 
-**Next micro-task:** migrate the seven legacy `--error` consumers to a dedicated canonical status-error token, preserving the effective premium value `#F06E78` and leaving the existing `--ka-danger` token unchanged until consumer roles are reviewed.
+
+## 11. Task 01.8 — Semantic error-state migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- The loaded legacy `styles.css` root declared `--error:#C84B4B`.
+- The later-loaded `premium-experience.css` declared `--error:#F06E78`, so `#F06E78` was the effective legacy error-state value for all seven active consumers.
+- The scan of the 16 stylesheets linked by `index.html` found exactly seven `var(--error)` consumers, all in `styles.css`; no error consumers were found in the other loaded stylesheets.
+- The seven consumer contexts are `.result-error>span`, `.result-error h2`, `.danger-action`, `.quiz-feedback`, `.assessment-history-list .fail`, `.assessment-score.fail`, and `.quiz-review-item.incorrect`.
+
+### Canonical decision
+
+- Added `--ka-status-error:#F06E78` to `tokens.css`.
+- Migrated all seven active error-state consumers in `styles.css` to `var(--ka-status-error)`.
+- Removed the obsolete `--error` declarations from `styles.css` and `premium-experience.css`.
+- Preserved the existing `--ka-danger:#F2616B` accent unchanged. It remains distinct from semantic error-state color until its own consumers are reviewed.
+- Extended `tests/design-tokens.test.js` to guard the canonical declaration, exact effective value, seven migrated consumers, legacy alias retirement, and preservation of `--ka-danger`.
+
+No markup, JavaScript, learning content, XP, calculations, learner storage, font loading, or deployment behavior changed.
+
+**Next micro-task:** classify the nine direct `--text` consumers by actual text hierarchy and migrate only the lowest-risk secondary-text group; do not globally alias `--text` to `--ka-text` until light-surface consumers and contrast are verified.
+
