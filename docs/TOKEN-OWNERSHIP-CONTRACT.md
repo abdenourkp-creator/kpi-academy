@@ -1,7 +1,7 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration  
+**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration  
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
 **Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
 **Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
@@ -123,7 +123,7 @@ The canonical token column identifies the preferred target family. Where the leg
 | `--muted` | `--ka-muted` / `--ka-faint` | Choose based on hierarchy and contrast |
 | `--border` | `--ka-border` / `--ka-border-blue` | Quiet vs emphasized border |
 | `--success` | `--ka-status-success` | Preserve the winning premium cascade value (`#19C987`) without changing the existing `--ka-success` accent (`#2ECC8F`) |
-| `--warning` | `--ka-warning` | Keep warning separate from decorative gold |
+| `--warning` | `--ka-status-warning` | Preserve the effective premium status value (`#E7B95C`) while keeping the existing `--ka-warning` accent (`#F5B942`) unchanged |
 | `--error` | `--ka-danger` | Preserve semantic state |
 | `--radius` | `--ka-radius-md` | Validate component shape before retiring alias |
 | `--shadow` | New `--ka-shadow-card` token | Define a dedicated card elevation token; do not reuse glow / button / drawer shadows |
@@ -215,3 +215,27 @@ The design-token test now asserts:
 - the existing --ka-success:#2ECC8F remains unchanged.
 
 No markup, JavaScript, curriculum, XP, calculation, progress-storage, font, or deployment behavior was changed.
+
+
+## 10. Task 01.7 — Semantic warning-state migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- The loaded legacy `styles.css` root declared `--warning:#D99A32`.
+- The later-loaded `premium-experience.css` declared `--warning:#E7B95C`, so the premium value was the effective warning color for the three active CSS consumers.
+- The scan of the 16 stylesheets linked by `index.html` found exactly three `var(--warning)` consumers, all in `styles.css`; no warning consumers were found in the other loaded stylesheets.
+- The three consumer contexts are the shared `.note-dot,.status-dot` indicator rule, `.progress-lesson-link.active em`, and `.learning-dot`. The topbar status dot has its own later success-state override.
+
+### Canonical decision
+
+- Added `--ka-status-warning:#E7B95C` to `tokens.css`.
+- Migrated all three active warning-state consumers in `styles.css` to `var(--ka-status-warning)`.
+- Removed the obsolete `--warning` declarations from `styles.css` and `premium-experience.css`.
+- Preserved the existing `--ka-warning:#F5B942` accent token and its current consumers. It remains distinct from semantic warning-state color, avoiding an unrelated visual change to newer components.
+- Extended `tests/design-tokens.test.js` to guard the canonical declaration, exact effective value, three migrated consumers, retirement of the legacy declaration/reference, and preservation of `--ka-warning`.
+
+No markup, JavaScript, learning content, XP, calculations, learner storage, font loading, or deployment behavior changed.
+
+**Next micro-task:** migrate the seven legacy `--error` consumers to a dedicated canonical status-error token, preserving the effective premium value `#F06E78` and leaving the existing `--ka-danger` token unchanged until consumer roles are reviewed.

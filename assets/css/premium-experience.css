@@ -3,7 +3,7 @@
 :root{
  --blue:#19BDEB;--navy:#06182B;--light-blue:#0C2A43;--soft-blue:#123C5B;
  --bg:#061321;--surface:#0B2033;--text:#EAF3FC;--muted:#9CB1C4;--border:rgba(129,177,211,.22);
- --warning:#E7B95C;--error:#F06E78;--radius:20px;
+ --error:#F06E78;--radius:20px;
  --shadow:0 18px 48px rgba(0,0,0,.28);
  color-scheme:dark;
 }

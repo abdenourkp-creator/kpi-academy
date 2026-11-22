@@ -30,6 +30,12 @@ assert.equal(count(/var\(\s*--ka-content(?:\s*,|\s*\))/g, css), 0, "legacy --ka-
 assert.equal(count(/var\(\s*--ka-shadow(?:\s*,|\s*\))/g, css), 0, "legacy --ka-shadow references must be retired");
 assert.equal(count(/--success\s*:/g, css), 0, "legacy --success declarations must be retired");
 assert.equal(count(/var\(\s*--success\b/g, css), 0, "legacy --success references must be retired");
+assert.equal(count(/--warning\s*:/g, css), 0, "legacy --warning declarations must be retired");
+assert.equal(count(/var\(\s*--warning\b/g, css), 0, "legacy --warning references must be retired");
+assert.equal(count(/--ka-status-warning\s*:/g, css), 1, "status warning token must have one canonical declaration");
+assert.match(tokens, /--ka-status-warning\s*:\s*#E7B95C\s*;/, "status warning token must preserve the effective premium warning value");
+assert.match(tokens, /--ka-warning\s*:\s*#F5B942\s*;/, "the existing canonical warning accent must remain unchanged");
+assert.equal(count(/var\(\s*--ka-status-warning\s*\)/g, styles), 3, "all three legacy warning consumers must use the canonical status token");
 
 assert.equal(count(/--ka-layout-content-max-width\s*:/g, css), 1, "content max-width token must have one declaration");
 assert.equal(count(/--ka-elevation-card-hover\s*:/g, css), 1, "card hover elevation token must have one declaration");
@@ -55,5 +61,5 @@ assert.equal(
 );
 
 console.log(
-  "Design token migration tests passed: canonical ownership, preserved values, retired aliases, and all 3 consumers verified."
+  "Design token migration tests passed: canonical ownership, preserved layout/elevation and success/warning values, retired aliases, and migrated consumers verified."
 );
