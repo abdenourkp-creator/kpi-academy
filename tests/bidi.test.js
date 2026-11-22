@@ -4,7 +4,7 @@ const fs=require("node:fs");
 const vm=require("node:vm");
 const source=fs.readFileSync(require("node:path").join(__dirname,"../assets/js/bidi.js"),"utf8");
 const created=[];
-const document={createElement(tag){assert.equal(tag,"bdi");const el={tagName:tag.toUpperCase(),attrs:{},set lang(v){this.attrs.lang=v},set dir(v){this.attrs.dir=v},set textContent(v){this.text=v}};created.push(el);return el;},documentElement:{lang:"ar",dir:"rtl"}};
+const document={createElement(tag){assert.equal(tag,"bdi");const el={tagName:tag.toUpperCase(),attrs:{},lang:"",dir:"",set textContent(v){this.text=v}};created.push(el);return el;},documentElement:{lang:"ar",dir:"rtl"}};
 const window={KPI:{i18n:{ar:{dir:"rtl"},en:{dir:"ltr"}}}};
 vm.runInNewContext(source,{window,document});
 const samples=[
