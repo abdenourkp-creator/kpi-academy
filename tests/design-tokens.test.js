@@ -66,6 +66,27 @@ assert.equal(
   "module-card hover must retain its elevation consumer"
 );
 
+assert.equal(
+  count(/var\\(\\s*--text\\b/g, css),
+  8,
+  "only the certificate secondary-copy fallback should leave the legacy --text alias in this task"
+);
+assert.match(
+  styles,
+  /\\.certificate-panel p\\{[^}]*color:\\s*var\\(--ka-muted\\)/,
+  "certificate descriptive copy must use the canonical muted fallback"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\\.certificate-panel p(?:,|\\s*\\{)[^{}]*color:\\s*#A2B8C9/,
+  "the active premium certificate-copy color must remain unchanged"
+);
+assert.match(
+  tokens,
+  /--ka-muted\\s*:\\s*rgba\\(235,243,251,\\.72\\)\\s*;/,
+  "canonical muted text token must retain its audited value"
+);
+
 console.log(
   "Design token migration tests passed: canonical ownership, preserved layout/elevation and success/warning values, retired aliases, and migrated consumers verified."
 );
