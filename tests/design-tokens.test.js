@@ -78,7 +78,7 @@ assert.match(
 );
 assert.match(
   cssByPath.get("assets/css/premium-experience.css"),
-  /\.certificate-panel p(?:,|\s*\{)[^{}]*color:\s*#A2B8C9/,
+  /\.certificate-panel p(?:,|\s*\{)[^{}]*\{[^}]*color:\s*#A2B8C9/,
   "the active premium certificate-copy color must remain unchanged"
 );
 assert.match(
