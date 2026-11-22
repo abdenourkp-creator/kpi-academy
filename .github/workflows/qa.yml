@@ -62,6 +62,7 @@ jobs:
           node --check tests/release-integrity.test.js
           node --check tests/study-tools.test.js
           node --check tests/bidi.test.js
+          node --check tests/design-tokens.test.js
       - name: Run KPI calculation tests
         run: node tests/kpi-engine.test.js
       - name: Run lesson Markdown renderer tests
@@ -100,6 +101,8 @@ jobs:
         run: node tests/visual-assets.test.js
       - name: Run bidirectional text tests
         run: node tests/bidi.test.js
+      - name: Run canonical design token migration tests
+        run: node tests/design-tokens.test.js
 
   browser:
     needs: verify

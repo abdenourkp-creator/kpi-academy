@@ -1,10 +1,11 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Task:** 01.3 — Canonical token ownership and safe migration decisions  
+**Task:** 01.5 — First value-preserving layout / elevation token migration  
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
 **Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
-**Scope:** all 16 stylesheets loaded by the current `index.html`; static CSS custom-property declarations and `var()` references. No runtime CSS or JavaScript was changed for this task.
+**Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
+**Scope:** all 16 stylesheets loaded by the current `index.html`; static CSS custom-property declarations and `var()` references. This task migrates the two low-risk layout/elevation tokens while preserving their effective values; no JavaScript, curriculum, learner-state, XP, calculation, or font-loading behavior is changed.
 
 ## 1. Executive decision
 
@@ -20,7 +21,7 @@ The migration rule is therefore:
 4. Remove the legacy declaration only after its consumer count reaches zero.
 5. Keep feature-local styling isolated; do not make a global palette change to fix one lab.
 
-No token values are changed by this document. It is the contract for the next implementation tasks.
+This task does not alter the effective visual values. It relocates two legacy values into canonical semantic tokens and updates only their known consumers.
 
 ## 2. Verified source facts
 
@@ -135,8 +136,8 @@ The canonical token column identifies the preferred target family. Where the leg
 | `--ka-light` | 3 background references | Migrate to an explicit subtle / selected surface token |
 | `--ka-soft` | 0 references | Candidate for retirement after a full search |
 | `--ka-error` | 0 references | Prefer canonical `--ka-danger`; remove unused alias after verification |
-| `--ka-shadow` | 1 hover elevation reference | Migrate to a named card-hover/elevation token while preserving the intended effect |
-| `--ka-content` | 2 `max-width` references; value `1180px` | Rename to a layout-specific canonical token such as `--ka-content-max` |
+| `--ka-shadow` | 1 hover elevation reference | Migrate to `--ka-elevation-card-hover` while preserving the effective hover shadow |
+| `--ka-content` | 2 `max-width` references; value `1180px` | Migrate to `--ka-layout-content-max-width` |
 | `--ka-type-body` | 1 body font-size reference; value `15px` | Preserve the 15px body role with an explicit canonical body token |
 | `--ka-type-small` | 0 references | Candidate for retirement after a full search |
 | `--ka-type-label` | 0 references | Candidate for retirement after a full search |
@@ -158,7 +159,7 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 
 ## 7. Safe implementation order
 
-1. Migrate the unambiguous layout / elevation tokens first (`--ka-content`, `--ka-shadow`) while preserving their current effective values.
+1. **Completed in Task 01.5:** migrate `--ka-content` to `--ka-layout-content-max-width:1180px` and `--ka-shadow` to `--ka-elevation-card-hover:0 18px 50px rgba(20,35,59,.08)`; preserve the two content-width consumers and the single module-card hover consumer.
 2. Migrate direct semantic aliases (`--text`, `--muted`, `--success`, `--warning`, `--error`) in small selector groups.
 3. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
 4. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
@@ -167,14 +168,14 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 7. Keep `premium-experience.css` as a temporary compatibility layer until its page/component ownership has been moved into `dashboard.css`, `lesson-page.css`, or shared primitives.
 8. Do not globally reorder stylesheets during this work. Any future load-order change requires a visual and functional regression pass across the app and labs.
 
-## 8. Acceptance criteria for Mission 01.3
+## 8. Acceptance criteria for Mission 01.5
 
 - [x] Canonical token owner identified.
 - [x] All 14 duplicated unprefixed variables recorded with both source values and reference counts.
 - [x] Overloaded tokens identified and split by semantic role.
 - [x] The nine extra legacy `--ka-*` names inventoried.
 - [x] Safe migration order documented.
-- [ ] First low-risk token migration implemented and regression-checked.
+- [x] First low-risk token migration implemented and regression-checked by a dedicated static CSS contract test and CI.
 - [ ] Browser-computed cascade and contrast checked at the actual Home / Lesson surfaces.
 
-**Current result:** this task establishes the token contract only. No CSS values, stylesheet order, page markup, learning logic, XP, calculations, or font loading were changed. The next focused implementation task is to migrate the two low-risk layout/elevation tokens (`--ka-content` and `--ka-shadow`) to canonical names while preserving their current effective values.
+**Current result:** the first low-risk migration is implemented. The canonical tokens preserve the current effective values exactly; the old declarations and references are removed from `styles.css`. The next task is to migrate direct semantic aliases (`--text`, `--muted`, `--success`, `--warning`, `--error`) in a small consumer group after role and cascade verification.
