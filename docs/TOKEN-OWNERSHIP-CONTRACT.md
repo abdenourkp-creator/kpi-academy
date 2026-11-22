@@ -1,7 +1,7 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Task:** 01.5 — First value-preserving layout / elevation token migration  
+**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration  
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
 **Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
 **Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
@@ -21,7 +21,7 @@ The migration rule is therefore:
 4. Remove the legacy declaration only after its consumer count reaches zero.
 5. Keep feature-local styling isolated; do not make a global palette change to fix one lab.
 
-This task does not alter the effective visual values. It relocates two legacy values into canonical semantic tokens and updates only their known consumers.
+The staged migrations do not alter the effective visual values of their migrated consumers. Task 01.5 relocates the legacy layout/elevation values; Task 01.6 relocates the premium success-state value into a canonical status token and updates its 13 known consumers.
 
 ## 2. Verified source facts
 
@@ -122,7 +122,7 @@ The canonical token column identifies the preferred target family. Where the leg
 | `--text` | `--ka-text` | Direct semantic mapping |
 | `--muted` | `--ka-muted` / `--ka-faint` | Choose based on hierarchy and contrast |
 | `--border` | `--ka-border` / `--ka-border-blue` | Quiet vs emphasized border |
-| `--success` | `--ka-success` | Preserve semantic state |
+| `--success` | `--ka-status-success` | Preserve the winning premium cascade value (`#19C987`) without changing the existing `--ka-success` accent (`#2ECC8F`) |
 | `--warning` | `--ka-warning` | Keep warning separate from decorative gold |
 | `--error` | `--ka-danger` | Preserve semantic state |
 | `--radius` | `--ka-radius-md` | Validate component shape before retiring alias |
@@ -160,13 +160,14 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 ## 7. Safe implementation order
 
 1. **Completed in Task 01.5:** migrate `--ka-content` to `--ka-layout-content-max-width:1180px` and `--ka-shadow` to `--ka-elevation-card-hover:0 18px 50px rgba(20,35,59,.08)`; preserve the two content-width consumers and the single module-card hover consumer.
-2. Migrate direct semantic aliases (`--text`, `--muted`, `--success`, `--warning`, `--error`) in small selector groups.
-3. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
-4. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
-5. Retire unused legacy tokens only after a repository-wide CSS and JavaScript search.
-6. Remove duplicate root declarations from `styles.css` after the consumers are migrated.
-7. Keep `premium-experience.css` as a temporary compatibility layer until its page/component ownership has been moved into `dashboard.css`, `lesson-page.css`, or shared primitives.
-8. Do not globally reorder stylesheets during this work. Any future load-order change requires a visual and functional regression pass across the app and labs.
+2. **Completed in Task 01.6:** migrate all 13 `--success` consumers to `--ka-status-success:#19C987`; remove the now-unused `--success` declarations from `styles.css` and `premium-experience.css`. The existing `--ka-success:#2ECC8F` remains unchanged for current canonical consumers.
+3. Migrate the remaining direct semantic aliases (`--text`, `--muted`, `--warning`, `--error`) in small selector groups.
+4. Split overloaded `--navy`, `--blue`, `--border`, and `--light-blue` by consumer role.
+5. Introduce explicit surface variants for dark shell panels and any intentional light work surfaces.
+6. Retire unused legacy tokens only after a repository-wide CSS and JavaScript search.
+7. Remove duplicate root declarations from `styles.css` after the consumers are migrated.
+8. Keep `premium-experience.css` as a temporary compatibility layer until its page/component ownership has been moved into `dashboard.css`, `lesson-page.css`, or shared primitives.
+9. Do not globally reorder stylesheets during this work. Any future load-order change requires a visual and functional regression pass across the app and labs.
 
 ## 8. Acceptance criteria for Mission 01.5
 
@@ -179,3 +180,38 @@ The existing `lesson-experience.css` remains the owner of its BM-005 lab interna
 - [ ] Browser-computed cascade and contrast checked at the actual Home / Lesson surfaces.
 
 **Current result:** the first low-risk migration is implemented. The canonical tokens preserve the current effective values exactly; the old declarations and references are removed from `styles.css`. The next task is to migrate direct semantic aliases (`--text`, `--muted`, `--success`, `--warning`, `--error`) in a small consumer group after role and cascade verification.
+
+
+## 9. Task 01.6 — Semantic success-state migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- styles.css declared --success:#23865B at the root.
+- premium-experience.css loads later and redeclared --success:#19C987.
+- The later premium declaration therefore supplied the effective value for the legacy var(--success) consumers.
+- A full scan of the 16 stylesheets found 13 legacy var(--success) references, all in styles.css; the JavaScript files and index.html contained no --success references.
+
+### Canonical decision
+
+- Added --ka-status-success:#19C987 to tokens.css.
+- Migrated all 13 legacy success-state consumers in styles.css to var(--ka-status-success).
+- Removed the unused --success declarations from both legacy root blocks.
+- Preserved the existing --ka-success:#2ECC8F token and its three current canonical consumers. It was not changed because doing so would alter the current shell/checklist success accent.
+
+This keeps the old status/result/progress/assessment success color stable while avoiding an unrelated palette change to the newer shell.
+
+### Consumers migrated
+
+.topbar-meta .status-dot, .result-label, .result-number, .progress-lesson-link.done em, .assessment-badge.passed, .certificate-panel.eligible .certificate-state, .backup-feedback, .learning-dot.good, .lesson-status.done, .evidence-item input, .assessment-history-list .pass, .assessment-score.pass, and .quiz-review-item.correct.
+
+### Regression coverage
+
+The design-token test now asserts:
+- no legacy --success declarations or references remain in the loaded stylesheets;
+- exactly one canonical --ka-status-success declaration exists with value #19C987;
+- all 13 consumers use the canonical token;
+- the existing --ka-success:#2ECC8F remains unchanged.
+
+No markup, JavaScript, curriculum, XP, calculation, progress-storage, font, or deployment behavior was changed.
