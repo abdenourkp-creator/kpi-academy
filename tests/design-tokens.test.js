@@ -36,6 +36,12 @@ assert.equal(count(/--ka-status-warning\s*:/g, css), 1, "status warning token mu
 assert.match(tokens, /--ka-status-warning\s*:\s*#E7B95C\s*;/, "status warning token must preserve the effective premium warning value");
 assert.match(tokens, /--ka-warning\s*:\s*#F5B942\s*;/, "the existing canonical warning accent must remain unchanged");
 assert.equal(count(/var\(\s*--ka-status-warning\s*\)/g, styles), 3, "all three legacy warning consumers must use the canonical status token");
+assert.equal(count(/--error\s*:/g, css), 0, "legacy --error declarations must be retired");
+assert.equal(count(/var\(\s*--error\b/g, css), 0, "legacy --error references must be retired");
+assert.equal(count(/--ka-status-error\s*:/g, css), 1, "status error token must have one canonical declaration");
+assert.match(tokens, /--ka-status-error\s*:\s*#F06E78\s*;/, "status error token must preserve the effective premium error value");
+assert.match(tokens, /--ka-danger\s*:\s*#F2616B\s*;/, "the existing canonical danger accent must remain unchanged");
+assert.equal(count(/var\(\s*--ka-status-error\s*\)/g, styles), 7, "all seven legacy error consumers must use the canonical status token");
 
 assert.equal(count(/--ka-layout-content-max-width\s*:/g, css), 1, "content max-width token must have one declaration");
 assert.equal(count(/--ka-elevation-card-hover\s*:/g, css), 1, "card hover elevation token must have one declaration");
