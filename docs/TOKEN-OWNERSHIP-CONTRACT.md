@@ -526,26 +526,27 @@ No assessment content, question order, answer IDs, scoring, attempt history, lea
 
 The two references must **not** be collapsed into one global text token. They represent two different surface contracts:
 
-| Consumer | Surface contract | Current effective source value | Recommended canonical role |
+| Consumer | Surface contract | Source value / active state | Decision |
 |---|---|---|---|
-| `styles.css body` | Legacy light-theme fallback, when the premium layer is absent | `#172B3A` on `#F6F9FC` | `--ka-text-body-light:#172B3A` |
+| `styles.css body` | Dormant legacy light-theme declaration | Declares `--text:#172B3A` and `--bg:#F6F9FC`, but is overridden in the current stack | Do not migrate until standalone legacy-theme support is confirmed; otherwise retire the stale declaration separately |
 | `premium-experience.css html,body` | Active premium dark application shell | `#EAF3FC` on `#061321` | `--ka-text-shell:#EAF3FC` |
 
-The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text role. The existing `--ka-text-on-light` remains the high-contrast ink role used by the white assessment surface; it must not be repurposed as the legacy body fallback because its value is `#071522`, not `#172B3A`.
+The `styles.css body` declaration is not an active fallback in the current loaded stack. If the premium stylesheet were omitted while `base.css` remained loaded, the later `base.css body` rule has equal specificity and wins by source order. The legacy `styles.css body` color/background would become effective only if both the premium and base layers were absent. That standalone mode is not represented by the current `index.html`.
+
+The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text role. The existing `--ka-text-on-light` remains the high-contrast ink role used by the white assessment surface. Neither should replace the active shell value `#EAF3FC` when exact computed-value preservation is required.
 
 ### Next isolated tasks
 
-**Task 01.18 — Legacy light-body fallback migration**
-- Add `--ka-text-body-light:#172B3A` to `tokens.css`.
-- Migrate only the `styles.css body` fallback from `var(--text)` to `var(--ka-text-body-light)`.
-- Preserve the premium `html,body` rule and the active dark-shell computed color.
-- Add regression assertions for the exact token value, selector ownership, and remaining direct-reference count (2 → 1).
-
-**Task 01.19 — Premium shell text migration**
+**Task 01.18 — Active premium shell text migration**
 - Add `--ka-text-shell:#EAF3FC` to `tokens.css`.
-- Migrate only the premium `html,body` color from `var(--text)` to `var(--ka-text-shell)`.
-- Preserve the active shell color and verify the global contrast value.
-- Audit both now-unused legacy `--text` declarations before retiring them in a separate safe cleanup step.
+- Migrate only the `premium-experience.css html,body` color from `var(--text)` to `var(--ka-text-shell)`.
+- Preserve the active shell color and its approximately 16.68:1 contrast on `#061321`.
+- Leave the dormant `styles.css body` declaration untouched; verify direct references reduce from 2 to 1.
+
+**Task 01.19 — Legacy body declaration disposition**
+- Confirm whether a standalone legacy stylesheet mode is supported anywhere outside the current `index.html` stack.
+- If it is supported, define a dedicated exact-value legacy-light role for `#172B3A` and migrate only that fallback.
+- If it is not supported, retire the dormant `styles.css body` `color:var(--text)` declaration in an isolated cleanup, then audit legacy `--text` root declarations before removal.
 
 ### Verification boundary
 
