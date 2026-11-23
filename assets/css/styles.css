@@ -53,7 +53,7 @@
 .progress-lesson-link{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;padding:9px 3px;border-bottom:1px solid #F0F3F6;font-size:11px}
 .progress-lesson-link:last-child{border-bottom:0}
 .progress-lesson-link>span{font-size:10px;color:var(--blue);direction:ltr}
-.progress-lesson-link strong{font-weight:500;color:var(--text)}
+.progress-lesson-link strong{font-weight:500;color:var(--ka-text)}
 .progress-lesson-link em{font-style:normal;font-size:10px;color:#9AA6B2}
 .progress-lesson-link.done em{color:var(--ka-status-success)}
 .progress-lesson-link.active em{color:var(--ka-status-warning)}
