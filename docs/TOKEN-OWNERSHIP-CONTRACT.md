@@ -654,3 +654,92 @@ The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text 
 No markup, JavaScript, learning content, XP, calculations, learner progress, fonts, stylesheet order, RTL behavior, `main`, `gh-pages`, merge, or deployment changes.
 
 **Next micro-task (01.21):** perform a source-grounded inventory of the remaining active legacy root aliases and their consumers (palette, surfaces, border, radius, and shadow). Classify actual winning values and token ownership before selecting one isolated migration. Do not begin Home Dashboard or Lesson implementation during that audit.
+
+
+## 24. Task 01.21 — Active Legacy Root Alias Ownership Audit
+
+**Status:** Audit complete; documentation-only. No production CSS, tests, markup, or JavaScript were changed in this task.
+
+### Repository and evidence boundary
+
+- Audited the exact PR #4 head `f1e5888312cd561ae0bd2ab9afcd931712d8f2fc` on `fix/phase1-drawer-bidi-deploy-safety`.
+- Re-read the stylesheet order from the branch's `index.html`. The active stack contains 16 stylesheets; `styles.css` loads first, `premium-experience.css` loads eighth, `tokens.css` loads thirteenth, and `base.css` loads fourteenth.
+- Re-fetched and scanned all 16 loaded stylesheets. The only active legacy alias root declarations in scope are in `styles.css` and `premium-experience.css`. Later `tokens.css` and `base.css` define canonical `--ka-*` tokens but do not redefine these legacy aliases.
+- Static reference counts below are occurrences of `var(--alias)` across the 16 loaded stylesheets, not counts of unique selectors.
+
+### Root declaration values and effective cascade
+
+The first-loaded `styles.css` declares the earlier light-theme values:
+
+| Alias | `styles.css` value |
+|---|---|
+| `--blue` | `#2477B8` |
+| `--navy` | `#17324D` |
+| `--light-blue` | `#EAF4FC` |
+| `--soft-blue` | `#D7EAF8` |
+| `--bg` | `#F6F9FC` |
+| `--surface` | `#fff` |
+| `--muted` | `#718096` |
+| `--border` | `#E4EBF2` |
+| `--radius` | `16px` |
+| `--shadow` | `0 8px 28px rgba(23,50,77,.055)` |
+
+The later-loaded `premium-experience.css` re-declares the same aliases. Its values therefore win for the active page's root cascade:
+
+| Alias | Effective premium value |
+|---|---|
+| `--blue` | `#19BDEB` |
+| `--navy` | `#06182B` |
+| `--light-blue` | `#0C2A43` |
+| `--soft-blue` | `#123C5B` |
+| `--bg` | `#061321` |
+| `--surface` | `#0B2033` |
+| `--muted` | `#9CB1C4` |
+| `--border` | `rgba(129,177,211,.22)` |
+| `--radius` | `20px` |
+| `--shadow` | `0 18px 48px rgba(0,0,0,.28)` |
+
+### Active CSS consumer inventory
+
+| Alias | Total references | Distribution | Current role / disposition |
+|---|---:|---|---|
+| `--blue` | 19 | styles 18; visual-learning 1 | Accent, links, indicators and selected-state color. Keep until each consumer is matched to a canonical accent role. |
+| `--navy` | 46 | styles 44; visual-learning 2 | Mixed heading, foreground and dark-surface role. Keep; it is overloaded and has no exact one-to-one canonical replacement. |
+| `--light-blue` | 6 | styles 6 | Surface/state background, including the selected quiz surface. Keep until each surface/state is mapped separately. |
+| `--soft-blue` | 0 | no active CSS consumers | Unused in the active stylesheet stack. Candidate for isolated alias retirement after a repository-wide HTML/JS reference check. |
+| `--bg` | 1 | styles 1 | Used only by the early `body` background declaration; later Premium and base `body` background declarations replace that background. Treat as dormant in the current cascade, but do not remove during this audit. |
+| `--surface` | 3 | styles 3 | Used by early sidebar/card/chapter surface rules; later Premium rules replace those backgrounds. Treat as overridden fallback consumers, not proof of an active surface color. |
+| `--muted` | 52 | styles 50; visual-learning 2 | Secondary text and metadata across many components. Keep; the effective `#9CB1C4` differs from canonical `--ka-muted:rgba(235,243,251,.72)`. |
+| `--border` | 66 | styles 40; premium 24; visual-learning 2 | Broad border primitive across shell, cards, lesson surfaces and visual-learning elements. Keep; the effective blue-tinted value differs from `--ka-border`. |
+| `--radius` | 2 | styles 2 | Card/chapter shape primitive. Effective `20px` exactly matches `--ka-radius-md:20px`; suitable for a narrow, value-preserving migration. |
+| `--shadow` | 12 | styles 7; premium 3; visual-learning 2 | General elevation shadow. Keep until consumers are split by elevation purpose; it is not equivalent to the canonical hover, drawer, button or glow shadows. |
+
+All other active stylesheets in the 16-file stack had no references to these legacy aliases, apart from the distributions listed above.
+
+### Canonical-token comparison
+
+- `--blue:#19BDEB` is not an exact match for `--ka-blue:#1E7BE8` or `--ka-cyan:#19B5F0`. Do not globally substitute either token.
+- `--bg:#061321` matches `--ka-bg:#061321`, but its only legacy consumer is overridden by later body-background declarations. Confirm the intended fallback contract before retiring it.
+- `--surface:#0B2033` is not equal to `--ka-surface:rgba(12,34,53,.88)`.
+- `--muted:#9CB1C4` is not equal to `--ka-muted:rgba(235,243,251,.72)`; changing it globally would alter secondary-text color.
+- `--border:rgba(129,177,211,.22)` is not equal to `--ka-border:rgba(255,255,255,.10)`; the existing blue border tint must not be lost.
+- `--radius:20px` is an exact value match for `--ka-radius-md:20px` and has only two CSS consumers.
+- `--shadow:0 18px 48px rgba(0,0,0,.28)` is not equivalent to the current canonical hover/elevation, drawer, button or glow shadows.
+- There is no direct canonical `--ka-navy`, `--ka-light-blue` or `--ka-soft-blue` token in `tokens.css` with the same semantic role and exact value.
+
+### Decisions and next task
+
+1. Do not perform a bulk alias replacement. The palette aliases are overloaded across foreground, accent, selected-state, border and surface roles.
+2. Keep `--blue`, `--navy`, `--light-blue`, `--muted`, `--border` and `--shadow) pending consumer-by-consumer mapping.
+3. Treat `--bg` and `--surface` as overridden fallbacks that need a separate removal decision; do not infer computed appearance from their declaration alone.
+4. The lowest-risk next micro-task is to confirm that `--soft-blue` is absent from all active HTML and JavaScript sources, then remove only its unused declarations from the two active root blocks and add a zero-reference regression assertion.
+5. A later isolated task can migrate the two `var(--radius)` consumers to `var(--ka-radius-md)`, preserving the exact effective `20px` value, before retiring the legacy radius declaration.
+
+### Verification boundary
+
+- This audit is source-grounded and covers the exact 16 stylesheets linked by the current branch's `index.html`; no production files were changed.
+- CI run #384 on the audited head completed successfully: `verify`, `browser` and `package` passed; `deploy-preview` was skipped. This is the existing head's CI evidence, not a test run for this documentation-only audit commit.
+- No computed-style snapshot was captured specifically for every alias consumer in this task. The winning root values above are established from stylesheet load order and root declaration order; selectors with later overrides are explicitly called out.
+- No markup, JavaScript, curriculum, XP, calculations, learner progress, fonts, RTL behavior, `main`, `gh-pages`, merge or deployment changes.
+
+**Next micro-task (01.22):** perform the non-CSS HTML/JavaScript search for `--soft-blue`; if no active consumer exists, remove only the unused `--soft-blue` declarations from `styles.css` and `premium-experience.css`, with a regression assertion. Do not migrate another token or begin Home Dashboard / Lesson implementation in that task.
