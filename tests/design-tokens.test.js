@@ -68,8 +68,8 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  8,
-  "only the certificate secondary-copy fallback should leave the legacy --text alias in this task"
+  7,
+  "seven role-specific legacy --text references should remain after migrating the calculator field label"
 );
 assert.match(
   styles,
@@ -85,6 +85,22 @@ assert.match(
   tokens,
   /--ka-muted\s*:\s*rgba\(235,243,251,\.72\)\s*;/,
   "canonical muted text token must retain its audited value"
+);
+
+assert.match(
+  styles,
+  /\.calc-field\{[^}]*color:\s*var\(--ka-text\)/,
+  "calculator field labels must use the canonical primary-text fallback"
+);
+assert.match(
+  tokens,
+  /--ka-text\s*:\s*#F3F7FC\s*;/,
+  "canonical primary text token must retain its audited value"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\.calc-section h2,\.calc-field\s*\{\s*color:\s*#E2ECF4\s*;/,
+  "the premium calculator field-label color override must remain unchanged"
 );
 
 console.log(
