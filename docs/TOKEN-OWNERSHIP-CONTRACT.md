@@ -296,7 +296,7 @@ The stylesheet order is unchanged. `premium-experience.css` loads after `styles.
 
 No markup, JavaScript, learning content, XP, calculations, learner storage, fonts, stylesheet order, or deployment behavior changed.
 
-**Next micro-task (01.11):** migrate the calculator input/select fallback from legacy `--text` to `--ka-text`, preserving the later premium `#F2F7FB` value override. Keep calculated outputs, lesson titles, quiz options, and global body text out of that task.
+**Next micro-task (01.12):** migrate only the `.result-details dd` fallback from legacy `--text` to `--ka-text`, preserving the later premium `#E5EFF6` result-text override. Do not change calculation logic, result values, lesson titles, quiz options, or global body text.
 
 ## 13. Task 01.10 — Calculator field-label text fallback migration
 
@@ -318,3 +318,34 @@ No markup, JavaScript, learning content, XP, calculations, learner storage, font
 No markup, JavaScript, curriculum, XP, calculations, learner storage, fonts, stylesheet order, or deployment behavior changed.
 
 **Next micro-task (01.11):** migrate the calculator input/select fallback from legacy `--text` to `--ka-text`, preserving the later premium `#F2F7FB` value override. Keep calculated outputs, lesson titles, quiz options, and global body text out of that task.
+
+
+## 14. Task 01.11 — Calculator input/select text fallback migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- The `.calc-field input,.calc-field select` rule in `styles.css` used the legacy `color:var(--text)` fallback.
+- `premium-experience.css` loads later and explicitly applies `color:#F2F7FB` to calculator inputs and selects, so the effective value color remains `#F2F7FB`.
+- The canonical `--ka-text:#F3F7FC` token already exists and is the appropriate primary-text fallback for the dark calculator surface.
+- The prior QA run #369 failed only at the existing field-label regression assertion because its regex required a trailing semicolon after `#E2ECF4`; the valid source rule omits that optional final semicolon before `}`. The assertion now accepts either valid CSS form without changing production CSS.
+
+### Canonical decision
+
+- Changed only the calculator input/select fallback in `styles.css` from `var(--text)` to `var(--ka-text)`.
+- Preserved the later premium input/select override `#F2F7FB`; no computed value-color change is intended.
+- Reduced direct `var(--text)` references across the 16 loaded stylesheets from seven to six.
+- Updated the prior field-label regression assertion to tolerate an optional trailing declaration semicolon.
+- Added regression assertions for the canonical input/select fallback, the `--ka-text:#F3F7FC` token, and the retained premium `#F2F7FB` override.
+
+No result-value styles, calculation logic, lesson titles, quiz options, global body text, markup, JavaScript, curriculum, XP, learner storage, fonts, stylesheet order, or deployment behavior changed.
+
+### Verification
+
+- Static source inspection confirmed the canonical input/select fallback and the premium `#F2F7FB` override.
+- The prior full scan of the 16 stylesheets found seven direct `var(--text)` references; this one-consumer migration reduces the total to six.
+- Confirmed the field-label override remains `#E2ECF4`; its test now allows the valid omitted trailing semicolon.
+- CI for the new head must be checked separately; the previous run #369 failed only at the over-strict semicolon assertion, after all curriculum, KPI, lab, BiDi, and other checks passed.
+
+**Next micro-task (01.12):** migrate only `.result-details dd` fallback from `var(--text)` to `var(--ka-text)`, preserving the later premium `#E5EFF6` result-text override. Keep calculation logic and result values unchanged.
