@@ -84,8 +84,8 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  3,
-  "three role-specific legacy --text references should remain after migrating quiz-option text to its light-surface role"
+  2,
+  "two global body/root legacy --text references should remain after migrating the progress-list title to canonical primary text"
 );
 assert.match(
   styles,
@@ -96,6 +96,16 @@ assert.match(
   cssByPath.get("assets/css/premium-experience.css"),
   /\.lesson-name\{\s*color:\s*#DDEAF4\s*;?\s*\}/,
   "the premium lesson-row title color override must remain unchanged"
+);
+assert.match(
+  styles,
+  /\.progress-lesson-link strong\{[^}]*color:\s*var\(--ka-text\)/,
+  "progress-list lesson titles must use the canonical primary-text fallback"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\.progress-lesson-link strong\{\s*color:\s*#E1ECF4\s*;?\s*\}/,
+  "the premium progress-list title color override must remain unchanged"
 );
 
 assert.equal(
