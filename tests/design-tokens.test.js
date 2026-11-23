@@ -68,8 +68,8 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  7,
-  "seven role-specific legacy --text references should remain after migrating the calculator field label"
+  6,
+  "six role-specific legacy --text references should remain after migrating calculator field labels and input/select fallbacks"
 );
 assert.match(
   styles,
@@ -99,8 +99,19 @@ assert.match(
 );
 assert.match(
   cssByPath.get("assets/css/premium-experience.css"),
-  /\.calc-section h2,\.calc-field\s*\{\s*color:\s*#E2ECF4\s*;/,
+  /\.calc-section h2,\.calc-field\s*\{\s*color:\s*#E2ECF4\s*;?\s*\}/,
   "the premium calculator field-label color override must remain unchanged"
+);
+
+assert.match(
+  styles,
+  /\.calc-field input,\.calc-field select\{[^}]*color:\s*var\(--ka-text\)/,
+  "calculator input and select fallbacks must use the canonical primary-text token"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\.calc-field input,\.calc-field select\{[^}]*color:\s*#F2F7FB\s*;?\s*\}/,
+  "the premium calculator input/select color override must remain unchanged"
 );
 
 console.log(
