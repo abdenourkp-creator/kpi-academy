@@ -375,7 +375,7 @@ No calculation logic, displayed result values, result formatting, lesson titles,
 - The existing calculator field-label `#E2ECF4` and input/select `#F2F7FB` premium overrides remain unchanged.
 - CI run #371 on the previous head completed successfully for `verify`, `browser`, and `package`; `deploy-preview` was skipped. A new workflow run for this task's final commit must be checked separately.
 
-**Next micro-task (01.14):** migrate only the `.lesson-name` fallback from `var(--text)` to `var(--ka-text)`, preserving the later premium `#DDEAF4` override. Do not change the global body, progress-list title, or quiz-option text in that task.
+**Task 01.14 implementation is recorded in Section 17 below.**
 
 
 ## 16. Task 01.13 — Remaining `--text` consumer audit
@@ -416,3 +416,26 @@ No calculation logic, displayed result values, result formatting, lesson titles,
 - Leave `body`, `html,body`, `.progress-lesson-link strong`, and `.quiz-option` untouched.
 
 After that task, create a dedicated contrast/token task for the white `.assessment-form` surface before migrating quiz-option text.
+
+
+## 17. Task 01.14 — Lesson-row title fallback migration
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Scope
+
+- Changed only the `.lesson-name` fallback in `assets/css/styles.css` from `var(--text)` to `var(--ka-text)`.
+- Preserved the later-loaded `premium-experience.css` override `.lesson-name{color:#DDEAF4}`; the effective chapter-row title color remains unchanged.
+- Reduced direct `var(--text)` references across the 16 stylesheets loaded by `index.html` from five to four.
+- Added regression assertions for the canonical fallback, the preserved premium override, and the new four-reference count.
+- Left global `body` / `html,body`, `.progress-lesson-link strong`, and `.quiz-option` unchanged.
+
+### Verification boundary
+
+- Source-level assertions confirm the single selector migration and the preserved premium override.
+- The previous PR-head CI run #374 completed successfully for `verify`, `browser`, and `package`; visual-comparison and test-build artifacts were uploaded, and `deploy-preview` was skipped.
+- A new CI run for this task's commit must be checked independently. No claim of CI success is made from run #374 alone.
+
+No markup, JavaScript, lesson content, XP, calculations, learner progress data, fonts, stylesheet order, `main`, `gh-pages`, merge, or deployment changes.
+
+**Next micro-task (01.15):** define and test a dedicated light-surface text role for the white `.assessment-form` surface, then correct the existing `.quiz-option` contrast failure. Do not reuse `--ka-text` on white or change global body/progress-list text in that task.

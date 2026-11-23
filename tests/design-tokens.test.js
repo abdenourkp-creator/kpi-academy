@@ -68,9 +68,20 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  5,
-  "five role-specific legacy --text references should remain after migrating calculator labels, input/select values, and result details"
+  4,
+  "four role-specific legacy --text references should remain after migrating the lesson-row title fallback"
 );
+assert.match(
+  styles,
+  /\.lesson-name\{[^}]*color:\s*var\(--ka-text\)/,
+  "lesson-row titles must use the canonical primary-text fallback"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\.lesson-name\{\s*color:\s*#DDEAF4\s*;?\s*\}/,
+  "the premium lesson-row title color override must remain unchanged"
+);
+
 assert.match(
   styles,
   /\.certificate-panel p\{[^}]*color:\s*var\(--ka-muted\)/,
