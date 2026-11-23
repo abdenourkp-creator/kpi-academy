@@ -68,8 +68,8 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  6,
-  "six role-specific legacy --text references should remain after migrating calculator field labels and input/select fallbacks"
+  5,
+  "five role-specific legacy --text references should remain after migrating calculator labels, input/select values, and result details"
 );
 assert.match(
   styles,
@@ -112,6 +112,17 @@ assert.match(
   cssByPath.get("assets/css/premium-experience.css"),
   /\.calc-field input,\.calc-field select\{[^}]*color:\s*#F2F7FB\s*;?\s*\}/,
   "the premium calculator input/select color override must remain unchanged"
+);
+
+assert.match(
+  styles,
+  /\.result-details dd\{[^}]*color:\s*var\(--ka-text\)/,
+  "calculated result detail values must use the canonical primary-text fallback"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /\.result-details dd\{\s*color:\s*#E5EFF6\s*;?\s*\}/,
+  "the premium calculated-result detail color override must remain unchanged"
 );
 
 console.log(
