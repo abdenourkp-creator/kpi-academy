@@ -481,4 +481,25 @@ No markup, JavaScript, lesson content, XP, calculations, learner progress data, 
 
 No assessment content, question order, answer IDs, scoring, attempt history, learning engine, XP, learner storage, curriculum, calculations, RTL logic, fonts, stylesheet order, main, gh-pages, merge, or deployment behavior changed.
 
-**Next micro-task (01.16):** migrate only .progress-lesson-link strong to the canonical primary-text fallback, preserving the later premium #E1ECF4 override. Keep global body/root text out of that task.
+**Next micro-task (01.17):** audit the two remaining global body/root var(--text) references, classify their active surfaces and winning cascade, and decide whether they need one shared semantic role or separate light/dark roles. Do not change global text until the cascade and surface evidence are documented.
+
+
+## 19. Task 01.16 — Progress-list title fallback migration
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Scope and cascade evidence
+
+- Migrated only `.progress-lesson-link strong` in `assets/css/styles.css` from `color:var(--text)` to `color:var(--ka-text)`.
+- Preserved the later-loaded `premium-experience.css` rule `.progress-lesson-link strong{color:#E1ECF4}`; the effective progress-list title color remains unchanged.
+- Audited all 16 CSS files linked by `index.html`: direct `var(--text)` references decreased from **3 to 2**.
+- The two remaining direct references are global `body` text in `styles.css` and `html,body` text in `premium-experience.css`. They are intentionally left untouched for a separate global text-ownership audit.
+- Updated the design-token regression test to require the canonical fallback, preserve the premium `#E1ECF4` override, and enforce the two-reference remainder.
+
+### Verification boundary
+
+- Static source verification was run against the exact PR-head versions of all 16 loaded stylesheets.
+- The prior PR-head CI run #376 completed successfully on commit `1ec51a97686e0645dabd7f5fafcaf853d9e3843a`; that result does not verify this new task commit. A fresh CI run must be checked independently.
+- No markup, JavaScript, learning content, XP, calculations, learner progress data, fonts, stylesheet order, `main`, `gh-pages`, merge, or deployment changes.
+
+**Next micro-task (01.17):** audit the two remaining global body/root `var(--text)` references, classify their active surfaces and winning cascade, and decide whether they need one shared semantic role or separate light/dark roles. Do not change global text until the cascade and surface evidence are documented.
