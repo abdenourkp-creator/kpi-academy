@@ -584,3 +584,42 @@ The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text 
 - No markup, JavaScript, learning content, XP, calculations, learner progress data, fonts, stylesheet order, RTL behavior, `main`, `gh-pages`, merge, or deployment changes.
 
 **Next micro-task (01.19):** inspect repository-wide references and workflow/documentation evidence to determine whether a standalone legacy-light stylesheet mode is supported. If supported, give the dormant `#172B3A` body foreground an explicit legacy-light semantic role; if unsupported, retire only the dormant `styles.css body` foreground declaration and then audit whether its old `--text` root declaration is still consumed elsewhere. Do not modify global background, body typography, or the active premium shell in that task.
+
+## 22. Task 01.19 — Legacy body foreground declaration disposition
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Standalone-mode support audit
+
+- The current Git tree at 4c83c466a18e474fa0b267c4bfffccead2f61468 contains one production application entry point: root index.html. It loads the 16-file application stylesheet stack, including styles.css, premium-experience.css, tokens.css, and base.css.
+- The only other HTML documents in the tree are the development BiDi harness and an archived pre-learning-experience snapshot. The BiDi harness loads tokens.css and base.css, not the root legacy stylesheet. The archived snapshot resolves its own backup-local assets/css/styles.css; it is not a supported alternate entry point for the current application.
+- README.md describes one static HTML/CSS/Vanilla JavaScript application. docs/IMPLEMENTATION-LOG.md DEC-001 records that the approved Dark Navy + Glass direction supersedes the earlier light theme.
+- .github/workflows/deploy-preview.yml is explicitly disabled with if: false. The QA workflow packages the root index.html; its deploy job is restricted to a manual dispatch on implementation/kpi-academy-mvp. No standalone legacy-light runtime or deployment target is defined.
+- Inspected all 16 active stylesheets: before this change, the only direct var(--text) consumer was the dormant body declaration in assets/css/styles.css; the other 15 stylesheets had zero such consumers.
+- Inspected all 23 tracked JavaScript modules: none reads --text, injects styles.css / premium-experience.css, or uses computed-style access to consume the legacy variable.
+- The archived backup stylesheets still contain their historical --text consumers. They are deliberately excluded from the active runtime audit and are not modified.
+
+**Decision:** no supported standalone legacy-light mode exists in the current product. Retire the dormant foreground declaration rather than creating a new token for an unsupported surface.
+
+### Change and preservation
+
+- Removed only color:var(--text) from the legacy body rule in assets/css/styles.css.
+- Preserved the same rule's margin, background, font-family, and line-height declarations.
+- Preserved the active premium shell's --ka-text-shell:#EAF3FC consumer and dark background #061321.
+- Direct var(--text) consumers across the 16 loaded stylesheets decrease from **1 to 0**.
+- The two legacy root declarations (--text:#172B3A in styles.css and --text:#EAF3FC in premium-experience.css) are now unconsumed. They are intentionally retained for the separate Task 01.20 declaration cleanup; no root palette declaration was removed in this task.
+
+### Regression coverage
+
+- Assert zero direct var(--text) consumers across the loaded stylesheet stack.
+- Assert the two legacy root declarations remain temporarily, so their removal is isolated to Task 01.20.
+- Assert the legacy body rule retains margin, background, font-family, and line-height without the retired foreground declaration.
+- Keep the canonical premium shell token and its exact foreground/background contract unchanged.
+
+### Verification boundary
+
+- Source audit covered the exact PR head and all 16 loaded CSS files, the 23 tracked JavaScript modules, root and archived HTML entry points, README, implementation decisions, and both GitHub Actions workflows.
+- Prior exact-head CI run #382 on 4c83c466a18e474fa0b267c4bfffccead2f61468 completed successfully: verify, browser, and package passed; deploy-preview was skipped. This verifies the parent commit, not this new change. The new head requires its own CI result.
+- This task changes one production CSS declaration, its regression assertions, and this ownership record only. No HTML, JavaScript, curriculum, XP, calculations, learner progress, fonts, stylesheet order, RTL behavior, main, gh-pages, merge, or deployment changes.
+
+**Next micro-task (01.20):** remove the two now-unconsumed legacy --text root declarations from styles.css and premium-experience.css, with tests confirming zero legacy declarations or consumers across the active 16-file stack. Leave archived backup files untouched.

@@ -84,8 +84,13 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  1,
-  "only the dormant legacy-light body fallback should remain after migrating the active premium shell to its canonical token"
+  0,
+  "no loaded stylesheet should retain a consumer of the retired legacy --text alias"
+);
+assert.equal(
+  count(/--text\s*:/g, css),
+  2,
+  "the two now-unconsumed legacy root aliases remain isolated for the next cleanup task"
 );
 assert.equal(
   count(/--ka-text-shell\s*:/g, css),
@@ -104,8 +109,18 @@ assert.match(
 );
 assert.match(
   styles,
-  /body\{margin:0;background:var\(--bg\);color:var\(--text\)/,
-  "the dormant legacy-light body declaration must remain untouched for the separate disposition task"
+  /body\{margin:0;background:var\(--bg\);font-family:Tahoma,Arial,sans-serif;line-height:1\.65\}/,
+  "the legacy body must retain its background and typography after its dormant foreground declaration is retired"
+);
+assert.match(
+  styles,
+  /--text:#172B3A;/,
+  "the unconsumed legacy-light root alias remains for the separate token-declaration cleanup"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /--text:#EAF3FC;/,
+  "the unconsumed premium legacy root alias remains for the separate token-declaration cleanup"
 );
 const shellTextHex = tokens.match(/--ka-text-shell\s*:\s*(#[0-9a-f]{6})/i)?.[1];
 assert.ok(shellTextHex, "premium shell text color must be resolvable from the canonical token");
