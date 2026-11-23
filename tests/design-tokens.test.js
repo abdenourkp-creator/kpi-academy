@@ -24,6 +24,22 @@ const tokens = cssByPath.get("assets/css/tokens.css");
 const styles = cssByPath.get("assets/css/styles.css");
 const count = (pattern, source) => (source.match(pattern) || []).length;
 
+function relativeLuminance(hex) {
+  const value = hex.replace("#", "");
+  if (!/^[0-9a-f]{6}$/i.test(value)) throw new Error("Expected a six-digit hex color");
+  const channels = [0, 2, 4].map((offset) => {
+    const channel = Number.parseInt(value.slice(offset, offset + 2), 16) / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrastRatio(foreground, background) {
+  const first = relativeLuminance(foreground);
+  const second = relativeLuminance(background);
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+}
+
 assert.equal(count(/--ka-content\s*:/g, css), 0, "legacy --ka-content declaration must be retired");
 assert.equal(count(/--ka-shadow\s*:/g, css), 0, "legacy --ka-shadow declaration must be retired");
 assert.equal(count(/var\(\s*--ka-content(?:\s*,|\s*\))/g, css), 0, "legacy --ka-content references must be retired");
@@ -68,8 +84,8 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  4,
-  "four role-specific legacy --text references should remain after migrating the lesson-row title fallback"
+  3,
+  "three role-specific legacy --text references should remain after migrating quiz-option text to its light-surface role"
 );
 assert.match(
   styles,
@@ -80,6 +96,49 @@ assert.match(
   cssByPath.get("assets/css/premium-experience.css"),
   /\.lesson-name\{\s*color:\s*#DDEAF4\s*;?\s*\}/,
   "the premium lesson-row title color override must remain unchanged"
+);
+
+assert.equal(
+  count(/--ka-text-on-light\s*:/g, css),
+  1,
+  "the light-surface text role must have one canonical declaration"
+);
+assert.match(
+  tokens,
+  /--ka-text-on-light\s*:\s*var\(--ka-ink\)\s*;/,
+  "light-surface text must resolve through the canonical ink primitive"
+);
+assert.match(
+  tokens,
+  /--ka-ink\s*:\s*#071522\s*;/,
+  "the dark ink primitive must retain its audited value"
+);
+assert.match(
+  styles,
+  /\.assessment-form\{[^}]*background:\s*#fff\b/i,
+  "the assessment form must retain its white surface"
+);
+assert.match(
+  styles,
+  /\.quiz-option\{[^}]*color:\s*var\(--ka-text-on-light\)/,
+  "unselected quiz options must use the dedicated light-surface text role"
+);
+assert.match(
+  styles,
+  /\.quiz-option:has\(input:checked\)\{[^}]*background:\s*var\(--light-blue\)[^}]*color:\s*var\(--ka-text\)/,
+  "selected quiz options must use light text on the dark selected surface"
+);
+const inkHex = tokens.match(/--ka-ink\s*:\s*(#[0-9a-f]{6})/i)?.[1];
+const selectedTextHex = tokens.match(/--ka-text\s*:\s*(#[0-9a-f]{6})/i)?.[1];
+const selectedSurfaceHex = cssByPath.get("assets/css/premium-experience.css").match(/--light-blue\s*:\s*(#[0-9a-f]{6})/i)?.[1];
+assert.ok(inkHex && selectedTextHex && selectedSurfaceHex, "quiz contrast colors must be resolvable from canonical source tokens");
+assert.ok(
+  contrastRatio(inkHex, "#FFFFFF") >= 4.5,
+  "unselected quiz text must meet WCAG AA normal-text contrast on the white assessment surface"
+);
+assert.ok(
+  contrastRatio(selectedTextHex, selectedSurfaceHex) >= 4.5,
+  "selected quiz text must meet WCAG AA normal-text contrast on the premium selected surface"
 );
 
 assert.match(
@@ -137,5 +196,5 @@ assert.match(
 );
 
 console.log(
-  "Design token migration tests passed: canonical ownership, preserved layout/elevation and success/warning values, retired aliases, and migrated consumers verified."
+  "Design token migration tests passed: canonical ownership, preserved layout/elevation and status values, light-surface quiz contrast, retired aliases, and migrated consumers verified."
 );

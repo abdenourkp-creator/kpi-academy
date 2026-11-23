@@ -439,3 +439,46 @@ After that task, create a dedicated contrast/token task for the white `.assessme
 No markup, JavaScript, lesson content, XP, calculations, learner progress data, fonts, stylesheet order, `main`, `gh-pages`, merge, or deployment changes.
 
 **Next micro-task (01.15):** define and test a dedicated light-surface text role for the white `.assessment-form` surface, then correct the existing `.quiz-option` contrast failure. Do not reuse `--ka-text` on white or change global body/progress-list text in that task.
+
+
+## 18. Task 01.15 — Light-surface assessment text ownership and quiz contrast
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Source-grounded problem
+
+- learning-ui.js renders each answer as a .quiz-option label inside .assessment-form; no markup or answer-generation change is needed.
+- The active .assessment-form surface is white (#FFFFFF).
+- premium-experience.css defines the inherited legacy --text:#EAF3FC; the existing .quiz-option rule therefore rendered pale text on white at approximately 1.12:1 contrast.
+- The canonical --ka-text:#F3F7FC is also a light-on-dark role and is not suitable for the unselected white surface.
+- The existing --ka-ink:#071522 is the established dark ink primitive. It is suitable as the source value for a dedicated semantic text role without changing the primitive or its existing brand-mark use.
+- The selected option uses the premium dark surface --light-blue:#0C2A43; it must switch back to a light foreground when selected.
+
+### Canonical decision
+
+- Added exactly one semantic token in tokens.css: --ka-text-on-light:var(--ka-ink).
+- Changed only the .quiz-option base foreground to var(--ka-text-on-light) for the white assessment surface.
+- Added color:var(--ka-text) to the existing checked-option rule, preserving its current dark selected background while keeping selected answer text light.
+- Preserved the white assessment form, border, selected background, radio accent, answer-key chip, markup, and answer interaction.
+
+### Contrast evidence
+
+- Previous unselected answer text: #EAF3FC on #FFFFFF = approximately **1.12:1**.
+- New unselected answer text: #071522 on #FFFFFF = approximately **18.43:1**.
+- New selected answer text: #F3F7FC on #0C2A43 = approximately **13.67:1**.
+- Both new states exceed the WCAG AA normal-text threshold of **4.5:1**.
+- The regression test computes these ratios from the token and surface values rather than relying only on a fixed expected number.
+
+### Regression coverage
+
+- Exactly one --ka-text-on-light declaration, aliased to --ka-ink.
+- The dark ink primitive remains #071522; the primary light text token remains #F3F7FC.
+- The assessment form remains white.
+- Unselected quiz options use the dedicated light-surface token.
+- Selected quiz options use --ka-text on the retained premium dark selection surface.
+- Both unselected and selected text contrast ratios are asserted at or above 4.5:1.
+- Direct legacy var(--text) references across the 16 loaded stylesheets reduce from four to three.
+
+No assessment content, question order, answer IDs, scoring, attempt history, learning engine, XP, learner storage, curriculum, calculations, RTL logic, fonts, stylesheet order, main, gh-pages, merge, or deployment behavior changed.
+
+**Next micro-task (01.16):** migrate only .progress-lesson-link strong to the canonical primary-text fallback, preserving the later premium #E1ECF4 override. Keep global body/root text out of that task.
