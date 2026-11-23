@@ -375,4 +375,44 @@ No calculation logic, displayed result values, result formatting, lesson titles,
 - The existing calculator field-label `#E2ECF4` and input/select `#F2F7FB` premium overrides remain unchanged.
 - CI run #371 on the previous head completed successfully for `verify`, `browser`, and `package`; `deploy-preview` was skipped. A new workflow run for this task's final commit must be checked separately.
 
-**Next micro-task (01.13):** audit the five remaining direct `var(--text)` references across the loaded stylesheets, record each consumer role and winning cascade, and select one low-risk consumer for the next isolated migration. Keep global body text, lesson titles, and quiz options out until contrast and surface ownership are explicitly reviewed.
+**Next micro-task (01.14):** migrate only the `.lesson-name` fallback from `var(--text)` to `var(--ka-text)`, preserving the later premium `#DDEAF4` override. Do not change the global body, progress-list title, or quiz-option text in that task.
+
+
+## 16. Task 01.13 — Remaining `--text` consumer audit
+
+**Status:** Completed as a source-grounded audit and migration decision. This task changes documentation only; no production CSS, JavaScript, markup, or tests are changed.
+
+### Scope and method
+
+- Read the stylesheet links from the current `index.html` on this PR head and enumerated all 16 loaded stylesheets: `styles.css`, `lesson-experience.css`, `visual-learning.css`, `study-tools.css`, `percentage-labs.css`, `simulator.css`, `live-venue.css`, `premium-experience.css`, `bm001-lab.css`, `bm002-lab.css`, `bm003-lab.css`, `bm004-lab.css`, `tokens.css`, `base.css`, `components.css`, and `shell.css`.
+- Scanned the content of all 16 files for direct `var(--text)` references.
+- Exactly five references remain: four in `assets/css/styles.css` and one in `assets/css/premium-experience.css`. No direct references remain in the other 14 loaded stylesheets.
+- The active premium root value is `--text:#EAF3FC`; the canonical `--ka-text` is `#F3F7FC`. These values are close but not identical, so they must not be globally aliased without consumer review.
+
+### Five-reference inventory
+
+| Source selector | Consumer role | Winning cascade / surface | Decision |
+|---|---|---|---|
+| `styles.css: body` | Global body text fallback | `premium-experience.css` sets `--text:#EAF3FC` and applies it through the more-specific `html,body` rule. The later `base.css body` rule uses `--ka-text` but has lower selector specificity than `html,body`. | Retain. Global body and root ownership need a separate migration plan. |
+| `premium-experience.css: html,body` | Global dark-shell text | Uses the premium root `--text:#EAF3FC` over the dark page background. | Retain. Do not replace with `--ka-text` until the global text token and shell surface contract are reconciled. |
+| `styles.css: .lesson-name` | Lesson title in a chapter row | `app.js` renders it inside `.lesson-row` within `.chapter-panel`. The later premium rule `.lesson-name{color:#DDEAF4}` wins over the fallback. The chapter panel uses the dark premium card gradient. | **Selected for Task 01.14.** The fallback can move to `--ka-text` while the explicit premium color remains unchanged. |
+| `styles.css: .progress-lesson-link strong` | Lesson title in the progress list | The later premium rule explicitly sets `#E1ECF4`; this is a separate progress-list component and should be migrated independently. | Retain for a later isolated task. |
+| `styles.css: .quiz-option` | Assessment answer label | `learning-ui.js` generates the option as a label inside `.assessment-form`. The form background remains `#fff`; no later `.quiz-option` color override exists. The inherited premium `--text:#EAF3FC` therefore produces approximately **1.12:1** contrast against white. | **Do not migrate to `--ka-text`.** This is a pre-existing contrast failure requiring a dedicated light-surface text token and a separate accessibility fix. |
+
+### Contrast and risk notes
+
+- The selected `.lesson-name` color is `#DDEAF4`. Against the two chapter-panel gradient stops composited over the `#061321` page base, the approximate contrast range is **12.61:1–14.52:1**. This is comfortably above the WCAG AA normal-text threshold; the later explicit color override remains the visual owner after the fallback migration.
+- The progress-list title's active `#E1ECF4` override is also a light-on-dark role, but it remains a separate component and is not included in Task 01.14.
+- The quiz option contrast calculation is direct against its declared white form surface: `#EAF3FC` on `#FFFFFF` is approximately **1.12:1**. The canonical `--ka-text:#F3F7FC` is also too light for this surface. The existing `--ka-ink:#071522` would yield approximately **18.43:1** on white, but its ownership and intended semantic role must be checked before reuse. Do not silently assign it to quiz labels in the lesson-title migration.
+- No learner data, XP, calculations, assessment scoring, or interactive behavior is affected by this audit.
+
+### Next isolated task
+
+**Task 01.14 — Lesson-row title fallback migration**
+
+- Change only `.lesson-name` in `assets/css/styles.css` from `var(--text)` to `var(--ka-text)`.
+- Preserve the later premium `#DDEAF4` override.
+- Add a focused regression assertion for both declarations and the remaining direct-reference count (five to four).
+- Leave `body`, `html,body`, `.progress-lesson-link strong`, and `.quiz-option` untouched.
+
+After that task, create a dedicated contrast/token task for the white `.assessment-form` surface before migrating quiz-option text.
