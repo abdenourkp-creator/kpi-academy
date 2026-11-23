@@ -349,3 +349,30 @@ No result-value styles, calculation logic, lesson titles, quiz options, global b
 - CI for the new head must be checked separately; the previous run #369 failed only at the over-strict semicolon assertion, after all curriculum, KPI, lab, BiDi, and other checks passed.
 
 **Next micro-task (01.12):** migrate only `.result-details dd` fallback from `var(--text)` to `var(--ka-text)`, preserving the later premium `#E5EFF6` result-text override. Keep calculation logic and result values unchanged.
+
+## 15. Task 01.12 — Calculator result-details text fallback migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- The `.result-details dd` rule in `styles.css` used the legacy `color:var(--text)` fallback for calculated detail values.
+- `premium-experience.css` loads later and applies `color:#E5EFF6` to the same selector, so the effective result-detail text color remains `#E5EFF6`.
+- The canonical `--ka-text:#F3F7FC` token is the appropriate primary-text fallback for this dark result surface.
+
+### Canonical decision
+
+- Changed only the `.result-details dd` fallback in `styles.css` from `var(--text)` to `var(--ka-text)`.
+- Preserved the later premium `#E5EFF6` override; no computed result-detail color change is intended.
+- Reduced direct legacy `var(--text)` references across the 16 loaded stylesheets from six to five.
+- Added regression assertions for the canonical result-detail fallback, the retained premium `#E5EFF6` override, and the updated remaining-reference count.
+
+No calculation logic, displayed result values, result formatting, lesson titles, quiz options, global body text, markup, JavaScript, curriculum, XP, learner storage, fonts, stylesheet order, main, gh-pages, merge, or deployment behavior changed.
+
+### Verification
+
+- Static source checks confirm the single `.result-details dd` fallback migration and unchanged premium `#E5EFF6` override.
+- The existing calculator field-label `#E2ECF4` and input/select `#F2F7FB` premium overrides remain unchanged.
+- CI run #371 on the previous head completed successfully for `verify`, `browser`, and `package`; `deploy-preview` was skipped. A new workflow run for this task's final commit must be checked separately.
+
+**Next micro-task (01.13):** audit the five remaining direct `var(--text)` references across the loaded stylesheets, record each consumer role and winning cascade, and select one low-risk consumer for the next isolated migration. Keep global body text, lesson titles, and quiz options out until contrast and surface ownership are explicitly reviewed.
