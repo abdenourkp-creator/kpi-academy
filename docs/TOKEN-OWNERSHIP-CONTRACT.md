@@ -296,4 +296,25 @@ The stylesheet order is unchanged. `premium-experience.css` loads after `styles.
 
 No markup, JavaScript, learning content, XP, calculations, learner storage, fonts, stylesheet order, or deployment behavior changed.
 
-**Next micro-task (01.10):** migrate the `.calc-field` fallback to `--ka-text` only after retaining and testing the later premium `#E2ECF4` override. Keep input values, result data, lesson titles, quiz options, and global body text out of that task.
+**Next micro-task (01.11):** migrate the calculator input/select fallback from legacy `--text` to `--ka-text`, preserving the later premium `#F2F7FB` value override. Keep calculated outputs, lesson titles, quiz options, and global body text out of that task.
+
+## 13. Task 01.10 — Calculator field-label text fallback migration
+
+**Status:** Implemented in this task.
+
+### Cascade evidence
+
+- The `.calc-field` rule in `styles.css` used the legacy `color:var(--text)` fallback.
+- `premium-experience.css` loads later and explicitly applies `color:#E2ECF4` through `.calc-section h2,.calc-field`, so the effective calculator field-label color remains `#E2ECF4`.
+- The canonical `--ka-text:#F3F7FC` token already exists in `tokens.css` and is the appropriate primary-text fallback for the dark calculator surface.
+
+### Canonical decision
+
+- Changed only the `.calc-field` fallback in `styles.css` from `var(--text)` to `var(--ka-text)`.
+- Preserved the later premium override `#E2ECF4`; no computed label color change is intended.
+- Reduced direct `var(--text)` references across the 16 loaded stylesheets from eight to seven.
+- Extended `tests/design-tokens.test.js` to assert the migrated fallback, the canonical `--ka-text:#F3F7FC` value, and the retained premium `#E2ECF4` override.
+
+No markup, JavaScript, curriculum, XP, calculations, learner storage, fonts, stylesheet order, or deployment behavior changed.
+
+**Next micro-task (01.11):** migrate the calculator input/select fallback from legacy `--text` to `--ka-text`, preserving the later premium `#F2F7FB` value override. Keep calculated outputs, lesson titles, quiz options, and global body text out of that task.
