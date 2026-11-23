@@ -623,3 +623,34 @@ The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text 
 - This task changes one production CSS declaration, its regression assertions, and this ownership record only. No HTML, JavaScript, curriculum, XP, calculations, learner progress, fonts, stylesheet order, RTL behavior, main, gh-pages, merge, or deployment changes.
 
 **Next micro-task (01.20):** remove the two now-unconsumed legacy --text root declarations from styles.css and premium-experience.css, with tests confirming zero legacy declarations or consumers across the active 16-file stack. Leave archived backup files untouched.
+
+## 23. Task 01.20 — Legacy `--text` root declaration cleanup
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Scope and exact changes
+
+- Removed only the unconsumed `--text:#172B3A` declaration from the `:root` block in `assets/css/styles.css`.
+- Removed only the unconsumed `--text:#EAF3FC` declaration from the `:root` block in `assets/css/premium-experience.css`.
+- Left all neighboring legacy palette declarations intact; this task does not migrate `--bg`, `--surface`, `--muted`, `--border`, `--blue`, `--navy`, `--radius`, or `--shadow`.
+- Left archived backup CSS untouched.
+- Preserved the canonical `--ka-text:#F3F7FC`, `--ka-text-shell:#EAF3FC`, and `--ka-text-on-light` roles and all active consumers.
+
+### Regression coverage
+
+- The active 16-stylesheet stack must contain zero `var(--text)` consumers.
+- The active 16-stylesheet stack must contain zero `--text:` declarations.
+- The canonical primary and shell text tokens must retain their exact values.
+- The active premium shell must continue consuming `--ka-text-shell` on `#061321`.
+- The legacy body rule must retain its background and typography declarations.
+
+### Verification evidence
+
+- Pre-change PR head: `930cdf0dabc6e5a5f425ebbcee5fa2f20b1f2053`.
+- Re-fetched all 16 stylesheet files linked by the exact-head `index.html`. The only remaining `--text:` declarations were the two targeted root aliases; no `var(--text)` consumers remained.
+- CI run #383 on the exact parent head completed successfully: `verify`, `browser`, and `package` passed; `deploy-preview` was skipped. This is the parent baseline, not evidence for this new commit.
+- The new commit's own CI must be checked independently. No local browser or project test execution is claimed in this task record.
+
+No markup, JavaScript, learning content, XP, calculations, learner progress, fonts, stylesheet order, RTL behavior, `main`, `gh-pages`, merge, or deployment changes.
+
+**Next micro-task (01.21):** perform a source-grounded inventory of the remaining active legacy root aliases and their consumers (palette, surfaces, border, radius, and shadow). Classify actual winning values and token ownership before selecting one isolated migration. Do not begin Home Dashboard or Lesson implementation during that audit.
