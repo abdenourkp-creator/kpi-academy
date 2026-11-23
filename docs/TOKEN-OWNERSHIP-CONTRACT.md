@@ -1,9 +1,9 @@
 # KPI Academy — Canonical Token Ownership Contract
 
 **Mission:** 01 — Design System Audit  
-**Tasks:** 01.5 — Layout / elevation migration; 01.6 — Semantic success-state migration; 01.7 — Semantic warning-state migration; 01.8 — Semantic error-state migration; 01.9 — Secondary-text fallback migration  
+**Tasks:** 01.5–01.17 — staged design-system ownership, semantic status, layout/elevation, and text-role audits/migrations
 **Audited branch:** `fix/phase1-drawer-bidi-deploy-safety`  
-**Audited commit:** `79291914aaaee1682d0658d729d0f42c7365ea16`  
+**Audited commit:** 0e2e917371308c56302d57c5590863c9bb7d9d63
 **Implementation base:** `c78d94f199e2885f927f33fad1cd03c28fc25c6f`  
 **Scope:** all 16 stylesheets loaded by the current `index.html`; static CSS custom-property declarations and `var()` references. This contract records staged token migrations while preserving effective values; no JavaScript, curriculum, learner-state, XP, calculation, or font-loading behavior is changed.
 
@@ -503,3 +503,53 @@ No assessment content, question order, answer IDs, scoring, attempt history, lea
 - No markup, JavaScript, learning content, XP, calculations, learner progress data, fonts, stylesheet order, `main`, `gh-pages`, merge, or deployment changes.
 
 **Next micro-task (01.17):** audit the two remaining global body/root `var(--text)` references, classify their active surfaces and winning cascade, and decide whether they need one shared semantic role or separate light/dark roles. Do not change global text until the cascade and surface evidence are documented.
+
+## 20. Task 01.17 — Global body/root text ownership audit
+
+**Status:** Completed as a source-grounded audit and documentation artifact. No production CSS, markup, JavaScript, or test file was changed in this task.
+
+### Exact source and cascade evidence
+
+- Audited the 16 stylesheet links in the current `index.html` on branch `fix/phase1-drawer-bidi-deploy-safety`.
+- Exactly two direct `var(--text)` references remain across those 16 stylesheets:
+  1. `assets/css/styles.css` — the legacy `body` rule: `color:var(--text)`.
+  2. `assets/css/premium-experience.css` — the premium `html,body` rule: `color:var(--text)`.
+- The legacy `styles.css` root declares `--text:#172B3A`; its body surface is the legacy light baseline `--bg:#F6F9FC`.
+- The later `premium-experience.css` root redeclares `--text:#EAF3FC` and its `html,body` rule sets the active dark-shell background to `#061321`.
+- Stylesheet order is verified from `index.html`: `styles.css` loads first; `premium-experience.css` loads eighth; `tokens.css` loads thirteenth; `base.css` loads fourteenth.
+- The premium `html,body` selector has two type selectors and therefore greater specificity than either `styles.css body` or the later `base.css body` selector. It wins the global `color` declaration despite `base.css` loading later.
+- `base.css body` currently uses `color:var(--ka-text)`, where the canonical `--ka-text` is `#F3F7FC`; that lower-specificity rule does not replace the premium `#EAF3FC` shell color.
+- The active dark-shell color `#EAF3FC` on `#061321` has approximately **16.68:1** contrast. Replacing it with `--ka-text:#F3F7FC` would raise contrast to approximately **17.39:1**, but would still change the existing computed color and is not an exact-value-preserving migration.
+- The legacy light fallback `#172B3A` on `#F6F9FC` has approximately **13.77:1** contrast. Reusing `--ka-ink:#071522` would change that value and is not an exact-value-preserving replacement.
+
+### Ownership decision
+
+The two references must **not** be collapsed into one global text token. They represent two different surface contracts:
+
+| Consumer | Surface contract | Current effective source value | Recommended canonical role |
+|---|---|---|---|
+| `styles.css body` | Legacy light-theme fallback, when the premium layer is absent | `#172B3A` on `#F6F9FC` | `--ka-text-body-light:#172B3A` |
+| `premium-experience.css html,body` | Active premium dark application shell | `#EAF3FC` on `#061321` | `--ka-text-shell:#EAF3FC` |
+
+The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text role. The existing `--ka-text-on-light` remains the high-contrast ink role used by the white assessment surface; it must not be repurposed as the legacy body fallback because its value is `#071522`, not `#172B3A`.
+
+### Next isolated tasks
+
+**Task 01.18 — Legacy light-body fallback migration**
+- Add `--ka-text-body-light:#172B3A` to `tokens.css`.
+- Migrate only the `styles.css body` fallback from `var(--text)` to `var(--ka-text-body-light)`.
+- Preserve the premium `html,body` rule and the active dark-shell computed color.
+- Add regression assertions for the exact token value, selector ownership, and remaining direct-reference count (2 → 1).
+
+**Task 01.19 — Premium shell text migration**
+- Add `--ka-text-shell:#EAF3FC` to `tokens.css`.
+- Migrate only the premium `html,body` color from `var(--text)` to `var(--ka-text-shell)`.
+- Preserve the active shell color and verify the global contrast value.
+- Audit both now-unused legacy `--text` declarations before retiring them in a separate safe cleanup step.
+
+### Verification boundary
+
+- Static audit fetched and inspected all 16 stylesheet files from the exact branch head; the only direct references found were the two selectors listed above.
+- Verified root token values, stylesheet order, the later `base.css body` rule, and selector-specificity ownership from the source.
+- The exact branch-head CI run #379 (`45185415256`) completed successfully: `verify`, `browser`, and `package` passed; `deploy-preview` was skipped. Visual comparison and test-build artifacts were uploaded. This run verifies the pre-audit source commit `0e2e917`, not the documentation commit created for this audit.
+- No production visual value, learning content, XP, calculations, learner progress, fonts, RTL behavior, main, gh-pages, merge, or deployment behavior changed.
