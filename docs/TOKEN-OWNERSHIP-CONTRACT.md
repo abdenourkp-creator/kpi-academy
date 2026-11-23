@@ -554,3 +554,33 @@ The existing `--ka-text:#F3F7FC` remains the general light-on-dark primary text 
 - Verified root token values, stylesheet order, the later `base.css body` rule, and selector-specificity ownership from the source.
 - The exact branch-head CI run #379 (`45185415256`) completed successfully: `verify`, `browser`, and `package` passed; `deploy-preview` was skipped. Visual comparison and test-build artifacts were uploaded. This run verifies the pre-audit source commit `0e2e917`, not the documentation commit created for this audit.
 - No production visual value, learning content, XP, calculations, learner progress, fonts, RTL behavior, main, gh-pages, merge, or deployment behavior changed.
+
+
+## 21. Task 01.18 — Active premium shell text migration
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Scope and preserved behavior
+
+- Added exactly one canonical token in `assets/css/tokens.css`: `--ka-text-shell:#EAF3FC`.
+- Migrated only the active `html,body` foreground in `assets/css/premium-experience.css` from `var(--text)` to `var(--ka-text-shell)`.
+- Preserved the active shell background `#061321` and the exact foreground value `#EAF3FC`; no intended computed visual change.
+- Left the dormant legacy-light `styles.css body` declaration `color:var(--text)` untouched for the separate Task 01.19 disposition decision.
+- Reduced direct `var(--text)` references across the 16 stylesheets linked by `index.html` from **2 to 1**.
+
+### Regression coverage
+
+- Exactly one canonical `--ka-text-shell` declaration with the preserved value `#EAF3FC`.
+- The active premium `html,body` selector consumes the new token and retains background `#061321`.
+- The dormant legacy-light body fallback remains unchanged.
+- The shell text/background contrast is computed from the canonical token and asserted at or above WCAG AA normal-text threshold (4.5:1).
+- The previous primary `--ka-text:#F3F7FC` role remains unchanged.
+
+### Verification boundary
+
+- Source preconditions were checked against the exact PR head before editing: `ebd94dd88291a0721f82a36d70e44487864bffa0`.
+- Static assertions against the updated source verify one shell-token declaration, the exact shell consumer, the preserved legacy body fallback, and one remaining direct `var(--text)` reference.
+- The prior exact-head CI run #381 completed successfully for `verify`, `browser`, and `package`; `deploy-preview` was skipped. That run verifies the pre-task documentation head, not this new implementation commit. A new CI run must be checked independently.
+- No markup, JavaScript, learning content, XP, calculations, learner progress data, fonts, stylesheet order, RTL behavior, `main`, `gh-pages`, merge, or deployment changes.
+
+**Next micro-task (01.19):** inspect repository-wide references and workflow/documentation evidence to determine whether a standalone legacy-light stylesheet mode is supported. If supported, give the dormant `#172B3A` body foreground an explicit legacy-light semantic role; if unsupported, retire only the dormant `styles.css body` foreground declaration and then audit whether its old `--text` root declaration is still consumed elsewhere. Do not modify global background, body typography, or the active premium shell in that task.

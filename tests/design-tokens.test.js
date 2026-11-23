@@ -84,8 +84,34 @@ assert.equal(
 
 assert.equal(
   count(/var\(\s*--text\b/g, css),
-  2,
-  "two global body/root legacy --text references should remain after migrating the progress-list title to canonical primary text"
+  1,
+  "only the dormant legacy-light body fallback should remain after migrating the active premium shell to its canonical token"
+);
+assert.equal(
+  count(/--ka-text-shell\s*:/g, css),
+  1,
+  "the premium shell text role must have exactly one canonical declaration"
+);
+assert.match(
+  tokens,
+  /--ka-text-shell\s*:\s*#EAF3FC\s*;/,
+  "the premium shell text token must preserve the active legacy computed color"
+);
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /html,body\{background:#061321;color:var\(--ka-text-shell\)\}/,
+  "the active premium shell must consume the canonical shell text token without changing its background"
+);
+assert.match(
+  styles,
+  /body\{margin:0;background:var\(--bg\);color:var\(--text\)/,
+  "the dormant legacy-light body declaration must remain untouched for the separate disposition task"
+);
+const shellTextHex = tokens.match(/--ka-text-shell\s*:\s*(#[0-9a-f]{6})/i)?.[1];
+assert.ok(shellTextHex, "premium shell text color must be resolvable from the canonical token");
+assert.ok(
+  contrastRatio(shellTextHex, "#061321") >= 4.5,
+  "premium shell text must retain WCAG AA normal-text contrast on the dark shell"
 );
 assert.match(
   styles,

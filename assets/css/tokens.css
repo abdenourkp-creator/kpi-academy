@@ -1,6 +1,6 @@
 :root{
  --ka-bg:#061321;--ka-bg-deep:#030d18;--ka-surface:rgba(12,34,53,.88);--ka-glass-1:rgba(255,255,255,.04);--ka-glass-2:rgba(255,255,255,.08);--ka-glass-3:rgba(255,255,255,.12);--ka-border:rgba(255,255,255,.10);--ka-border-blue:rgba(87,166,220,.22);
- --ka-text:#F3F7FC;--ka-muted:rgba(235,243,251,.72);--ka-faint:rgba(235,243,251,.58);
+ --ka-text:#F3F7FC;--ka-text-shell:#EAF3FC;--ka-muted:rgba(235,243,251,.72);--ka-faint:rgba(235,243,251,.58);
  --ka-gold:#D9A84E;--ka-gold-bright:#F2C879;--ka-blue:#1E7BE8;--ka-cyan:#19B5F0;--ka-success:#2ECC8F;--ka-warning:#F5B942;--ka-danger:#F2616B;
  --ka-status-success:#19C987;--ka-status-warning:#E7B95C;--ka-status-error:#F06E78;
  --ka-bg-radial:rgba(22,75,111,.20);--ka-overlay:rgba(0,0,0,.60);--ka-overlay-strong:rgba(0,0,0,.78);--ka-backdrop:rgba(3,14,25,.96);
