@@ -768,4 +768,33 @@ All other active stylesheets in the 16-file stack had no references to these leg
 - Static source checks confirmed both declarations were removed, no remaining `var(--soft-blue)` use exists in the two declaration-bearing active stylesheets, and the new regression assertions are present.
 - The complete automated suite for this new commit is pending its PR-triggered CI run; the previous successful run #385 applies only to the parent commit.
 
-**Next micro-task (01.23):** migrate the two audited `var(--radius)` consumers to `var(--ka-radius-md)`, preserving the exact effective `20px` value. Keep all other geometry tokens out of that task.
+**Task 01.23 completed:** migrated exactly two audited consumers in `assets/css/styles.css` from `var(--radius)` to `var(--ka-radius-md)`: the shared stat/module/content/empty-card rule and `.chapter-panel`. The 16-file stylesheet audit found no other `var(--radius)` consumers. The canonical token resolves to 20px because `tokens.css` loads after `premium-experience.css`. Seven canonical-radius consumers existed before this task (six in `styles.css`, one in `components.css); the migration brings the total to nine. Three `--ka-radius-md` declarations already exist (two in `styles.css`, one in `tokens.css); they were not changed. The earlier `--radius:16px` and later Premium `--radius:20px` root declarations are intentionally retained for the separate alias-retirement task.
+
+**Next micro-task (01.24):** retire only the two now-unconsumed `--radius` root declarations from `styles.css` and `premium-experience.css`, after rechecking the active 16-file stylesheet stack. Keep other geometry tokens and duplicate `--ka-radius-md` declaration consolidation out of that task.
+
+
+### Task 01.23 — Migrate the two audited radius consumers
+
+**Repository evidence before editing**
+- PR #4 was open and draft on `fix/phase1-drawer-bidi-deploy-safety`, targeting `implementation/kpi-academy-mvp`; exact pre-edit head: `c5e35395d42364544f97c8067ff4d8e953837339`.
+- Re-fetched the exact-head `styles.css`, `premium-experience.css`, `tokens.css`, `components.css`, test file and ownership contract; the prior full inventory covered all 16 CSS files linked by `index.html`.
+- Found exactly two `var(--radius)` consumers, both in `assets/css/styles.css`: the shared stat/module/content/empty-card rule and `.chapter-panel`. No other active stylesheet contains a legacy radius consumer.
+- Seven `var(--ka-radius-md)` consumers existed before the migration: six in `styles.css` and one in `components.css`.
+- The existing canonical radius has three declarations: `--ka-radius-md:16px` and `--ka-radius-md:20px` in `styles.css`, plus `--ka-radius-md:20px` in `tokens.css`. `tokens.css` loads after `premium-experience.css`, so its 20px declaration is the final canonical value.
+- Legacy roots remain `--radius:16px` in `styles.css` and `--radius:20px` in later-loaded `premium-experience.css`.
+
+**Implementation**
+- Replaced only the two `border-radius:var(--radius)` consumers with `border-radius:var(--ka-radius-md)`.
+- Added regression assertions for zero legacy consumers, nine total canonical consumers, the final 20px token, stylesheet order, both target selectors, and preservation of the existing canonical and legacy declarations.
+
+**Preservation**
+- No root declaration, other geometry token, selector structure, spacing, shadow, markup, JavaScript, learning content, XP, calculations, learner progress, fonts, RTL behavior, or stylesheet order changed.
+- No backup files, `main`, or `gh-pages` changes. No merge or deployment.
+
+**Verification boundary**
+- Pre-edit inventory across all 16 loaded stylesheets found exactly two legacy consumers and seven existing canonical consumers.
+- In-memory static assertions verified exactly two replacements, zero remaining `var(--radius)` consumers, nine canonical consumers, three unchanged canonical declarations, and two unchanged legacy root declarations.
+- Parent-head CI run #386 completed successfully: verify, browser and package passed; deploy-preview was skipped. This is evidence for the parent only. The new commit requires its own CI run.
+- No computed-style capture was run specifically for the radius migration; visual preservation is supported by the verified final 20px token and will be checked by the new browser run.
+
+**Next micro-task (01.24):** remove only the two unconsumed legacy `--radius` root declarations after confirming zero active consumers. Duplicate canonical `--ka-radius-md` declaration consolidation remains a separate later task.
