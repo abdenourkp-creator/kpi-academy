@@ -825,3 +825,33 @@ All other active stylesheets in the 16-file stack had no references to these leg
 - CI run #387 verifies the parent commit only. The new commit requires its own PR-triggered CI run; no local Node or browser execution is claimed here.
 
 **Next micro-task (01.25):** consolidate the three duplicate `--ka-radius-md` declarations into one canonical `20px` owner in `tokens.css`, after confirming all nine consumers resolve to that value and no stylesheet-specific radius fallback is required. Keep other radius sizes and component geometry out of scope.
+
+
+## 26. Task 01.25 — Consolidate canonical medium-radius ownership
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Repository evidence before editing
+- PR #4 was open and draft on `fix/phase1-drawer-bidi-deploy-safety`, targeting `implementation/kpi-academy-mvp`; exact pre-edit head: `cd78cde99f3a5955323befafbbf6454e160cba0b`.
+- The exact-head commit was `refactor(tokens): retire legacy radius declarations`. CI run #388 for this exact head completed successfully.
+- Re-read `index.html` and fetched all 16 linked stylesheets from the exact head. `styles.css` was first; `premium-experience.css` loaded eighth; `tokens.css` loaded thirteenth. No later stylesheet redefined `--ka-radius-md`.
+- The active stack had exactly three declarations: `16px` and `20px` in separate `:root` blocks inside `styles.css`, plus `20px` in `tokens.css`. It had nine consumers: eight in `styles.css` and one in `components.css`.
+- The separate HTML QA page, `dev/bidi-test.html`, loads `tokens.css` and `base.css`, not `styles.css`; it does not require a standalone `styles.css` radius fallback.
+- The canonical `tokens.css` declaration loads after both `styles.css` and `premium-experience.css`, so the active application already resolves all nine consumers to `20px`.
+
+### Implementation
+- Removed only the two duplicate `--ka-radius-md` declarations from `assets/css/styles.css` (the `16px` legacy-root value and the `20px` visual-learning-root value).
+- Kept the single `--ka-radius-md:20px` declaration in `assets/css/tokens.css`.
+- Updated `tests/design-tokens.test.js` to require exactly one declaration in the loaded stack, zero declarations in `styles.css`, one declaration in `tokens.css`, nine consumers, and canonical token load order after both source layers.
+
+### Preservation
+- Left all nine consumers unchanged.
+- Left `--ka-radius-sm`, `--ka-radius-lg`, `--ka-radius-control`, and `--ka-radius-pill` untouched.
+- No component geometry, spacing, shadows, colors, markup, JavaScript, curriculum, XP, calculations, learner progress, fonts, RTL behavior, or stylesheet order changed.
+- No backup files, `main`, or `gh-pages` changes. No merge or deployment.
+
+### Verification boundary
+- In-memory static checks over the fetched exact-head source confirm the two targeted declarations are removed from `styles.css`, the one canonical `20px` declaration remains in `tokens.css`, eight `styles.css` consumers remain, and stylesheet order is preserved. The pre-edit scan of all 16 active stylesheets found the ninth consumer in `components.css`.
+- Parent-head CI run #388 completed successfully. The new commits require their own PR-triggered CI run; no local Node or browser execution is claimed here.
+
+**Next micro-task (01.26):** audit the remaining canonical radius family (`--ka-radius-sm`, `--ka-radius-lg`, `--ka-radius-control`, and `--ka-radius-pill`) for duplicate declarations, consumer counts, and actual cascade ownership. Documentation-only; do not change their values or consumers in that audit.
