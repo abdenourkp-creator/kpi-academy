@@ -93,6 +93,16 @@ assert.equal(
   "no loaded stylesheet should retain a declaration of the retired legacy --text alias"
 );
 assert.equal(
+  count(/--soft-blue\s*:/g, css),
+  0,
+  "the unused legacy --soft-blue alias must have no declarations in the loaded stylesheet stack"
+);
+assert.equal(
+  count(/var\(\s*--soft-blue\b/g, css),
+  0,
+  "the unused legacy --soft-blue alias must have no consumers in the loaded stylesheet stack"
+);
+assert.equal(
   count(/--ka-text-shell\s*:/g, css),
   1,
   "the premium shell text role must have exactly one canonical declaration"

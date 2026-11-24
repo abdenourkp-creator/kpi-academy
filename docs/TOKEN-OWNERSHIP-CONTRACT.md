@@ -742,4 +742,30 @@ All other active stylesheets in the 16-file stack had no references to these leg
 - No computed-style snapshot was captured specifically for every alias consumer in this task. The winning root values above are established from stylesheet load order and root declaration order; selectors with later overrides are explicitly called out.
 - No markup, JavaScript, curriculum, XP, calculations, learner progress, fonts, RTL behavior, `main`, `gh-pages`, merge or deployment changes.
 
-**Next micro-task (01.22):** perform the non-CSS HTML/JavaScript search for `--soft-blue`; if no active consumer exists, remove only the unused `--soft-blue` declarations from `styles.css` and `premium-experience.css`, with a regression assertion. Do not migrate another token or begin Home Dashboard / Lesson implementation in that task.
+**Task 01.22 completed:** the active `index.html` and all 23 production JavaScript files were checked for `soft-blue` references; none were found. The two unused root declarations were removed from the active base and premium stylesheets, and regression assertions now enforce zero declarations and zero `var()` consumers across the loaded stylesheet stack. No replacement token was introduced because the alias has no active semantic consumer.
+
+**Next micro-task (01.23):** migrate only the two audited `var(--radius)` consumers to `var(--ka-radius-md)`, preserving the effective `20px` value and leaving unrelated geometry tokens untouched.
+
+
+### Task 01.22 — Retire unused `--soft-blue` alias
+
+**Repository evidence before editing**
+- PR #4 was open and draft; branch `fix/phase1-drawer-bidi-deploy-safety` pointed to `7954f7a528fb98faca351d7f26a678a5996ee5f8`, targeting `implementation/kpi-academy-mvp`.
+- The previous head's CI run #385 completed successfully: verify, browser and package passed; deploy-preview was skipped.
+- The active `index.html` contains 23 production script references. Each referenced JavaScript file was fetched from the exact PR head and checked; zero `soft-blue` references were found. The active HTML file also contained zero matches.
+- The loaded stylesheet audit identified exactly two unused root declarations: `--soft-blue:#D7EAF8` in `assets/css/styles.css` and `--soft-blue:#123C5B` in `assets/css/premium-experience.css`. No `var(--soft-blue)` consumers were present. `assets/css/tokens.css` had no declaration or consumer.
+
+**Implementation**
+- Removed only those two unused declarations.
+- Added design-token regression assertions requiring zero `--soft-blue` declarations and zero `var(--soft-blue)` consumers across all stylesheets loaded by `index.html`.
+- No replacement token was added: there is no active consumer to migrate, and the similarly named `--ka-soft` role is not assumed to be interchangeable.
+
+**Preservation**
+- No selector, computed color, background, spacing, radius, learning content, XP, calculation, learner progress, JavaScript, HTML, font, RTL behavior, or stylesheet load order was changed.
+- No backup files, `main`, or `gh-pages` were modified. No merge or deployment occurred.
+
+**Verification boundary**
+- Static source checks confirmed both declarations were removed, no remaining `var(--soft-blue)` use exists in the two declaration-bearing active stylesheets, and the new regression assertions are present.
+- The complete automated suite for this new commit is pending its PR-triggered CI run; the previous successful run #385 applies only to the parent commit.
+
+**Next micro-task (01.23):** migrate the two audited `var(--radius)` consumers to `var(--ka-radius-md)`, preserving the exact effective `20px` value. Keep all other geometry tokens out of that task.
