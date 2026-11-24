@@ -102,6 +102,55 @@ assert.equal(
   0,
   "the unused legacy --soft-blue alias must have no consumers in the loaded stylesheet stack"
 );
+
+assert.equal(
+  count(/var\(\s*--radius\s*\)/g, css),
+  0,
+  "all audited card/chapter consumers must leave the legacy --radius alias"
+);
+assert.equal(
+  count(/var\(\s*--ka-radius-md\s*\)/g, css),
+  9,
+  "the two migrated card/chapter consumers must join the seven existing canonical radius consumers"
+);
+assert.equal(
+  count(/--ka-radius-md\s*:/g, css),
+  3,
+  "the existing two styles.css declarations and the tokens.css declaration must remain unchanged pending consolidation"
+);
+assert.match(styles, /--ka-radius-md:16px;/, "the earlier styles.css medium-radius fallback declaration must remain unchanged");
+assert.match(styles, /--ka-radius-md:20px;/, "the later styles.css medium-radius declaration must remain unchanged");
+assert.match(
+  tokens,
+  /--ka-radius-md\s*:\s*20px\s*;/,
+  "the final canonical medium-radius token must preserve the effective 20px radius"
+);
+assert.ok(
+  stylesheetPaths.indexOf("assets/css/tokens.css") > stylesheetPaths.indexOf("assets/css/premium-experience.css"),
+  "canonical tokens must load after the legacy and premium stylesheet layers"
+);
+assert.equal(
+  count(/--radius\s*:/g, css),
+  2,
+  "legacy root radius declarations must remain until their separate retirement task"
+);
+assert.match(styles, /--radius:16px;/, "the earlier legacy fallback declaration must remain unchanged");
+assert.match(
+  cssByPath.get("assets/css/premium-experience.css"),
+  /--radius:\s*20px;/,
+  "the later premium root declaration must remain unchanged"
+);
+assert.match(
+  styles,
+  /\.stat-card,\.module-card,\.content-card,\.empty-card\{[^}]*border-radius:\s*var\(--ka-radius-md\)/,
+  "stat, module, content and empty cards must use the canonical medium radius"
+);
+assert.match(
+  styles,
+  /\.chapter-panel\{[^}]*border-radius:\s*var\(--ka-radius-md\)/,
+  "chapter panels must use the canonical medium radius"
+);
+
 assert.equal(
   count(/--ka-text-shell\s*:/g, css),
   1,
