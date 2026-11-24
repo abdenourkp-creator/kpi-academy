@@ -115,19 +115,31 @@ assert.equal(
 );
 assert.equal(
   count(/--ka-radius-md\s*:/g, css),
-  3,
-  "the existing two styles.css declarations and the tokens.css declaration must remain unchanged pending consolidation"
+  1,
+  "the canonical medium-radius token must have exactly one declaration across the loaded stylesheet stack"
 );
-assert.match(styles, /--ka-radius-md:16px;/, "the earlier styles.css medium-radius fallback declaration must remain unchanged");
-assert.match(styles, /--ka-radius-md:20px;/, "the later styles.css medium-radius declaration must remain unchanged");
+assert.equal(
+  count(/--ka-radius-md\s*:/g, styles),
+  0,
+  "styles.css must not retain duplicate medium-radius declarations"
+);
+assert.equal(
+  count(/--ka-radius-md\s*:/g, tokens),
+  1,
+  "tokens.css must own the single canonical medium-radius declaration"
+);
 assert.match(
   tokens,
   /--ka-radius-md\s*:\s*20px\s*;/,
-  "the final canonical medium-radius token must preserve the effective 20px radius"
+  "the canonical medium-radius token must preserve the effective 20px radius"
+);
+assert.ok(
+  stylesheetPaths.indexOf("assets/css/tokens.css") > stylesheetPaths.indexOf("assets/css/styles.css"),
+  "canonical tokens must load after styles.css consumers"
 );
 assert.ok(
   stylesheetPaths.indexOf("assets/css/tokens.css") > stylesheetPaths.indexOf("assets/css/premium-experience.css"),
-  "canonical tokens must load after the legacy and premium stylesheet layers"
+  "canonical tokens must load after the premium stylesheet layer"
 );
 assert.equal(
   count(/--radius\s*:/g, css),
