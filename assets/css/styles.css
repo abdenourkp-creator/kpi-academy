@@ -204,7 +204,7 @@ body { text-align: right; }
 
 
 /* KPI Academy premium interface system — consolidated overrides */
-:root{--ka-blue:#2477B8;--ka-navy:#17324D;--ka-light:#EAF4FC;--ka-soft:#D7EAF8;--ka-bg:#F6F9FC;--ka-surface:#FFFFFF;--ka-text:#172B3A;--ka-muted:#718096;--ka-border:#E4EBF2;--ka-success:#23865B;--ka-warning:#D99A32;--ka-error:#C84B4B;--ka-radius-sm:10px;--ka-radius-md:16px;--ka-radius-lg:22px;}
+:root{--ka-blue:#2477B8;--ka-navy:#17324D;--ka-light:#EAF4FC;--ka-soft:#D7EAF8;--ka-bg:#F6F9FC;--ka-surface:#FFFFFF;--ka-text:#172B3A;--ka-muted:#718096;--ka-border:#E4EBF2;--ka-success:#23865B;--ka-warning:#D99A32;--ka-error:#C84B4B;--ka-radius-sm:10px;--ka-radius-lg:22px;}
 body{background:var(--ka-bg);color:var(--ka-text);font-family:Inter,"Noto Sans Arabic",Tahoma,Arial,sans-serif}
 .app-shell{background:var(--ka-bg)}.sidebar{background:#fff;border-inline-end:1px solid var(--ka-border);box-shadow:none}.brand{padding:25px 22px 28px}.brand-mark{background:var(--ka-navy);border-radius:12px;box-shadow:none}
 .nav-link{border-radius:10px;margin:3px 10px;padding:12px 13px;transition:background .16s,border-color .16s,color .16s}.nav-link:hover{background:#F3F8FC;color:var(--ka-navy)}.nav-link.active{background:var(--ka-light);color:var(--ka-navy);font-weight:750}
@@ -271,7 +271,7 @@ body{background:var(--ka-bg);color:var(--ka-text);font-family:Inter,"Noto Sans A
 
 
 /* KPI Academy — Premium visual learning system */
-:root{--ka-blue:#3979F6;--ka-navy:#14233B;--ka-light:#EAF1FF;--ka-soft:#D8E5FF;--ka-bg:#F3F6FB;--ka-text:#192B42;--ka-muted:#71839A;--ka-border:#DFE7F1;--ka-radius-md:20px;--ka-radius-lg:28px;}
+:root{--ka-blue:#3979F6;--ka-navy:#14233B;--ka-light:#EAF1FF;--ka-soft:#D8E5FF;--ka-bg:#F3F6FB;--ka-text:#192B42;--ka-muted:#71839A;--ka-border:#DFE7F1;--ka-radius-lg:28px;}
 body{background:radial-gradient(ellipse at 85% 0%,rgba(57,121,246,.055),transparent 30%),var(--ka-bg)}
 .sidebar{background:linear-gradient(180deg,#101D32,#172B49);border:0;box-shadow:12px 0 40px rgba(14,28,48,.1)}
 .brand{border-bottom:1px solid rgba(255,255,255,.1)}.brand-mark{background:linear-gradient(145deg,#5A91FF,#2E5ED3);border:1px solid rgba(255,255,255,.24);box-shadow:0 9px 24px rgba(42,100,220,.3)}.brand strong{color:#fff}.brand small{color:#9FB2CC}
