@@ -798,3 +798,30 @@ All other active stylesheets in the 16-file stack had no references to these leg
 - No computed-style capture was run specifically for the radius migration; visual preservation is supported by the verified final 20px token and will be checked by the new browser run.
 
 **Next micro-task (01.24):** remove only the two unconsumed legacy `--radius` root declarations after confirming zero active consumers. Duplicate canonical `--ka-radius-md` declaration consolidation remains a separate later task.
+
+## 25. Task 01.24 — Retire legacy radius root declarations
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Repository evidence before editing
+- PR #4 was open and draft on `fix/phase1-drawer-bidi-deploy-safety`, targeting `implementation/kpi-academy-mvp`; exact pre-edit head: `b4e76b793644bb5918c24e3b4e5b8196af7cf59a`.
+- The branch ref and PR head agreed. The latest commits were the three Task 01.23 commits: `f3eca35` (CSS migration), `d6ec7df` (regression tests), and `b4e76b7` (documentation).
+- CI run #387 on the exact pre-edit head completed successfully: `verify`, `browser`, and `package` passed; `deploy-preview` was skipped.
+- Re-read `index.html` and fetched all 16 linked stylesheets from the exact head. The only legacy radius declarations were `--radius:16px` in `assets/css/styles.css` and `--radius:20px` in `assets/css/premium-experience.css`. The full active stylesheet stack had zero `var(--radius)` consumers.
+- The canonical radius still has three declarations and nine consumers. The final canonical value remains `--ka-radius-md:20px` from the later-loaded `tokens.css`.
+
+### Implementation
+- Removed only the two now-unconsumed legacy root declarations.
+- Updated `tests/design-tokens.test.js` to require zero legacy `--radius` declarations and zero consumers across the active stylesheet stack, with explicit checks for both declaration-bearing files.
+- Left all three canonical `--ka-radius-md` declarations and all nine canonical consumers unchanged.
+
+### Preservation
+- No selectors, component radii, spacing, shadows, colors, stylesheet order, markup, JavaScript, curriculum, XP, calculations, learner progress, fonts, or RTL behavior changed.
+- No archived backup files, `main`, or `gh-pages` were modified. No merge or deployment occurred.
+
+### Verification boundary
+- Pre-edit source audit covered all 16 stylesheets linked by the current `index.html`; it found exactly two legacy declarations and zero legacy consumers.
+- In-memory source assertions after the edit confirm zero `--radius` declarations, zero `var(--radius)` consumers, nine `var(--ka-radius-md)` consumers, and three unchanged canonical declarations.
+- CI run #387 verifies the parent commit only. The new commit requires its own PR-triggered CI run; no local Node or browser execution is claimed here.
+
+**Next micro-task (01.25):** consolidate the three duplicate `--ka-radius-md` declarations into one canonical `20px` owner in `tokens.css`, after confirming all nine consumers resolve to that value and no stylesheet-specific radius fallback is required. Keep other radius sizes and component geometry out of scope.

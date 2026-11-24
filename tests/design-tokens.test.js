@@ -131,14 +131,19 @@ assert.ok(
 );
 assert.equal(
   count(/--radius\s*:/g, css),
-  2,
-  "legacy root radius declarations must remain until their separate retirement task"
+  0,
+  "all legacy --radius root declarations must be retired from the active stylesheet stack"
 );
-assert.match(styles, /--radius:16px;/, "the earlier legacy fallback declaration must remain unchanged");
-assert.match(
+assert.equal(
+  count(/var\(\s*--radius\b/g, css),
+  0,
+  "the retired legacy --radius alias must have no consumers in the active stylesheet stack"
+);
+assert.doesNotMatch(styles, /--radius\s*:/, "the legacy base radius declaration must be removed");
+assert.doesNotMatch(
   cssByPath.get("assets/css/premium-experience.css"),
-  /--radius:\s*20px;/,
-  "the later premium root declaration must remain unchanged"
+  /--radius\s*:/,
+  "the legacy premium radius declaration must be removed"
 );
 assert.match(
   styles,
