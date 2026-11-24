@@ -133,6 +133,25 @@ assert.match(
   /--ka-radius-md\s*:\s*20px\s*;/,
   "the canonical medium-radius token must preserve the effective 20px radius"
 );
+
+assert.equal(count(/--ka-radius-sm\s*:/g, css), 1, "small radius must have one declaration across the loaded stylesheet stack");
+assert.equal(count(/--ka-radius-sm\s*:/g, styles), 0, "styles.css must not retain a dormant small-radius declaration");
+assert.equal(count(/--ka-radius-sm\s*:/g, tokens), 1, "tokens.css must own the single small-radius declaration");
+assert.match(tokens, /--ka-radius-sm\s*:\s*16px\s*;/, "small radius must preserve the canonical 16px value");
+assert.equal(count(/var\(\s*--ka-radius-sm\b/g, css), 1, "the mobile navigation must retain its single small-radius consumer");
+
+assert.equal(count(/--ka-radius-lg\s*:/g, css), 1, "large radius must have one declaration across the loaded stylesheet stack");
+assert.equal(count(/--ka-radius-lg\s*:/g, styles), 0, "styles.css must not retain dormant large-radius declarations");
+assert.equal(count(/--ka-radius-lg\s*:/g, tokens), 1, "tokens.css must own the single large-radius declaration");
+assert.match(tokens, /--ka-radius-lg\s*:\s*28px\s*;/, "large radius must preserve the canonical 28px value");
+assert.equal(count(/var\(\s*--ka-radius-lg\b/g, css), 1, "the welcome hero must retain its single large-radius consumer");
+
+assert.equal(count(/--ka-radius-control\s*:/g, css), 1, "control radius must retain one canonical declaration");
+assert.match(tokens, /--ka-radius-control\s*:\s*14px\s*;/, "control radius must preserve 14px");
+assert.equal(count(/var\(\s*--ka-radius-control\b/g, css), 5, "all five control-radius consumers must remain unchanged");
+assert.equal(count(/--ka-radius-pill\s*:/g, css), 1, "pill radius must retain one canonical declaration");
+assert.match(tokens, /--ka-radius-pill\s*:\s*999px\s*;/, "pill radius must preserve 999px");
+assert.equal(count(/var\(\s*--ka-radius-pill\b/g, css), 2, "both pill-radius consumers must remain unchanged");
 assert.ok(
   stylesheetPaths.indexOf("assets/css/tokens.css") > stylesheetPaths.indexOf("assets/css/styles.css"),
   "canonical tokens must load after styles.css consumers"

@@ -900,3 +900,37 @@ The load order is `styles.css` first, `premium-experience.css` eighth, `tokens.c
 - CI #390 is successful for the pre-audit head. This task changes documentation only; its new commit still requires its own workflow state to be checked before claiming a new-head CI result.
 
 **Next micro-task (01.27):** remove only the three dormant duplicate declarations for `--ka-radius-sm` and `--ka-radius-lg` from `assets/css/styles.css`. Keep the single canonical values in `tokens.css`, all nine consumers, and every component radius unchanged. Re-fetch the exact PR head and recheck all 16 stylesheets before editing.
+
+
+## 28. Task 01.27 — Remove dormant radius-family declarations
+
+**Status:** Implemented on the isolated Phase 1 branch.
+
+### Repository and CI evidence before the edit
+- Re-fetched PR #4 metadata and confirmed it was open, draft, unmerged, and based on implementation/kpi-academy-mvp; the branch and PR head both matched 72f7544f59c7585562037ec0430843a828b8d7e8.
+- Inspected the latest branch commits: 72f7544 (radius-family audit), 9e077d9 (medium-radius consolidation record), 7d884e0 (medium-radius regression tests), and 2758c54 (medium-radius CSS consolidation).
+- CI run #391 on the exact pre-edit head completed successfully: Verify, Browser, and Package passed; Deploy Preview was skipped. No deployment occurred.
+- Re-fetched index.html and all 16 linked stylesheets at the exact head, then re-counted declarations and consumers before editing.
+
+### Exact pre-edit inventory
+| Token | Declarations before | Consumers before | Canonical value |
+|---|---:|---:|---:|
+| --ka-radius-sm | 2 | 1 | 16px |
+| --ka-radius-lg | 3 | 1 | 28px |
+| --ka-radius-control | 1 | 5 | 14px |
+| --ka-radius-pill | 1 | 2 | 999px |
+
+The three dormant duplicates were confined to two :root blocks in assets/css/styles.css: --ka-radius-sm:10px, --ka-radius-lg:22px, and --ka-radius-lg:28px. The canonical tokens.css layer loads later and owns the effective values.
+
+### Implementation
+- Removed only those three dormant declarations from assets/css/styles.css.
+- Kept all four canonical declarations in assets/css/tokens.css unchanged.
+- Added regression assertions for single declaration ownership, canonical values, and unchanged consumer counts for all four radius-family tokens.
+
+### Preservation and verification boundary
+- Post-edit source checks across the same 16 loaded stylesheets confirm one declaration each for sm, lg, control, and pill; values remain 16px, 28px, 14px, and 999px; consumer counts remain 1, 1, 5, and 2 respectively.
+- The nine consumers in the audited four-token family are unchanged. The separate nine --ka-radius-md consumers are also unchanged.
+- No markup, JavaScript, learning content, XP, calculations, progress data, font files, font activation, stylesheet order, RTL behavior, backup files, main, or gh-pages changes.
+- The exact new-head CI result must be checked separately. No local Node or browser execution is claimed by this task record.
+
+**Next micro-task (01.28):** Design System exit-gate review. Reconcile the blueprint, style-ownership map, token contract, and current CI/browser evidence; identify only genuine blockers to Home Dashboard implementation. Do not begin Home markup or Phase 2 during that review.
