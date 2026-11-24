@@ -855,3 +855,48 @@ All other active stylesheets in the 16-file stack had no references to these leg
 - Parent-head CI run #388 completed successfully. The new commits require their own PR-triggered CI run; no local Node or browser execution is claimed here.
 
 **Next micro-task (01.26):** audit the remaining canonical radius family (`--ka-radius-sm`, `--ka-radius-lg`, `--ka-radius-control`, and `--ka-radius-pill`) for duplicate declarations, consumer counts, and actual cascade ownership. Documentation-only; do not change their values or consumers in that audit.
+
+
+## 27. Task 01.26 — Audit the remaining canonical radius family
+
+**Status:** Documentation-only audit completed on the isolated Phase 1 branch.
+
+### Repository and CI evidence before the audit
+- PR #4 was open and draft, targeting `implementation/kpi-academy-mvp`; branch `fix/phase1-drawer-bidi-deploy-safety`.
+- Exact PR head and branch head agreed at `9e077d969da7fb23a82e25721e47b0229c370f24`.
+- Latest commits at the start of this task were `9e077d9` (documentation), `7d884e0` (radius regression tests), and `2758c54` (medium-radius declaration consolidation).
+- CI run #390 on the exact head completed successfully: `verify`, `browser`, and `package` passed; `deploy-preview` was skipped. No deployment occurred.
+- Re-fetched `index.html` from the exact head and enumerated all 16 linked stylesheets in source order. Also inspected the repository tree: the active app page is `index.html`; `dev/bidi-test.html` is the isolated QA page; the older backup HTML is archived under `backups/`.
+- The QA page loads only `../assets/css/tokens.css` and `../assets/css/base.css`; it does not load `styles.css`. No other active HTML page was found that independently loads the legacy stylesheet stack.
+
+### Exact declaration and consumer inventory
+
+Counts below are across the 16 stylesheets linked by the active `index.html`, fetched at the exact head above.
+
+| Token | Active declarations | Consumers | Winning value |
+|---|---:|---:|---:|
+| `--ka-radius-sm` | 2 | 1 | `16px` |
+| `--ka-radius-lg` | 3 | 1 | `28px` |
+| `--ka-radius-control` | 1 | 5 | `14px` |
+| `--ka-radius-pill` | 1 | 2 | `999px` |
+
+Declaration locations and cascade:
+- `--ka-radius-sm`: `styles.css` declares `10px`; later `tokens.css` declares `16px`. The only consumer is in `shell.css` (the mobile bottom-navigation link). The effective value is `16px`.
+- `--ka-radius-lg`: `styles.css` declares `22px` in its first root block and `28px` in a later root block; later `tokens.css` declares `28px`. The only consumer is the `.ka-welcome` hero in `styles.css`. The effective value is `28px`.
+- `--ka-radius-control`: its single declaration is `14px` in `tokens.css`; five consumers are split across `components.css` (one) and `shell.css` (four). The effective value is `14px`.
+- `--ka-radius-pill`: its single declaration is `999px` in `tokens.css`; both consumers are in `components.css`. The effective value is `999px`.
+
+The load order is `styles.css` first, `premium-experience.css` eighth, `tokens.css` thirteenth, then `base.css`, `components.css`, and `shell.css`. No later active stylesheet redeclares these four radius tokens. Therefore `tokens.css` is the final owner of all four values; the earlier `styles.css` declarations for `sm` and `lg` are dormant duplicates in the active application cascade.
+
+### Decision and preservation boundary
+- Keep all four canonical declarations in `tokens.css` unchanged.
+- The only cleanup candidate is the three earlier duplicate declarations in `styles.css`: `--ka-radius-sm:10px`, `--ka-radius-lg:22px`, and `--ka-radius-lg:28px`.
+- Do not change any of the nine consumers, the four token values, component geometry, spacing, shadows, markup, JavaScript, learning content, XP, calculations, learner progress, fonts, or RTL behavior during this audit.
+- No production source or test file was changed in Task 01.26. No backup files, `main`, or `gh-pages` were changed. No merge or deployment occurred.
+
+### Verification boundary
+- Static source inventory completed against all 16 active stylesheets at the exact PR head; counts, declaration locations, consumer locations, and load order were checked directly.
+- The repository HTML inventory found no supported standalone page that loads `styles.css` without the later canonical `tokens.css` layer.
+- CI #390 is successful for the pre-audit head. This task changes documentation only; its new commit still requires its own workflow state to be checked before claiming a new-head CI result.
+
+**Next micro-task (01.27):** remove only the three dormant duplicate declarations for `--ka-radius-sm` and `--ka-radius-lg` from `assets/css/styles.css`. Keep the single canonical values in `tokens.css`, all nine consumers, and every component radius unchanged. Re-fetch the exact PR head and recheck all 16 stylesheets before editing.
