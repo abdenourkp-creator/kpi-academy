@@ -509,7 +509,11 @@ function startServer() {
     assert.equal(await evidenceMeter.getAttribute("value"), "1");
     assert.equal(await evidenceMeter.getAttribute("max"), "4");
     assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
-    await labPage.getByRole("link", { name: /المختبر التطبيقي/ }).click();
+    const practicalShortcut = labPage.locator('.sprint-shortcuts a[href="#lesson-BM-005?tab=lab"]');
+    assert.equal(await practicalShortcut.count(), 1);
+    assert.match(await practicalShortcut.textContent(), /حالة تطبيقية/);
+    await practicalShortcut.click();
+    await labPage.waitForFunction(() => location.hash === "#lesson-BM-005?tab=lab");
     await labPage.locator("[data-margin-value]").waitFor();
     assert.equal(await labPage.locator("[data-margin-value]").textContent(), "70.0%");
     assert.equal(await labPage.locator("[data-gross-profit]").textContent(), "29,400 MAD");
