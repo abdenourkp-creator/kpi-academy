@@ -55,7 +55,9 @@
 .sprint-resume .sprint-primary { min-block-size: 44px; align-items: center; }
 .sprint-video-link { display: inline-block; padding: 10px; }
 .sprint-shortcuts, .sprint-lesson-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
-.sprint-shortcuts a { min-width: 0; padding: 12px 5px; display: grid; justify-items: center; align-content: center; gap: 5px; text-align: center; font-size: .85rem; }
+.sprint-shortcuts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sprint-shortcuts a:focus-visible { outline: 2px solid #a0f2ff; outline-offset: 3px; }
+.sprint-shortcuts a { min-block-size: 44px; overflow-wrap: anywhere; min-width: 0; padding: 12px 5px; display: grid; justify-items: center; align-content: center; gap: 5px; text-align: center; font-size: .85rem; }
 .sprint-shortcuts a:hover, .sprint-lesson-controls button:hover { border-color: #69d5ff; }
 .sprint-shortcuts svg { width: 25px; height: 25px; color: #6fdbff; }
 .sprint-shortcuts small { color: #a6c1da; font-size: .68rem; }
