@@ -69,19 +69,6 @@ function startServer() {
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
     assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
     assert.equal(await page.locator(".sprint-resume").getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
-    await page.getByRole("link", { name: /المختبر التطبيقي/ }).click();
-    await page.locator("[data-margin-value]").waitFor();
-    assert.equal(await page.locator("[data-margin-value]").textContent(), "70.0%");
-    assert.equal(await page.locator("[data-gross-profit]").textContent(), "29,400 MAD");
-    await page.locator("[data-gross-cost]").fill("50000");
-    assert.equal(await page.locator("[data-margin-value]").textContent(), "-19.0%");
-    await page.locator("[data-gross-sales]").fill("0");
-    assert.equal(await page.locator("[data-margin-value]").textContent(), "—");
-    for (const clip of ["bm-001", "bm-005"]) {
-      const response = await page.request.get("http://127.0.0.1:" + port + "/assets/video/" + clip + ".mp4");
-      assert.equal(response.headers()["content-type"], "video/mp4");
-      assert.ok((await response.body()).length > 1000);
-    }
     await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
     assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
@@ -490,6 +477,28 @@ function startServer() {
         assert.equal(hasOverflow, false, route + " must not overflow at " + width + "px");
       }
     }
+
+    // Exercise the dashboard's lab deep link in a separate learner profile.
+    const labContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const labPage = await labContext.newPage();
+    labPage.on("pageerror", error => failures.push(error.message));
+    await labPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await labPage.getByRole("link", { name: /المختبر التطبيقي/ }).click();
+    await labPage.locator("[data-margin-value]").waitFor();
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "70.0%");
+    assert.equal(await labPage.locator("[data-gross-profit]").textContent(), "29,400 MAD");
+    await labPage.locator("[data-gross-cost]").fill("50000");
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "-19.0%");
+    await labPage.locator("[data-gross-sales]").fill("0");
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "—");
+    for (const clip of ["bm-001", "bm-005"]) {
+      const response = await labPage.request.get("http://127.0.0.1:" + port + "/assets/video/" + clip + ".mp4");
+      assert.equal(response.headers()["content-type"], "video/mp4");
+      assert.ok((await response.body()).length > 1000);
+    }
+    assert.equal(await labPage.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "the gross-margin case must fit the mobile viewport");
+    await labContext.close();
 
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
     console.log("Browser smoke passed: dashboard load state and assessment retry, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");
