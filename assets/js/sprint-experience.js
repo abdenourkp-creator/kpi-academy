@@ -19,10 +19,12 @@
 
   function quickLinks() {
     const links = [
+      ["modules", "modules", "الوحدات التعليمية", "Modules"],
       ["calculator", "tools", "حاسبة المؤشرات", "KPI Calculator"],
-      ["lesson-BM-005?tab=lab", "analytics", "المختبر التطبيقي", "Practical Lab"],
-      ["progress", "modules", "الاختبارات", "Assessments"],
-      ["analytics", "progress", "مختبر التحليل", "Analytics"]
+      ["analytics", "analytics", "مختبر التحليل", "Analytics Lab"],
+      ["lesson-BM-005?tab=lab", "tools", "حالة تطبيقية", "Practical Case"],
+      ["simulator", "simulator", "محاكاة الإدارة", "Simulator"],
+      ["progress", "progress", "التقييم والتقدم", "Assessments & Progress"]
     ];
     return '<nav class="sprint-shortcuts" aria-label="أدوات الأكاديمية">' + links.map(([route, icon, label, english]) =>
       '<a href="#' + route + '"><svg aria-hidden="true"><use href="#ka-icon-' + icon + '"/></svg>' +
