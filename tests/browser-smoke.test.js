@@ -483,6 +483,19 @@ function startServer() {
     const labPage = await labContext.newPage();
     labPage.on("pageerror", error => failures.push(error.message));
     await labPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    const resume = labPage.locator(".sprint-resume");
+    assert.match(await resume.locator(".ka-resume-context").textContent(), /الرياضيات التجارية/);
+    const evidenceMeter = resume.getByRole("progressbar", { name: "متطلبات إكمال الدرس" });
+    assert.equal(await evidenceMeter.getAttribute("value"), "0");
+    await labPage.evaluate(() => {
+      window.KPI_LEARNING_ENGINE.startLesson("BM-006");
+      window.KPI_LEARNING_ENGINE.saveLessonEvidence("BM-006", { interactiveLab: true });
+    });
+    await labPage.reload({ waitUntil: "networkidle" });
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    assert.equal(await evidenceMeter.getAttribute("value"), "1");
+    assert.equal(await evidenceMeter.getAttribute("max"), "4");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
     await labPage.getByRole("link", { name: /المختبر التطبيقي/ }).click();
     await labPage.locator("[data-margin-value]").waitFor();
     assert.equal(await labPage.locator("[data-margin-value]").textContent(), "70.0%");

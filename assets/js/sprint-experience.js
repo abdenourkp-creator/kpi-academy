@@ -33,7 +33,7 @@
   function overview(curriculum, translate, escape) {
     const engine = root.KPI_LEARNING_ENGINE;
     const stats = engine.getDashboard();
-    const lessons = curriculum.chapters.flatMap(chapter => chapter.lessons);
+    const lessons = curriculum.chapters.flatMap(chapter => chapter.lessons.map(lesson => ({ ...lesson, chapter })));
     const progress = engine.getState().lessonProgress;
     const next = lessons.filter(lesson => progress[lesson.code]?.status === "in-progress")
       .sort((a, b) => (progress[b.code].updatedAt || "").localeCompare(progress[a.code].updatedAt || ""))[0] ||
@@ -41,6 +41,14 @@
     const pct = Math.round(stats.completedLessons / stats.totalLessons * 100);
     const target = next ? "#lesson-" + next.code : "#progress";
     const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : "مراجعة نتائج الوحدة";
+    const evidence = next ? engine.getLessonProgress(next.code).evidence : null;
+    const evidenceCount = evidence ? ["interactiveLab", "professionalChallenge", "fieldChecklist", "learnerAttested"]
+      .filter(key => evidence[key] === true).length : 0;
+    const lessonContext = next ? '<p class="ka-resume-context">الرياضيات التجارية · الفصل ' +
+      escape(String(next.chapter.number)) + '</p>' : '';
+    const lessonEvidence = next ? '<div class="ka-resume-evidence"><span>متطلبات الإكمال <bdi>' +
+      evidenceCount + ' / 4</bdi></span><progress aria-label="متطلبات إكمال الدرس" value="' +
+      evidenceCount + '" max="4"></progress></div>' : '';
     return '<section class="sprint-overview" aria-label="سجل التعلّم">' +
       '<div class="sprint-greeting"><div><h2>مرحبًا بك، عبد النور</h2><p>مسار الرياضيات التجارية للضيافة</p></div><a href="#progress">سجلّ التعلّم ←</a></div>' +
       '<div class="sprint-score"><div class="sprint-ring" style="--value:' + pct + '%"><div><strong dir="ltr">' + pct + '%</strong><span>التقدم العام</span></div></div>' +
@@ -48,7 +56,7 @@
       '<div><dt>الدروس المكتملة</dt><dd dir="ltr">' + stats.completedLessons + ' / ' + stats.totalLessons + '</dd></div>' +
       '<div><dt>الاختبارات المجتازة</dt><dd dir="ltr">' + stats.passedAssessments + ' / ' + stats.totalAssessments + '</dd></div></dl></div>' +
       '<article class="sprint-resume"><div><span class="sprint-code">' + (next ? escape(next.code) : "BUSINESS MATHEMATICS") + '</span>' +
-      '<h2>' + escape(title) + '</h2><a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : "عرض النتائج") + ' ←</a>' +
+      lessonContext + '<h2>' + escape(title) + '</h2>' + lessonEvidence + '<a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : "عرض النتائج") + ' ←</a>' +
       (next && clipInfo[next.code] ? '<a class="sprint-video-link" href="' + target + '?tab=video">▶ شرح قصير</a>' : "") +
       '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + '</section>';
   }

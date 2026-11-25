@@ -49,6 +49,10 @@
 .sprint-case p { margin-bottom: 0; }
 .sprint-code { color: #f1c675; font-size: .8rem; font-weight: 700; }
 .sprint-primary { margin-top: 9px; display: inline-flex; border-radius: 14px; padding: 10px 15px; background: linear-gradient(145deg, #a0f2ff, #31b7f2); color: #04203a; font-weight: 800; }
+.ka-resume-context { margin: 3px 0 7px; color: var(--ka-muted); font-size: var(--ka-text-xs); }
+.ka-resume-evidence { display: grid; gap: 4px; margin-top: 8px; color: var(--ka-text); font-size: var(--ka-text-xs); }
+.ka-resume-evidence progress { width: 100%; height: 8px; accent-color: var(--ka-cyan, #4dcfff); }
+.sprint-resume .sprint-primary { min-block-size: 44px; align-items: center; }
 .sprint-video-link { display: inline-block; padding: 10px; }
 .sprint-shortcuts, .sprint-lesson-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
 .sprint-shortcuts a { min-width: 0; padding: 12px 5px; display: grid; justify-items: center; align-content: center; gap: 5px; text-align: center; font-size: .85rem; }
