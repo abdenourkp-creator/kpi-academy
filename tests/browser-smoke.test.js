@@ -49,8 +49,11 @@ function startServer() {
     page.on("pageerror", error => failures.push(error.message));
 
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
-    assert.equal(await page.locator('.nav-link[aria-current="page"]').count(), 1);
-    assert.equal(await page.locator('.nav-link[aria-current="page"]').getAttribute("data-view"), "dashboard");
+    for (const nav of [".main-nav", ".mobile-bottom-nav"]) {
+      const current = page.locator(nav + ' .nav-link[aria-current="page"]');
+      assert.equal(await current.count(), 1, "one current page per navigation landmark");
+      assert.equal(await current.getAttribute("data-view"), "dashboard");
+    }
     const catalogPage = await context.newPage();
     let catalogAttempts = 0;
     await catalogPage.route("**/data/modules.json", async route => {
@@ -65,7 +68,9 @@ function startServer() {
     await catalogPage.locator("#retryAcademyCatalog").waitFor();
     await catalogPage.evaluate(() => location.hash = "#modules");
     await catalogPage.locator("#retryAcademyCatalog").click();
-    await catalogPage.locator('.nav-link[data-view="modules"][aria-current="page"]').waitFor();
+    await catalogPage.locator(".main-nav .nav-link[data-view='modules'][aria-current='page']").waitFor();
+    assert.equal(await catalogPage.locator(".mobile-bottom-nav .nav-link[data-view='modules'][aria-current='page']").count(), 1);
+    assert.equal(await catalogPage.locator(".nav-link[data-view='dashboard'][aria-current='page']").count(), 0);
     assert.equal(catalogAttempts, 2, "catalog retry must make exactly one additional request");
     await catalogPage.close();
     await page.setViewportSize({ width: 390, height: 844 });
