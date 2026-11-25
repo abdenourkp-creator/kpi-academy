@@ -137,7 +137,8 @@ function startServer() {
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
     assert.equal(await page.locator(".assessment-card").count(), 9);
     assert.equal(await page.locator(".learning-resume").count(), 1);
-    assert.match(await page.locator(".learning-resume").textContent(), /BM-001|جارٍ تحميل خريطة الدروس/);
+    await page.waitForFunction(() => document.querySelector(".learning-resume")?.textContent.includes("BM-005"));
+    assert.match(await page.locator(".learning-resume").textContent(), /BM-005/, "opening the practical-case shortcut must resume the visited unfinished lesson");
 
     const failurePage = await context.newPage();
     const recoveryPageErrors = [];
