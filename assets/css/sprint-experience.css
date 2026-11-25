@@ -100,3 +100,13 @@
   .ka-dashboard .ka-welcome-copy h1 { font-size: clamp(1.2rem, 6.2vw, 1.9rem); }
   .ka-dashboard .ka-welcome::before { background: linear-gradient(to left, #061321 13%, #061321d9 51%, #06132135 100%); }
 }
+
+/* Home curriculum route */
+.sprint-route { min-width: 0; color: var(--ka-text); }
+.sprint-route h2 { margin: 0 0 12px; }
+.sprint-route h2 small { font-size: .75rem; color: var(--ka-muted); }
+.sprint-route ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 10px; }
+.sprint-route li { min-width: 0; display: grid; gap: 8px; padding: 14px; border: 1px solid #304d69; border-radius: 16px; background: #091b2c; }
+.sprint-route progress { width: 100%; accent-color: #4dcfff; }
+.sprint-route .sprint-primary { min-block-size: 44px; align-items: center; justify-self: start; margin: 0; }
+.sprint-route a:focus-visible { outline: 2px solid #a0f2ff; outline-offset: 3px; }
