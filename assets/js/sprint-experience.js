@@ -53,9 +53,17 @@
       '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + '</section>';
   }
 
+  function lessonProgress() {
+    const stats = root.KPI_LEARNING_ENGINE.getDashboard();
+    const percent = Math.round(stats.completedLessons / stats.totalLessons * 100);
+    return '<div class="sprint-lesson-progress"><span>دروس مكتملة</span><progress aria-label="تقدم الدروس" max="' +
+      stats.totalLessons + '" value="' + stats.completedLessons + '"></progress><strong dir="ltr">' +
+      stats.completedLessons + ' / ' + stats.totalLessons + ' · ' + percent + '%</strong></div>';
+  }
+
   function grossMargin() {
     return '<section class="sprint-gross" aria-labelledby="gross-title">' +
-      '<div class="sprint-case"><img src="assets/diagrams/hospitality-accounting/gross-profit-flow.svg" alt="">' +
+      '<div class="sprint-case"><img src="assets/photos/coastal-hotel.webp" alt="">' +
       '<div><span class="sprint-code">Gross Profit &amp; Gross Profit Margin</span><h2 id="gross-title">هامش الربح الإجمالي</h2>' +
       '<p>حقق مطعم فندق ساحلي خلال أسبوع صافي مبيعات طعام قدره <bdi>42,000 MAD</bdi>، وبلغت تكلفة الطعام <bdi>12,600 MAD</bdi>. احسب مجمل الربح وهامشه.</p></div></div>' +
       '<div class="sprint-gross-calculator"><h3>حاسبة هامش الربح</h3><div class="sprint-inputs">' +
@@ -132,5 +140,5 @@
       '</nav>';
   }
 
-  root.KPI_SPRINT = Object.freeze({ overview, clip, grossMargin, lessonControls, mountGross, mountLesson });
+  root.KPI_SPRINT = Object.freeze({ overview, clip, grossMargin, lessonControls, lessonProgress, mountGross, mountLesson });
 })(window);

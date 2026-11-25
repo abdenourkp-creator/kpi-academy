@@ -43,7 +43,7 @@ function startServer() {
   let browser;
   const failures = [];
   try {
-    browser = await chromium.launch({ headless: true, executablePath: process.env.KPI_CHROMIUM_PATH });
+    browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({ viewport: { width: 1365, height: 900 }, acceptDownloads: true });
     const page = await context.newPage();
     page.on("pageerror", error => failures.push(error.message));
@@ -56,7 +56,7 @@ function startServer() {
     await page.keyboard.press("Escape");
     assert.equal(await menuButton.getAttribute("aria-expanded"), "false", "Escape must close the mobile menu");
     await page.setViewportSize({ width: 1365, height: 900 });
-    await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
+    await page.getByRole("heading", { name: "أكاديمية ذكاء الأعمال لقطاع الضيافة" }).waitFor();
     assert.equal(await page.locator(".skip-link").getAttribute("href"), "#main-content", "keyboard users must have a skip link to the main landmark");
     assert.equal(await page.locator("#main-content").getAttribute("tabindex"), "-1", "the main landmark must be programmatically focusable");
     assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
@@ -68,7 +68,7 @@ function startServer() {
     assert.equal(await page.locator(".st-skill-node").count(), 8, "dashboard must render the eight-chapter skill tree");
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
     assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
-    assert.equal(await page.getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
+    assert.equal(await page.locator(".sprint-resume").getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
     await page.getByRole("link", { name: /المختبر التطبيقي/ }).click();
     await page.locator("[data-margin-value]").waitFor();
     assert.equal(await page.locator("[data-margin-value]").textContent(), "70.0%");

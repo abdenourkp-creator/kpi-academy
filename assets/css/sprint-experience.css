@@ -79,3 +79,18 @@
   .sprint-case img { max-height: 115px; }
   .sprint-greeting a { font-size: .84rem; }
 }
+.ka-dashboard .ka-welcome { isolation: isolate; display: block; }
+.ka-dashboard .ka-welcome-visual { position: absolute; inset: 0; z-index: -2; opacity: 1; }
+.ka-dashboard .ka-welcome-visual img { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: 36% 52%; border: 0; border-radius: 0; }
+.ka-dashboard .ka-welcome::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to left, #061321 15%, #061321e8 37%, #06132120 90%); }
+.ka-dashboard .ka-welcome-copy { max-width: min(560px, 72%); }
+.ka-dashboard .ka-welcome-copy p { color: #d3e1f0; }
+.sprint-lesson-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 8px 12px; border: 1px solid #385975; border-radius: 12px; color: #edfbff; background: #0c2134; font-size: .8rem; }
+.sprint-lesson-progress progress { min-width: 0; flex: 1 1 auto; accent-color: #4dcfff; }
+.sprint-lesson-progress strong { white-space: nowrap; }
+@media (max-width: 520px) {
+  .ka-dashboard .ka-welcome { min-height: 205px; }
+  .ka-dashboard .ka-welcome-copy { max-width: 74%; }
+  .ka-dashboard .ka-welcome-copy h1 { font-size: clamp(1.2rem, 6.2vw, 1.9rem); }
+  .ka-dashboard .ka-welcome::before { background: linear-gradient(to left, #061321 13%, #061321d9 51%, #06132135 100%); }
+}
