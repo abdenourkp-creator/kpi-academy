@@ -70,6 +70,13 @@ function startServer() {
     assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
     assert.equal(await page.locator(".sprint-resume").getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
     await page.setViewportSize({ width: 390, height: 844 });
+    const route = page.locator(".sprint-route");
+    assert.equal(await route.locator("li").count(), 8);
+    assert.equal(await route.locator("progress[value='0']").count(), 8);
+    const firstChapterLink = route.locator('a[href="#lesson-BM-001"]');
+    assert.equal(await firstChapterLink.count(), 1);
+    assert.ok((await firstChapterLink.boundingBox()).height >= 44);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
     const shortcutRoutes = ["modules", "calculator", "analytics", "lesson-BM-005?tab=lab", "simulator", "progress"];
     for (const route of shortcutRoutes) {
       const shortcut = page.locator('.sprint-shortcuts a[href="#' + route + '"]');
