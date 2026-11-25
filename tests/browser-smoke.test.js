@@ -49,6 +49,25 @@ function startServer() {
     page.on("pageerror", error => failures.push(error.message));
 
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
+    assert.equal(await page.locator('.nav-link[aria-current="page"]').count(), 1);
+    assert.equal(await page.locator('.nav-link[aria-current="page"]').getAttribute("data-view"), "dashboard");
+    const catalogPage = await context.newPage();
+    let catalogAttempts = 0;
+    await catalogPage.route("**/data/modules.json", async route => {
+      catalogAttempts++;
+      if (catalogAttempts === 1) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        await route.abort();
+      } else await route.continue();
+    });
+    await catalogPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "domcontentloaded" });
+    await catalogPage.locator("#app [role=status]").waitFor();
+    await catalogPage.locator("#retryAcademyCatalog").waitFor();
+    await catalogPage.evaluate(() => location.hash = "#modules");
+    await catalogPage.locator("#retryAcademyCatalog").click();
+    await catalogPage.locator('.nav-link[data-view="modules"][aria-current="page"]').waitFor();
+    assert.equal(catalogAttempts, 2, "catalog retry must make exactly one additional request");
+    await catalogPage.close();
     await page.setViewportSize({ width: 390, height: 844 });
     const menuButton = page.locator("#menuToggle");
     await menuButton.click();
