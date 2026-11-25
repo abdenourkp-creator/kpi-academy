@@ -69,6 +69,18 @@ function startServer() {
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
     assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
     assert.equal(await page.locator(".sprint-resume").getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
+    await page.setViewportSize({ width: 390, height: 844 });
+    const shortcutRoutes = ["modules", "calculator", "analytics", "lesson-BM-005?tab=lab", "simulator", "progress"];
+    for (const route of shortcutRoutes) {
+      const shortcut = page.locator('.sprint-shortcuts a[href="#' + route + '"]');
+      assert.equal(await shortcut.count(), 1, "each live quick action must appear once");
+      assert.ok((await shortcut.boundingBox()).height >= 44, "shortcut must meet minimum touch height");
+      await shortcut.click();
+      await page.waitForFunction(expected => location.hash === "#" + expected, route);
+      await page.locator(".sprint-shortcuts").waitFor({ state: "detached" });
+      await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    }
+    await page.setViewportSize({ width: 1365, height: 900 });
     await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
     assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
