@@ -11,7 +11,8 @@ const mime = {
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".md": "text/markdown; charset=utf-8",
-  ".svg": "image/svg+xml"
+  ".svg": "image/svg+xml",
+  ".mp4": "video/mp4"
 };
 
 function startServer() {
@@ -42,7 +43,7 @@ function startServer() {
   let browser;
   const failures = [];
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, executablePath: process.env.KPI_CHROMIUM_PATH });
     const context = await browser.newContext({ viewport: { width: 1365, height: 900 }, acceptDownloads: true });
     const page = await context.newPage();
     page.on("pageerror", error => failures.push(error.message));
@@ -66,6 +67,21 @@ function startServer() {
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
     assert.equal(await page.locator(".st-skill-node").count(), 8, "dashboard must render the eight-chapter skill tree");
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
+    assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
+    assert.equal(await page.getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
+    await page.getByRole("link", { name: /المختبر التطبيقي/ }).click();
+    await page.locator("[data-margin-value]").waitFor();
+    assert.equal(await page.locator("[data-margin-value]").textContent(), "70.0%");
+    assert.equal(await page.locator("[data-gross-profit]").textContent(), "29,400 MAD");
+    await page.locator("[data-gross-cost]").fill("50000");
+    assert.equal(await page.locator("[data-margin-value]").textContent(), "-19.0%");
+    await page.locator("[data-gross-sales]").fill("0");
+    assert.equal(await page.locator("[data-margin-value]").textContent(), "—");
+    for (const clip of ["bm-001", "bm-005"]) {
+      const response = await page.request.get("http://127.0.0.1:" + port + "/assets/video/" + clip + ".mp4");
+      assert.equal(response.headers()["content-type"], "video/mp4");
+      assert.ok((await response.body()).length > 1000);
+    }
     await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
     assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });

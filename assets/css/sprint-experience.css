@@ -1,0 +1,81 @@
+.ka-dashboard .ka-welcome {
+  min-height: 240px;
+  background: radial-gradient(ellipse at 12% 100%, #223950, transparent 65%), #071624;
+  border-color: #29425b;
+}
+.ka-dashboard .ka-welcome-copy h1 span { color: #f1c675; }
+.ka-dashboard .ka-welcome-visual { opacity: .85; }
+.sprint-overview { display: grid; gap: 18px; }
+.sprint-greeting { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sprint-greeting h2, .sprint-resume h2, .sprint-case h2 { margin: 0; color: #f5f9ff; }
+.sprint-greeting p { color: #aabdd3; margin: 2px 0 0; }
+.sprint-greeting a, .sprint-video-link { color: #8cddff; }
+.sprint-score, .sprint-resume, .sprint-shortcuts a, .sprint-case, .sprint-gross-calculator, .sprint-clip {
+  border: 1px solid #304d69;
+  border-radius: 20px;
+  color: #eff6ff;
+  background: radial-gradient(ellipse at 20% 0%, #164265 0, transparent 63%), #091b2c;
+  box-shadow: inset 0 1px 0 #84c9ff25, 0 8px 24px #0003;
+}
+.sprint-score {
+  padding: clamp(12px, 3vw, 26px);
+  display: grid;
+  grid-template-columns: minmax(105px, .8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: clamp(10px, 3vw, 32px);
+  direction: ltr;
+}
+.sprint-ring {
+  display: grid;
+  place-items: center;
+  width: min(100%, 158px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  border-radius: 50%;
+  padding: 10px;
+  background: conic-gradient(#58dcff 0%, #1288e9 var(--value, 0%), #294962 var(--value, 0%));
+}
+.sprint-ring > div { display: grid; place-content: center; width: 100%; height: 100%; border-radius: 50%; background: #0a2135; text-align: center; }
+.sprint-ring strong { font-size: clamp(1.3rem, 4vw, 2.25rem); line-height: 1.15; }
+.sprint-ring span { font-size: .75rem; color: #aec6dc; }
+.sprint-score dl { margin: 0; direction: rtl; }
+.sprint-score dl > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 3px 10px; padding-block: 8px; }
+.sprint-score dl > div + div { border-top: 1px solid #334e67; }
+.sprint-score dt { color: #bbcee3; }
+.sprint-score dd { margin: 0; font-weight: 750; white-space: nowrap; }
+.sprint-resume, .sprint-case { display: grid; grid-template-columns: minmax(0, 1fr) minmax(90px, .7fr); gap: 16px; padding: 16px; align-items: center; overflow: hidden; }
+.sprint-resume img, .sprint-case img { width: 100%; max-height: 135px; object-fit: cover; border-radius: 12px; }
+.sprint-case img { order: 1; }
+.sprint-case p { margin-bottom: 0; }
+.sprint-code { color: #f1c675; font-size: .8rem; font-weight: 700; }
+.sprint-primary { margin-top: 9px; display: inline-flex; border-radius: 14px; padding: 10px 15px; background: linear-gradient(145deg, #a0f2ff, #31b7f2); color: #04203a; font-weight: 800; }
+.sprint-video-link { display: inline-block; padding: 10px; }
+.sprint-shortcuts, .sprint-lesson-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+.sprint-shortcuts a { min-width: 0; padding: 12px 5px; display: grid; justify-items: center; align-content: center; gap: 5px; text-align: center; font-size: .85rem; }
+.sprint-shortcuts a:hover, .sprint-lesson-controls button:hover { border-color: #69d5ff; }
+.sprint-shortcuts svg { width: 25px; height: 25px; color: #6fdbff; }
+.sprint-shortcuts small { color: #a6c1da; font-size: .68rem; }
+.sprint-lesson-controls { grid-template-columns: repeat(auto-fit, minmax(103px, 1fr)); margin: 0 0 18px; }
+.sprint-lesson-controls button { padding: 9px 5px; min-height: 44px; background: #10273b; color: #ebf7ff; border: 1px solid #355774; border-radius: 12px; cursor: pointer; font: inherit; }
+.sprint-lesson-controls button[aria-pressed="true"] { border-color: #69d5ff; background: #17466a; }
+.sprint-gross { display: grid; gap: 14px; margin-bottom: 20px; }
+.sprint-gross-calculator, .sprint-clip { padding: clamp(12px, 3vw, 24px); }
+.sprint-gross-calculator h3, .sprint-clip h2 { margin: 0 0 10px; color: #f5f9ff; }
+.sprint-inputs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.sprint-inputs label { display: grid; gap: 4px; }
+.sprint-inputs input { width: 100%; color: #fff; background: #0b2134; border: 1px solid #6486a4; border-radius: 9px; padding: 9px; font: inherit; }
+.sprint-profit { display: block; font-size: clamp(1rem, 3vw, 1.7rem); }
+.sprint-gross-calculator .sprint-score > div:nth-child(2) { text-align: end; }
+.sprint-gross-calculator [role="status"] { color: #f1c675; margin-bottom: 0; }
+.sprint-clip { margin-bottom: 18px; }
+.sprint-clip-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.sprint-clip-head span { color: #f1c675; }
+.sprint-clip video { width: min(100%, 640px); display: block; aspect-ratio: 16 / 9; border-radius: 12px; background: #061321; }
+.sprint-clip details { margin-top: 8px; color: #c3daed; }
+.sprint-gross, .sprint-clip, .lesson-body, .ka-lesson-section { scroll-margin-top: 90px; }
+@media (max-width: 520px) {
+  .sprint-shortcuts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sprint-case { grid-template-columns: 1fr; }
+  .sprint-case img { max-height: 115px; }
+  .sprint-greeting a { font-size: .84rem; }
+}
