@@ -32,6 +32,24 @@
     ).join("") + '</nav>';
   }
 
+  function learningRoute(curriculum, progress, escape) {
+    const chapters = curriculum.chapters;
+    return '<section class="sprint-route" aria-labelledby="sprint-route-title">' +
+      '<h2 id="sprint-route-title">مسار التعلّم <small lang="en" dir="ltr">Learning route</small></h2>' +
+      (chapters.length ? '<ol>' + chapters.map(chapter => {
+        const total = chapter.lessons.length;
+        const done = chapter.lessons.filter(lesson => progress[lesson.code]?.status === "completed").length;
+        const next = chapter.lessons.find(lesson => progress[lesson.code]?.status === "in-progress") ||
+          chapter.lessons.find(lesson => progress[lesson.code]?.status !== "completed");
+        const status = !total ? "لا توجد دروس" : done === total ? "مكتمل" :
+          done || chapter.lessons.some(lesson => progress[lesson.code]?.status === "in-progress") ? "قيد التقدم" : "لم يبدأ";
+        return '<li><strong>الفصل ' + escape(String(chapter.number)) + '</strong> · ' + status +
+          ' <bdi>' + done + ' / ' + total + '</bdi>' +
+          (total ? '<progress aria-label="تقدم الفصل ' + escape(String(chapter.number)) + '" max="' + total + '" value="' + done + '"></progress>' : '') +
+          (next ? '<a class="sprint-primary" href="#lesson-' + escape(next.code) + '">فتح الدرس <bdi>' + escape(next.code) + '</bdi></a>' : '') + '</li>';
+      }).join("") + '</ol>' : '<p>لا توجد فصول متاحة.</p>') + '</section>';
+  }
+
   function overview(curriculum, translate, escape) {
     const engine = root.KPI_LEARNING_ENGINE;
     const stats = engine.getDashboard();
@@ -40,7 +58,7 @@
     const next = lessons.filter(lesson => progress[lesson.code]?.status === "in-progress")
       .sort((a, b) => (progress[b.code].updatedAt || "").localeCompare(progress[a.code].updatedAt || ""))[0] ||
       lessons.find(lesson => progress[lesson.code]?.status !== "completed");
-    const pct = Math.round(stats.completedLessons / stats.totalLessons * 100);
+    const pct = stats.totalLessons > 0 ? Math.round(stats.completedLessons / stats.totalLessons * 100) : 0;
     const target = next ? "#lesson-" + next.code : "#progress";
     const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : "مراجعة نتائج الوحدة";
     const evidence = next ? engine.getLessonProgress(next.code).evidence : null;
@@ -60,7 +78,7 @@
       '<article class="sprint-resume"><div><span class="sprint-code">' + (next ? escape(next.code) : "BUSINESS MATHEMATICS") + '</span>' +
       lessonContext + '<h2>' + escape(title) + '</h2>' + lessonEvidence + '<a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : "عرض النتائج") + ' ←</a>' +
       (next && clipInfo[next.code] ? '<a class="sprint-video-link" href="' + target + '?tab=video">▶ شرح قصير</a>' : "") +
-      '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + '</section>';
+      '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + learningRoute(curriculum, progress, escape) + '</section>';
   }
 
   function lessonProgress() {
