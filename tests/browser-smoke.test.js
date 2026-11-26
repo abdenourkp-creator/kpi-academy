@@ -151,6 +151,15 @@ function startServer() {
     await page.keyboard.press("Tab");
     assert.equal(await keyboardLinks.nth(1).evaluate(el => el === document.activeElement), true);
     assert.equal(await keyboardLinks.nth(1).evaluate(el => el.matches(":focus-visible")), true);
+    // Let the browser finish its smooth focus scroll before checking fixed-shell clearance.
+    await page.waitForTimeout(1500);
+    const focusedBounds = await keyboardLinks.nth(1).boundingBox();
+    const bottomNavBounds = await page.locator(".mobile-bottom-nav").boundingBox();
+    const topbarBounds = await page.locator(".topbar").boundingBox();
+    assert.ok(focusedBounds && bottomNavBounds && topbarBounds &&
+      focusedBounds.y >= topbarBounds.y + topbarBounds.height &&
+      focusedBounds.y + focusedBounds.height <= bottomNavBounds.y,
+    "keyboard focus must remain visible between the sticky header and fixed navigation");
     const focusStyle = await keyboardLinks.nth(1).evaluate(el => {
       const style = getComputedStyle(el);
       return (style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0) || style.boxShadow !== "none";

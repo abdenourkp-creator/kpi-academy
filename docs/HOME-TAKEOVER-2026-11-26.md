@@ -19,3 +19,7 @@ Serve from the repository root with `python3 -m http.server 4173`, then open `ht
 ## Open gates and limitations
 
 The approved Home and Lesson images were not available in this execution workspace. The captures have therefore not been compared to the approved references, and Phase 2 has not passed visual acceptance. The application is predominantly Arabic; `KPI.bidi.setLanguage` changes document attributes but is not a complete English-language experience. English and bilingual visual QA remain outstanding. Browser screenshots and control-size observations above concern the fresh Arabic dashboard; they do not establish accessibility or visual acceptance across every learner state and route. Phases 3–8 remain open. CI for the new commit must be checked separately.
+
+### Keyboard focus follow-up
+
+A real Tab traversal at 390 × 844 initially placed the focused shortcut underneath the fixed bottom bar even though its focus outline existed. The shell now reserves scroll clearance for both the sticky header and bottom navigation. A repeat Chromium capture showed the cyan outline and entire focused card unobscured. The browser regression checks the focused card's bounds after scrolling; this does not replace a complete keyboard and screen-reader audit.
