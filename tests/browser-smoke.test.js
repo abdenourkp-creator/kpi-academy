@@ -117,6 +117,24 @@ function startServer() {
       }
     }
     await page.setViewportSize({ width: 390, height: 844 });
+    // Keyboard regression: traverse real adjacent shortcuts, reverse and activate.
+    const keyboardLinks = page.locator(".sprint-shortcuts a");
+    await keyboardLinks.first().focus();
+    await page.keyboard.press("Tab");
+    assert.equal(await keyboardLinks.nth(1).evaluate(el => el === document.activeElement), true);
+    assert.equal(await keyboardLinks.nth(1).evaluate(el => el.matches(":focus-visible")), true);
+    const focusStyle = await keyboardLinks.nth(1).evaluate(el => {
+      const style = getComputedStyle(el);
+      return (style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0) || style.boxShadow !== "none";
+    });
+    assert.ok(focusStyle, "keyboard shortcut must have a rendered focus indicator");
+    await page.keyboard.press("Shift+Tab");
+    assert.equal(await keyboardLinks.first().evaluate(el => el === document.activeElement), true);
+    const keyboardHref = await keyboardLinks.first().getAttribute("href");
+    await page.keyboard.press("Enter");
+    await page.waitForFunction(expected => location.hash === expected, keyboardHref);
+    await page.locator(".sprint-shortcuts").waitFor({ state: "detached" });
+    await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
     const shortcutRoutes = ["modules", "calculator", "analytics", "lesson-BM-005?tab=lab", "simulator", "progress"];
     for (const route of shortcutRoutes) {
       const shortcut = page.locator('.sprint-shortcuts a[href="#' + route + '"]');
