@@ -575,6 +575,27 @@ function startServer() {
     }
     assert.equal(await labPage.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
       "the gross-margin case must fit the mobile viewport");
+    // Isolated completed-curriculum fixture through the real evidence/XP API.
+    await labPage.evaluate(() => {
+      const engine = window.KPI_LEARNING_ENGINE;
+      for (let n = 1; n <= 32; n++) {
+        const code = "BM-" + String(n).padStart(3, "0");
+        engine.saveLessonEvidence(code, { interactiveLab: true, professionalChallenge: true, fieldChecklist: true, learnerAttested: true });
+        if (!engine.completeLesson(code).ok) throw new Error("Completion fixture failed: " + code);
+      }
+    });
+    await labPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await resume.locator(".sprint-primary").waitFor();
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
+    assert.equal(await resume.locator(".ka-resume-evidence").count(), 0);
+    assert.equal(await labPage.locator(".sprint-ring strong").textContent(), "100%");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2880);
+    await labPage.reload({ waitUntil: "networkidle" });
+    await resume.locator(".sprint-primary").waitFor();
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2880);
+    await resume.locator(".sprint-primary").click();
+    await labPage.waitForFunction(() => location.hash === "#progress");
     await labContext.close();
 
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
