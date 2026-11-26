@@ -59,8 +59,9 @@
       .sort((a, b) => (progress[b.code].updatedAt || "").localeCompare(progress[a.code].updatedAt || ""))[0] ||
       lessons.find(lesson => progress[lesson.code]?.status !== "completed");
     const pct = stats.totalLessons > 0 ? Math.round(stats.completedLessons / stats.totalLessons * 100) : 0;
-    const target = next ? "#lesson-" + next.code : "#progress";
-    const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : "مراجعة نتائج الوحدة";
+    const empty = lessons.length === 0;
+    const target = next ? "#lesson-" + next.code : empty ? "#modules" : "#progress";
+    const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : empty ? "لا توجد دروس متاحة حاليًا" : "مراجعة نتائج الوحدة";
     const evidence = next ? engine.getLessonProgress(next.code).evidence : null;
     const evidenceCount = evidence ? ["interactiveLab", "professionalChallenge", "fieldChecklist", "learnerAttested"]
       .filter(key => evidence[key] === true).length : 0;
@@ -75,17 +76,17 @@
       '<dl><div><dt>نقاط الخبرة</dt><dd dir="ltr">' + stats.earnedXp.toLocaleString("en-US") + ' XP</dd></div>' +
       '<div><dt>الدروس المكتملة</dt><dd dir="ltr">' + stats.completedLessons + ' / ' + stats.totalLessons + '</dd></div>' +
       '<div><dt>الاختبارات المجتازة</dt><dd dir="ltr">' + stats.passedAssessments + ' / ' + stats.totalAssessments + '</dd></div></dl></div>' +
-      '<article class="sprint-resume"><div><span class="sprint-code">' + (next ? escape(next.code) : "BUSINESS MATHEMATICS") + '</span>' +
-      lessonContext + '<h2>' + escape(title) + '</h2>' + lessonEvidence + '<a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : "عرض النتائج") + ' ←</a>' +
+      '<article class="sprint-resume"><div><span class="sprint-code">' + (next ? escape(next.code) : empty ? "NO LESSONS" : "BUSINESS MATHEMATICS") + '</span>' +
+      lessonContext + '<h2>' + escape(title) + '</h2>' + lessonEvidence + '<a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : empty ? "عرض الوحدات" : "عرض النتائج") + ' ←</a>' +
       (next && clipInfo[next.code] ? '<a class="sprint-video-link" href="' + target + '?tab=video">▶ شرح قصير</a>' : "") +
       '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + learningRoute(curriculum, progress, escape) + '</section>';
   }
 
   function lessonProgress() {
     const stats = root.KPI_LEARNING_ENGINE.getDashboard();
-    const percent = Math.round(stats.completedLessons / stats.totalLessons * 100);
+    const percent = stats.totalLessons > 0 ? Math.round(stats.completedLessons / stats.totalLessons * 100) : 0;
     return '<div class="sprint-lesson-progress"><span>دروس مكتملة</span><progress aria-label="تقدم الدروس" max="' +
-      stats.totalLessons + '" value="' + stats.completedLessons + '"></progress><strong dir="ltr">' +
+      Math.max(1, stats.totalLessons) + '" value="' + stats.completedLessons + '"></progress><strong dir="ltr">' +
       stats.completedLessons + ' / ' + stats.totalLessons + ' · ' + percent + '%</strong></div>';
   }
 
