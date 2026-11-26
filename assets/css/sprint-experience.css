@@ -110,3 +110,17 @@
 .sprint-route progress { width: 100%; accent-color: #4dcfff; }
 .sprint-route .sprint-primary { min-block-size: 44px; align-items: center; justify-self: start; margin: 0; }
 .sprint-route a:focus-visible { outline: 2px solid #a0f2ff; outline-offset: 3px; }
+
+/* 02.10-C4: compact Home only; retain all routes and touch targets. */
+@media (max-width: 520px) {
+  .ka-dashboard .ka-welcome { min-height: 160px; padding: 14px; }
+  .ka-dashboard .ka-welcome-copy h1 { font-size: clamp(1.2rem, 5.4vw, 1.65rem); }
+  .ka-dashboard .sprint-overview { gap: 10px; }
+  .ka-dashboard .sprint-score { padding: 10px; gap: 10px; }
+  .ka-dashboard .sprint-ring { width: min(100%, 112px); padding: 7px; }
+  .ka-dashboard .sprint-score dl > div { padding-block: 5px; }
+  .ka-dashboard .sprint-resume { padding: 12px; gap: 10px; }
+  .ka-dashboard .sprint-shortcuts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ka-dashboard .sprint-shortcuts a { min-block-size: 44px; padding: 8px 4px; border-radius: 14px; }
+  .ka-dashboard .sprint-shortcuts svg { width: 22px; height: 22px; }
+}
