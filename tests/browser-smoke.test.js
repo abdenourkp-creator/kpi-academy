@@ -87,7 +87,35 @@ function startServer() {
     assert.equal(await page.locator(".ka-module-art img").count(), 3, "all modules must have visual illustrations");
     assert.equal(await page.locator(".ka-welcome-visual img").evaluate(img => img.complete && img.naturalWidth > 0), true, "dashboard hero illustration must load");
     assert.equal(await page.locator(".ka-module-art img").evaluateAll(imgs => imgs.every(img => img.complete && img.naturalWidth > 0)), true, "module illustrations must load");
+    // The next action must be visible above the fixed navigation on a fresh phone viewport.
+    for (const width of [320, 360, 390, 430]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.evaluate(() => scrollTo(0, 0));
+      const action = await page.locator(".sprint-resume .sprint-primary").boundingBox();
+      const nav = await page.locator(".mobile-bottom-nav").boundingBox();
+      assert.ok(action && nav && action.y >= 0 && action.y + action.height <= nav.y,
+        "resume action must be visible above mobile navigation at " + width + "px");
+      for (const link of await page.locator(".mobile-bottom-nav .mobile-bottom-link").all()) {
+        const bounds = await link.boundingBox();
+        assert.ok(bounds && bounds.width >= 44 && bounds.height >= 44,
+          "mobile navigation must provide 44px targets at " + width + "px");
+      }
+    }
+    await page.setViewportSize({ width: 768, height: 900 });
+    assert.equal(await page.locator(".mobile-bottom-nav").evaluate(el => getComputedStyle(el).position), "fixed",
+      "tablet navigation must remain fixed when displayed");
+    assert.equal(await menuButton.isVisible(), true, "tablet users can open the sidebar");
+    assert.equal(await page.locator(".mobile-brand").isVisible(), true, "tablet header retains the academy identity");
+    await menuButton.click();
+    assert.equal(await menuButton.getAttribute("aria-expanded"), "true");
+    await page.keyboard.press("Escape");
+    await page.setViewportSize({ width: 1365, height: 900 });
+    assert.equal(await page.locator(".ka-dashboard-details").getAttribute("open"), null,
+      "secondary progress details begin collapsed");
+    await page.locator(".ka-dashboard-details > summary").click();
     await page.locator(".chapter-progress").waitFor();
+    assert.equal(await page.locator(".st-skill-node").first().isVisible(), true,
+      "the disclosure must retain access to personal study tools");
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
     assert.equal(await page.locator(".st-skill-node").count(), 8, "dashboard must render the eight-chapter skill tree");
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
@@ -509,6 +537,7 @@ function startServer() {
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await page.locator(".ka-dashboard-details > summary").click();
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, "dashboard visual chart must fit mobile width");
     await page.goto("http://127.0.0.1:" + port + "/#analytics", { waitUntil: "networkidle" });

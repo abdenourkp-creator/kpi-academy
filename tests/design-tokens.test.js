@@ -148,7 +148,7 @@ assert.equal(count(/var\(\s*--ka-radius-lg\b/g, css), 1, "the welcome hero must 
 
 assert.equal(count(/--ka-radius-control\s*:/g, css), 1, "control radius must retain one canonical declaration");
 assert.match(tokens, /--ka-radius-control\s*:\s*14px\s*;/, "control radius must preserve 14px");
-assert.equal(count(/var\(\s*--ka-radius-control\b/g, css), 5, "all five control-radius consumers must remain unchanged");
+assert.equal(count(/var\(\s*--ka-radius-control\b/g, css), 6, "control-radius consumers include the dashboard disclosure");
 assert.equal(count(/--ka-radius-pill\s*:/g, css), 1, "pill radius must retain one canonical declaration");
 assert.match(tokens, /--ka-radius-pill\s*:\s*999px\s*;/, "pill radius must preserve 999px");
 assert.equal(count(/var\(\s*--ka-radius-pill\b/g, css), 2, "both pill-radius consumers must remain unchanged");
