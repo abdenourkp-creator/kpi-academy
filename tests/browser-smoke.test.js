@@ -101,6 +101,22 @@ function startServer() {
     assert.equal(await firstChapterLink.count(), 1);
     assert.ok((await firstChapterLink.boundingBox()).height >= 44);
     assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
+    // Phase 2 responsive acceptance: inspect the actual dashboard at each required width.
+    for (const width of [320, 360, 390, 430, 768, 1365]) {
+      await page.setViewportSize({ width, height: 900 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+        "dashboard must not overflow at " + width + "px");
+      for (const selector of [".sprint-shortcuts a", ".sprint-route a", ".sprint-resume a"]) {
+        const links = page.locator(selector);
+        assert.ok(await links.count() > 0, selector + " must exist");
+        for (const link of await links.all()) {
+          const bounds = await link.boundingBox();
+          assert.ok(bounds && bounds.height >= 44 && bounds.width >= 44,
+            selector + " must meet 44px touch target at " + width + "px");
+        }
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
     const shortcutRoutes = ["modules", "calculator", "analytics", "lesson-BM-005?tab=lab", "simulator", "progress"];
     for (const route of shortcutRoutes) {
       const shortcut = page.locator('.sprint-shortcuts a[href="#' + route + '"]');
