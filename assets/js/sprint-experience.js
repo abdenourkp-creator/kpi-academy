@@ -71,7 +71,7 @@
       evidenceCount + ' / 4</bdi></span><progress aria-label="متطلبات إكمال الدرس" value="' +
       evidenceCount + '" max="4"></progress></div>' : '';
     return '<section class="sprint-overview" aria-label="سجل التعلّم">' +
-      '<div class="sprint-greeting"><div><h2>مرحبًا بك، عبد النور</h2><p>مسار الرياضيات التجارية للضيافة</p></div><a href="#progress">سجلّ التعلّم ←</a></div>' +
+      '<div class="sprint-greeting"><div><h2>مرحبًا بك</h2><p>مسار الرياضيات التجارية للضيافة</p></div><a href="#progress">سجلّ التعلّم ←</a></div>' +
       '<div class="sprint-score"><div class="sprint-ring" style="--value:' + pct + '%"><div><strong dir="ltr">' + pct + '%</strong><span>التقدم العام</span></div></div>' +
       '<dl><div><dt>نقاط الخبرة</dt><dd dir="ltr">' + stats.earnedXp.toLocaleString("en-US") + ' XP</dd></div>' +
       '<div><dt>الدروس المكتملة</dt><dd dir="ltr">' + stats.completedLessons + ' / ' + stats.totalLessons + '</dd></div>' +
