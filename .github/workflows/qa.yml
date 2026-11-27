@@ -19,12 +19,16 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Check JavaScript syntax
         run: |
+          node --check assets/js/home-language.js
+          node --check tests/home-review.js
           node --check assets/js/app.js
           node --check assets/js/kpi-engine.js
           node --check assets/js/calculator.js
@@ -110,6 +114,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -141,11 +147,21 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Retrieve tested browser screenshots
+        uses: actions/download-artifact@v4
+        with:
+          name: kpi-academy-before-after-visuals
+          path: /tmp/kpi-visuals
       - name: Assemble static test build
         run: |
           mkdir -p dist
           cp index.html TESTING.md dist/
           cp -r assets data content dist/
+          cp docs/FOUNDER-HOME-REVIEW.md dist/
+          cp -r /tmp/kpi-visuals/home-review dist/review
+          git rev-parse HEAD > dist/TESTED-COMMIT.txt
           tar -czf kpi-academy-test-build.tar.gz -C dist .
       - name: Upload test build artifact
         uses: actions/upload-artifact@v4

@@ -7,10 +7,10 @@ window.KPI_AR_LABEL=arLabel;
 const titles={dashboard:"لوحة التحكم",modules:"الوحدات التعليمية",calculator:"حاسبة المؤشرات",analytics:"مختبر التحليل",simulator:"محاكاة الإدارة",progress:"التقييم والتقدم",settings:"الإعدادات"};
 let modules=[],businessMath=null,hospitalityAccounting=null,kpiRegistry=null;
 let catalogState="loading";
-function catalogStatus(){return catalogState==="loading"?'<div class="loading-state" role="status">جارٍ تحميل بيانات المنهج…</div>':'<div class="empty-card" role="alert"><h2>تعذر تحميل بيانات المنهج</h2><p>تحقق من الاتصال ثم حاول مجدداً.</p><button type="button" id="retryAcademyCatalog">إعادة المحاولة</button></div>';}
+function catalogStatus(){const copy=window.KPI.homeLanguage.apply();return catalogState==="loading"?'<div class="loading-state" role="status">'+copy.loading+'</div>':'<div class="empty-card" role="alert"><h2>'+copy.loadError+'</h2><p>'+copy.tryAgain+'</p><button type="button" id="retryAcademyCatalog">'+copy.retry+'</button></div>';}
 
 async function loadData(){catalogState="loading";app.innerHTML=catalogStatus();try{const [m,b,h,k]=await Promise.all([fetch(MODULES_URL),fetch(BM_URL),fetch(HA_URL),fetch(KPI_URL)]);if(!m.ok||!b.ok||!h.ok||!k.ok)throw Error("تعذر تحميل بيانات المنهج والسجل");modules=await m.json();businessMath=await b.json();hospitalityAccounting=await h.json();kpiRegistry=await k.json();catalogState="ready";render();}catch(e){catalogState="error";app.innerHTML=catalogStatus();}}
-function moduleVisual(id){const map={"business-mathematics":["module-business-mathematics.svg","رسم توضيحي للحساب والتحليل التجاري"],"hospitality-accounting":["module-hospitality-accounting.svg","رسم توضيحي لتدفق الإيرادات والتكاليف والربح"],"restaurant-kpis":["module-restaurant-kpis.svg","رسم توضيحي لمؤشرات أداء المطعم"]};const v=map[id];return v?'<div class="ka-module-art"><img src="assets/diagrams/academy/'+v[0]+'" alt="'+v[1]+'"></div>':"";}
+function moduleVisual(id, english = false){const map={"business-mathematics":["module-business-mathematics.svg","رسم توضيحي للحساب والتحليل التجاري"],"hospitality-accounting":["module-hospitality-accounting.svg","رسم توضيحي لتدفق الإيرادات والتكاليف والربح"],"restaurant-kpis":["module-restaurant-kpis.svg","رسم توضيحي لمؤشرات أداء المطعم"]};const v=map[id];return v?'<div class="ka-module-art"><img src="assets/diagrams/academy/'+v[0]+'" alt="'+(english ? "" : v[1])+'"></div>':"";}
 function chapterVisual(chapter,compact){
  const n=chapter.number;
  const art=[
@@ -27,38 +27,80 @@ function chapterVisual(chapter,compact){
  const captions=["خريطة الأعداد والعمليات والدقة","الجزء والإجمالي والتغير النسبي","المقارنة والتناسب وتوزيع الموارد","القيم والأوزان والمتوسطات","المتغيرات وتوازن المعادلات","المرجع والنتيجة وتحليل الانحراف","الإنتاج والوقت والإنتاجية","الجدول والاتجاه والتفسير"];
  return '<figure class="ka-chapter-visual'+(compact?" compact":"")+'"><svg viewBox="0 0 900 360" role="img" aria-label="Visual learning map for chapter '+n+'"><defs><linearGradient id="chapter-bg-'+n+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F8FAFF"/><stop offset="1" stop-color="#E8F0FC"/></linearGradient></defs><rect width="900" height="360" rx="22" fill="url(#chapter-bg-'+n+')"/><g opacity=".2" stroke="#9BB2D5"><path d="M0 70H900M0 140H900M0 210H900M0 280H900M100 0V360M200 0V360M300 0V360M400 0V360M500 0V360M600 0V360M700 0V360M800 0V360"/></g><text x="45" y="48" font-family="Arial" font-size="14" font-weight="700" letter-spacing="2" fill="#58749D">CHAPTER '+String(n).padStart(2,"0")+' · '+titles[n-1]+'</text>'+art[n-1]+'</svg><figcaption><span>VISUAL LEARNING MAP · '+String(n).padStart(2,"0")+'</span><strong>'+captions[n-1]+'</strong></figcaption></figure>';
 }
-function moduleCard(m){const isMath=m.id==="business-mathematics",isAccounting=m.id==="hospitality-accounting";const count=isMath&&businessMath?businessMath.chapters.reduce((n,c)=>n+c.lessons.length,0):0;const status=isMath?"متاح الآن":isAccounting?"نطاق معتمد · المنهج التفصيلي قيد الإعداد":"سجل المؤشرات والحاسبة متاحان · المنهج قيد الإعداد";const number=isMath?"01":isAccounting?"02":"03";return '<article class="ka-module-card ka-module-card--'+m.id+'">'+moduleVisual(m.id)+'<div class="ka-module-card-content"><div class="ka-module-top"><span class="ka-module-index">'+number+'</span><span class="ka-module-status '+(isMath?"available":"planned")+'">'+status+'</span></div><h3>'+esc(arLabel(m.title))+'</h3><p>'+esc(m.description)+'</p><div class="ka-module-outcomes">'+m.outcomes.slice(0,3).map(x=>'<span>'+esc(x)+'</span>').join("")+'</div><div class="ka-module-footer"><span>'+(isMath?count+" درساً · 8 فصول":isAccounting?(hospitalityAccounting?hospitalityAccounting.approvedScope.length:0)+" مجالات معتمدة":(kpiRegistry?kpiRegistry.kpis.length:0)+" مؤشراً معتمداً")+'</span><a class="ka-module-link" href="#module-'+m.id+'" data-module="'+m.id+'">'+(isMath?"ابدأ التعلّم":isAccounting?"استكشف النطاق":"استكشف المؤشرات")+' <span aria-hidden="true">←</span></a></div></div></article>';}
+const moduleEnglish = {
+  "business-mathematics": {
+    description: "Mathematics for decisions in restaurant and hotel operations.",
+    outcomes: ["Commercial arithmetic", "Percentages and change", "Ratios and weighted averages"]
+  },
+  "hospitality-accounting": {
+    description: "Revenue, expenses, costs and profit in hospitality operations."
+  },
+  "restaurant-kpis": {
+    description: "Measure costs, sales, labour, inventory and revenue per seat."
+  }
+};
+
+function moduleCard(module, language = "ar") {
+  const english = language === "en";
+  const math = module.id === "business-mathematics";
+  const accounting = module.id === "hospitality-accounting";
+  const description = english ? moduleEnglish[module.id]?.description || module.description : module.description;
+  const outcomes = english ? moduleEnglish[module.id]?.outcomes || module.outcomes : module.outcomes;
+  const count = math ? businessMath.chapters.reduce((sum, ch) => sum + ch.lessons.length, 0) :
+    accounting ? hospitalityAccounting.approvedScope.length : kpiRegistry.kpis.length;
+  const status = math ? (english ? "Available" : "متاح الآن") : accounting ?
+    (english ? "Approved scope · lessons in preparation" : "نطاق معتمد · المنهج قيد الإعداد") :
+    (english ? "Registry and calculator available" : "سجل المؤشرات والحاسبة متاحان");
+  const quantity = math ? (english ? "lessons" : "درساً") : accounting ? (english ? "scope areas" : "مجالات معتمدة") : (english ? "KPIs" : "مؤشراً");
+  const action = math ? (english ? "Explore lessons" : "استكشف الدروس") : accounting ?
+    (english ? "Explore scope" : "استكشف النطاق") : (english ? "Browse KPIs" : "استكشف المؤشرات");
+  return `<article class="ka-module-card ka-module-card--${esc(module.id)}">
+    ${moduleVisual(module.id, english)}
+    <div class="ka-module-card-content"><div class="ka-module-top">
+      <span class="ka-module-index">${esc(module.code.replace("MODULE ", ""))}</span>
+      <span class="ka-module-status ${math ? "available" : "planned"}">${status}</span></div>
+      <h3>${esc(english ? module.title : arLabel(module.title))}</h3><p>${esc(description)}</p>
+      <div class="ka-module-outcomes">${outcomes.slice(0,3).map(item => `<span>${esc(item)}</span>`).join("")}</div>
+      <div class="ka-module-footer"><span>${count} ${quantity}</span>
+        <a class="ka-module-link" href="#module-${esc(module.id)}" data-module="${esc(module.id)}">${action} <span aria-hidden="true">${english ? "→" : "←"}</span></a>
+      </div>
+    </div></article>`;
+}
+
 function dashboard() {
-  const summary = window.KPI_LEARNING_UI?.dashboardSummary({ chapterOnly: true });
-  const studyTools = window.KPI_STUDY_TOOLS?.dashboardWidget(businessMath) || "";
+  const language = document.documentElement.lang;
+  const english = language === "en";
+  const copy = window.KPI.i18n[language].home;
+  const summary = window.KPI_LEARNING_UI?.dashboardSummary({ chapterOnly: true, language });
+  const studyTools = window.KPI_STUDY_TOOLS?.dashboardWidget(businessMath, language) || "";
   return `<div class="ka-dashboard">
     <header class="ka-home-cover">
       <div class="ka-welcome-visual"><img src="assets/photos/hotel-reception.webp" alt="" fetchpriority="high"></div>
       <div class="ka-cover-copy">
-        <p class="ka-cover-subject">إدارة المطاعم والفنادق</p>
-        <h1>أكاديمية ذكاء الأعمال <span>لقطاع الضيافة</span></h1>
-        <p>تعلّم قراءة مؤشرات التشغيل والربحية واتخاذ القرار.</p>
+        <p class="ka-cover-subject">${copy.industry}</p>
+        <h1>${copy.academyTitle} <span>${copy.academyFocus}</span></h1>
+        <p>${copy.promise}</p>
       </div>
     </header>
-    ${window.KPI_SPRINT.overview(businessMath, arLabel, esc)}
+    ${window.KPI_SPRINT.overview(businessMath, english ? value => value : arLabel, esc, language)}
     <section class="ka-home-library" aria-labelledby="home-library-title">
-      <div class="ka-home-heading"><h2 id="home-library-title">مكتبة الوحدات</h2><a href="#modules">كل الوحدات ←</a></div>
-      <div class="ka-module-grid">${modules.map(moduleCard).join("")}</div>
+      <div class="ka-home-heading"><h2 id="home-library-title">${copy.library}</h2><a href="#modules">${copy.allModules}</a></div>
+      <div class="ka-module-grid">${modules.map(module => moduleCard(module, language)).join("")}</div>
     </section>
-    <details class="ka-dashboard-details">
-      <summary>تفاصيل التقدم والمراجعة الشخصية</summary>
-      ${summary || '<p>محرك التعلّم غير متاح حالياً.</p>'}
+    <details class="ka-dashboard-details"${app.querySelector(".ka-dashboard-details[open]") ? " open" : ""}>
+      <summary>${copy.record}</summary>
+      ${summary || `<p>${copy.unavailable}</p>`}
       ${studyTools}
-      <section class="ka-study-method"><h2>من المعرفة إلى القرار</h2>
-        <p>افهم المفهوم، طبّق المعادلة، حلّل النتيجة ثم اربطها بقرار إداري يحترم حدود البيانات.</p>
+      <section class="ka-study-method"><h2>${copy.method}</h2>
+        <p>${copy.methodText}</p>
       </section>
     </details>
   </div>`;
 }
 
-function modulesView(){return '<div class="ka-page-intro"><span class="eyebrow">KNOWLEDGE ARCHITECTURE</span><h1>الوحدات التعليمية</h1><p>استكشف المحتوى المتاح، وميّز بين المنهج المنشور والنطاق الذي ما زال قيد التطوير.</p></div><div class="ka-module-grid ka-module-grid-page">'+modules.map(moduleCard).join("")+'</div>';}
+function modulesView(){return '<div class="ka-page-intro"><span class="eyebrow">KNOWLEDGE ARCHITECTURE</span><h1>الوحدات التعليمية</h1><p>استكشف المحتوى المتاح، وميّز بين المنهج المنشور والنطاق الذي ما زال قيد التطوير.</p></div><div class="ka-module-grid ka-module-grid-page">'+modules.map(module => moduleCard(module)).join("")+'</div>';}
 
-function moduleDetail(id){const m=modules.find(x=>x.id===id);if(!m)return modulesView();let h='<div class="page-heading"><div><span class="eyebrow">'+m.code+'</span><h1>'+m.title+'</h1><p>'+m.description+'</p></div><a class="text-link" href="#modules">← كل الوحدات</a></div><div class="content-card"><h2>مخرجات التعلم</h2><p>'+m.outcomes.join(" · ")+'</p></div><h2 class="section-title">الفصول والدروس</h2>';if(id==="business-mathematics"&&businessMath){businessMath.chapters.forEach(c=>{h+='<section class="chapter-panel ka-chapter-panel"><div class="chapter-heading"><span class="module-number">الفصل '+String(c.number).padStart(2,"0")+'</span><span class="tag">'+c.lessons.length+' دروس</span></div><h2>'+arLabel(c.title)+'</h2>'+chapterVisual(c,false)+'<div class="lesson-list">';c.lessons.forEach(l=>{h+='<a class="lesson-row" href="#lesson-'+l.code+'"><span class="lesson-code">'+l.code+'</span><span class="lesson-name">'+arLabel(l.title.replace(/^BM-\d+ — /,''))+'</span><span class="lesson-xp">90 XP</span><span class="lesson-arrow">←</span></a>';});h+='</div></section>';});}else if(id==="hospitality-accounting"&&hospitalityAccounting){h+='<section class="chapter-panel ka-module-scope-panel"><div class="ka-module-feature-art">'+moduleVisual(id)+'</div><div class="chapter-heading"><span class="module-number">النطاق المعتمد للوحدة</span><span class="tag">المنهج التفصيلي قيد الإعداد</span></div><h2>المجالات المعتمدة ضمن نطاق الوحدة</h2><p class="scope-intro">هذه المجالات مثبتة في مواصفات KPI Academy. لم تحدد الوثائق بعد ترتيب الفصول أو الدروس أو التقييمات؛ لذلك لن نعرضها كمنهج مكتمل.</p><div class="scope-grid">'+hospitalityAccounting.approvedScope.map((x,i)=>'<article class="scope-item"><span class="scope-index">'+String(i+1).padStart(2,"0")+'</span><strong>'+x.title+'</strong><p>'+x.description+'</p></article>').join("")+'</div><div class="notice">'+hospitalityAccounting.curriculumNotice+'</div></section>';}else if(id==="restaurant-kpis"){h+='<section class="chapter-panel ka-kpi-module-panel"><div class="ka-module-feature-art">'+moduleVisual(id)+'</div><div class="chapter-heading"><span class="module-number">سجل المؤشرات المعتمد</span><span class="tag">'+(kpiRegistry?kpiRegistry.kpis.length:0)+' KPI</span></div><h2>من التعريف إلى الحساب والتفسير</h2><p>هذه تعريفات المؤشرات المعتمدة في سجل KPI Academy. عرض السجل لا يعني أن المنهج التعليمي التفصيلي للوحدة قد اكتمل.</p><div class="ka-kpi-registry-list">'+((kpiRegistry&&Array.isArray(kpiRegistry.kpis))?kpiRegistry.kpis:[]).map((k,i)=>'<article class="ka-kpi-registry-item"><div><span class="scope-index">'+String(i+1).padStart(2,"0")+'</span><strong>'+esc(k.name)+'</strong><small>'+esc(k.unit)+' · '+esc(k.period)+'</small></div><code>'+esc(k.formula)+'</code></article>').join("")+'</div><div class="notice">السجل الحسابي والحاسبة متاحان. ترتيب الفصول والدروس والأنشطة التعليمية لهذه الوحدة لم يعتمد بعد.</div><a class="primary-action ka-calculator-cta" href="#calculator">فتح حاسبة المؤشرات ←</a></section>'}else{h+='<div class="empty-card"><h2>المحتوى التفصيلي قيد الإعداد</h2><p>لن نعرض عناوين أو دروساً مختصرة على أنها محتوى مكتمل.</p></div>';}return h;}
+function moduleDetail(id){const m=modules.find(x=>x.id===id);if(!m)return modulesView();let h='<div class="page-heading"><div><span class="eyebrow">'+m.code+'</span><h1>'+m.title+'</h1><p>'+m.description+'</p></div><a class="text-link" href="#modules">← كل الوحدات</a></div><div class="content-card"><h2>مخرجات التعلم</h2><p>'+m.outcomes.join(" · ")+'</p></div><h2 class="section-title">الفصول والدروس</h2>';if(id==="business-mathematics"&&businessMath){businessMath.chapters.forEach(c=>{h+='<section class="chapter-panel ka-chapter-panel"><div class="chapter-heading"><span class="module-number">الفصل '+String(c.number).padStart(2,"0")+'</span><span class="tag">'+c.lessons.length+' دروس</span></div><h2>'+arLabel(c.title)+'</h2>'+chapterVisual(c,false)+'<div class="lesson-list">';c.lessons.forEach(l=>{h+='<a class="lesson-row" href="#lesson-'+l.code+'"><span class="lesson-code">'+l.code+'</span><span class="lesson-name">'+arLabel(l.title.replace(/^BM-\d+ — /,''))+'</span><span class="lesson-xp">'+l.availableXp+' XP</span><span class="lesson-arrow">←</span></a>';});h+='</div></section>';});}else if(id==="hospitality-accounting"&&hospitalityAccounting){h+='<section class="chapter-panel ka-module-scope-panel"><div class="ka-module-feature-art">'+moduleVisual(id)+'</div><div class="chapter-heading"><span class="module-number">النطاق المعتمد للوحدة</span><span class="tag">المنهج التفصيلي قيد الإعداد</span></div><h2>المجالات المعتمدة ضمن نطاق الوحدة</h2><p class="scope-intro">هذه المجالات مثبتة في مواصفات KPI Academy. لم تحدد الوثائق بعد ترتيب الفصول أو الدروس أو التقييمات؛ لذلك لن نعرضها كمنهج مكتمل.</p><div class="scope-grid">'+hospitalityAccounting.approvedScope.map((x,i)=>'<article class="scope-item"><span class="scope-index">'+String(i+1).padStart(2,"0")+'</span><strong>'+x.title+'</strong><p>'+x.description+'</p></article>').join("")+'</div><div class="notice">'+hospitalityAccounting.curriculumNotice+'</div></section>';}else if(id==="restaurant-kpis"){h+='<section class="chapter-panel ka-kpi-module-panel"><div class="ka-module-feature-art">'+moduleVisual(id)+'</div><div class="chapter-heading"><span class="module-number">سجل المؤشرات المعتمد</span><span class="tag">'+(kpiRegistry?kpiRegistry.kpis.length:0)+' KPI</span></div><h2>من التعريف إلى الحساب والتفسير</h2><p>هذه تعريفات المؤشرات المعتمدة في سجل KPI Academy. عرض السجل لا يعني أن المنهج التعليمي التفصيلي للوحدة قد اكتمل.</p><div class="ka-kpi-registry-list">'+((kpiRegistry&&Array.isArray(kpiRegistry.kpis))?kpiRegistry.kpis:[]).map((k,i)=>'<article class="ka-kpi-registry-item"><div><span class="scope-index">'+String(i+1).padStart(2,"0")+'</span><strong>'+esc(k.name)+'</strong><small>'+esc(k.unit)+' · '+esc(k.period)+'</small></div><code>'+esc(k.formula)+'</code></article>').join("")+'</div><div class="notice">السجل الحسابي والحاسبة متاحان. ترتيب الفصول والدروس والأنشطة التعليمية لهذه الوحدة لم يعتمد بعد.</div><a class="primary-action ka-calculator-cta" href="#calculator">فتح حاسبة المؤشرات ←</a></section>'}else{h+='<div class="empty-card"><h2>المحتوى التفصيلي قيد الإعداد</h2><p>لن نعرض عناوين أو دروساً مختصرة على أنها محتوى مكتمل.</p></div>';}return h;}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 function fmt(s){const value=s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,"<em>$1</em>").replace(/\`([^\`]+)\`/g,"<code>$1</code>").replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/g,"<strong>$1</strong>").replace(/&lt;br\s*\/?&gt;/g,"<br>");return value.replace(/(<[^>]*>|[^<]+)/g,part=>part.charAt(0)==="<"?part:part.replace(/[A-Za-z][A-Za-z0-9%+./-]*(?:\s+[A-Za-z][A-Za-z0-9%+./-]*){0,4}/g,match=>'<span class="ltr-term" lang="en" dir="ltr">'+match+'</span>'));}
 function markdownHtml(md){
@@ -306,7 +348,7 @@ async function lessonView(code,tab){
   }
 }
 function placeholder(v){if(v==="settings")return window.KPI_LEARNING_UI.settingsView();if(v==="analytics"&&window.KPI_ANALYTICS)return window.KPI_ANALYTICS.view();if(v==="simulator"){const management=window.KPI_SIMULATOR?window.KPI_SIMULATOR.view():"";const liveVenue=window.KPI_LIVE_VENUE?window.KPI_LIVE_VENUE.view():"";return management+liveVenue;}if(v==="calculator"&&window.calculatorView)return window.calculatorView();if(v==="progress"&&window.KPI_LEARNING_UI)return window.KPI_LEARNING_UI.progressView();const c={calculator:["حاسبة المؤشرات","ستُبنى الحاسبة على سجل KPI المعتمد، مع عرض المعادلة والمدخلات والوحدات والفترة والافتراضات ورسائل التحقق لكل نتيجة."],analytics:["مختبر التحليل","مساحة لتحليل الاتجاهات والمقارنات وقراءة الأرقام ضمن سياق تشغيلي واضح."],simulator:["محاكاة الإدارة","ثلاث حالات إدارية تطبيقية ضمن نطاق النسخة الأولية، تُبنى على بيانات وسيناريوهات موثقة."],progress:["التقييم والتقدم","سيُسجل التقدم ونقاط XP بناءً على دليل إكمال فعلي. فتح الدرس وحده لا يمنح نقاطاً أو إتماماً."]};return '<div class="page-heading"><div><span class="eyebrow">قيد التطوير</span><h1>'+c[v][0]+'</h1><p>'+c[v][1]+'</p></div></div><div class="empty-card"><div class="empty-symbol">◌</div><h2>هذه المساحة لم تُنفذ بعد</h2><p>لن نعرض وظائف وهمية أو نتائج غير محسوبة.</p></div>';}
-function render(){if(catalogState!=="ready"){app.innerHTML=catalogStatus();return;}const hash=location.hash.replace("#","");if(/^lesson-section-\d+$/.test(hash)&&document.querySelector(".lesson-reader"))return;const lm=hash.match(/^lesson-(BM-\d{3})(?:\?tab=(lab|video))?$/),mm=hash.match(/^module-(.+)$/),am=hash.match(/^assessment-(bm-chapter-\d{2}|bm-final-practical)$/),v=lm||mm||am?"modules":titles[hash]?hash:"dashboard";pageTitle.textContent=lm?lm[1]:mm?"تفاصيل الوحدة":am?"الاختبار":titles[v];document.querySelectorAll(".nav-link").forEach(a=>{const active=a.dataset.view===(am?"progress":v);a.classList.toggle("active",active);if(active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});if(am){if(window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.renderAssessmentRoute(am[1],app);else app.innerHTML='<div class="loading-state">محرك التقييم غير متاح.</div>';return;}if(lm){lessonView(lm[1],lm[2]);return;}app.innerHTML=mm?moduleDetail(mm[1]):v==="dashboard"?dashboard():v==="modules"?modulesView():placeholder(v);if((v==="progress"||v==="settings")&&window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.mountProgressActions();if(v==="analytics"&&window.KPI_ANALYTICS)window.KPI_ANALYTICS.mount(app);if(v==="simulator"){if(window.KPI_SIMULATOR)window.KPI_SIMULATOR.mount(app);if(window.KPI_LIVE_VENUE)window.KPI_LIVE_VENUE.mount(app);}}
+function render(){window.KPI.homeLanguage.apply();if(catalogState!=="ready"){app.innerHTML=catalogStatus();return;}const hash=location.hash.replace("#","");if(/^lesson-section-\d+$/.test(hash)&&document.querySelector(".lesson-reader"))return;const lm=hash.match(/^lesson-(BM-\d{3})(?:\?tab=(lab|video))?$/),mm=hash.match(/^module-(.+)$/),am=hash.match(/^assessment-(bm-chapter-\d{2}|bm-final-practical)$/),v=lm||mm||am?"modules":titles[hash]?hash:"dashboard";pageTitle.textContent=lm?lm[1]:mm?"تفاصيل الوحدة":am?"الاختبار":v==="dashboard"&&document.documentElement.lang==="en"?"Home":titles[v];document.querySelectorAll(".nav-link").forEach(a=>{const active=a.dataset.view===(am?"progress":v);a.classList.toggle("active",active);if(active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});if(am){if(window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.renderAssessmentRoute(am[1],app);else app.innerHTML='<div class="loading-state">محرك التقييم غير متاح.</div>';return;}if(lm){lessonView(lm[1],lm[2]);return;}app.innerHTML=mm?moduleDetail(mm[1]):v==="dashboard"?dashboard():v==="modules"?modulesView():placeholder(v);if(v==="dashboard")window.KPI_LEARNING_UI?.bindCatalogRetry();if((v==="progress"||v==="settings")&&window.KPI_LEARNING_UI)window.KPI_LEARNING_UI.mountProgressActions();if(v==="analytics"&&window.KPI_ANALYTICS)window.KPI_ANALYTICS.mount(app);if(v==="simulator"){if(window.KPI_SIMULATOR)window.KPI_SIMULATOR.mount(app);if(window.KPI_LIVE_VENUE)window.KPI_LIVE_VENUE.mount(app);}}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-module]");if(a){e.preventDefault();location.hash="module-"+a.dataset.module;}});
 const menuToggle=document.getElementById("menuToggle");
 const sidebar=document.getElementById("sidebar");

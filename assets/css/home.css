@@ -112,3 +112,43 @@
   .ka-home-library .ka-module-card-content { padding: 0; }
   .ka-home-library .ka-module-card h3 { margin: 5px 0; }
 }
+
+.ka-language-button {
+  color: var(--ka-gold-bright);
+  background: var(--ka-glass-1);
+  border: 1px solid var(--ka-border);
+  border-radius: 10px;
+  min-height: 44px;
+  padding-inline: 12px;
+  font: inherit;
+  cursor: pointer;
+}
+html[lang="en"] :is(body,.app-shell,.main-area,.page-content,.sidebar,.topbar,.mobile-bottom-nav,.more-drawer,.ka-module-card,.st-dashboard,.chapter-progress) { direction: ltr; }
+html[lang="en"] .ka-dashboard :is(h1,h2,h3,p,small,strong,dt,dd) { text-align: start; }
+html[lang="en"] .ka-dashboard { text-align: start; overflow-wrap: break-word; }
+html[lang="en"] .ka-home-cover .ka-welcome-visual::after { background: linear-gradient(90deg, #061321 0%, #061321e8 34%, #06132115 92%); }
+/* The reception photo has no text or data. Keep its bell opposite the heading. */
+html[lang="en"] .ka-home-cover .ka-welcome-visual img { transform: scaleX(-1); }
+html[lang="en"] .ka-dashboard :is(.sprint-code,.ka-chapter-index) { direction: ltr; }
+html[lang="en"] .sidebar { left: 0; right: auto; }
+@media (min-width: 1024px) {
+  html[lang="en"] .main-area { margin-right: 0; margin-left: var(--ka-sidebar-width); }
+}
+@media (max-width: 1023px) {
+  html[lang="en"] .sidebar:not(.open) { transform: translateX(-110%); }
+  html[lang="en"] .more-drawer { right: auto; left: 0; }
+  html[lang="en"] .more-drawer:not(.open) { transform: translateX(-110%); }
+}
+@media (max-width: 660px) {
+  html[lang="en"] .ka-cover-copy { max-width: 84%; }
+  html[lang="en"] .ka-home-cover .ka-welcome-visual::after { background: linear-gradient(90deg, #061321ee, #061321bf 52%, #06132115); }
+}
+
+@media (max-width: 430px) and (max-height: 650px) {
+  .ka-home-cover { min-height: 100px; }
+  .ka-cover-copy, html[lang="en"] .ka-cover-copy { max-width: 100%; padding: 10px 14px; }
+  .ka-cover-copy h1 { font-size: 1.35rem; }
+  .ka-cover-copy h1 span { display: inline; }
+  .ka-cover-copy p { font-size: .78rem; }
+  .ka-current-learning .sprint-resume { padding: 12px; }
+}

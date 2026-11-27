@@ -3,6 +3,8 @@ const store=new Map();
 global.window=global;
 global.localStorage={getItem:key=>store.has(key)?store.get(key):null,setItem:(key,value)=>store.set(key,value)};
 global.KPI_LEARNING_ENGINE={getDashboard:()=>({completedLessons:5,passedAssessments:1,courseComplete:false}),getLessonProgress:code=>({progress:code==="BM-001"?{status:"completed"}:null})};
+require("../assets/js/ar.js");
+require("../assets/js/en.js");
 require("../assets/js/study-tools.js");
 const api=global.KPI_STUDY_TOOLS;
 assert.ok(api);

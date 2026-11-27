@@ -22,9 +22,9 @@
       .then(async responses => {
         if (responses.some(response => !response.ok)) throw new Error("تعذر تحميل بنك الاختبارات أو خريطة المنهج.");
         const data = await Promise.all(responses.map(response => response.json()));
+        validateCatalog(data[0]);
         catalog = data[0];
         curriculum = data[1];
-        validateCatalog();
         loadError = null;
         refreshCurrentView();
         return true;
@@ -38,7 +38,7 @@
     return loadPromise;
   }
 
-  function validateCatalog() {
+  function validateCatalog(catalog) {
     if (!catalog || catalog.passThreshold !== 80 ||
         !Array.isArray(catalog.chapterAssessments) || catalog.chapterAssessments.length !== 8 ||
         !catalog.finalAssessment || catalog.finalAssessment.id !== "bm-final-practical") {
@@ -85,11 +85,14 @@
     return '<div class="learning-storage-note warning"><span class="learning-dot"></span>التخزين المحلي غير متاح حالياً؛ قد لا تبقى التغييرات بعد إغلاق الصفحة.</div>';
   }
 
-  function dashboardSummary({ chapterOnly = false } = {}) {
+  function dashboardSummary({ chapterOnly = false, language = "ar" } = {}) {
+    const copy = root.KPI.i18n[language].home;
     if (!ENGINE) return "";
     if (!curriculum && !loadPromise && !loadError) loadCatalog();
     if (!curriculum) {
-      return '<section class="learning-resume"><div><span class="eyebrow">محرك التعلّم</span><h3>جارٍ تحميل خريطة الدروس…</h3><p>لن نعرض نسبة إكمال قبل التحقق من بيانات المنهج.</p></div></section>';
+      return loadError
+        ? `<section role="alert"><p>${copy.assessError}</p><button type="button" id="retryLearningCatalog">${copy.retry}</button></section>`
+        : `<section class="learning-resume" role="status"><h3>${copy.mapLoading}</h3></section>`;
     }
     const data = ENGINE.getDashboard();
     const lessonProgress = pct(data.completedLessons, data.totalLessons);
@@ -106,21 +109,36 @@
     const resumeBlock = candidate
       ? '<section class="learning-resume"><div><span class="eyebrow">متابعة التعلّم</span><h3>' + esc(root.KPI_AR_LABEL ? root.KPI_AR_LABEL(candidate.title.replace(/^BM-\\d+ — /,'')) : candidate.title) + '</h3><p>' + esc(candidate.code) + ' · ' + (inProgress.length ? "تابع من حيث توقفت" : "الدرس التالي المقترح") + '</p></div><a href="#lesson-' + esc(candidate.code) + '" class="primary-action">متابعة الدرس ←</a></section>'
       : '<section class="learning-resume complete"><div><span class="eyebrow">اكتملت الدروس</span><h3>أكملت دروس الرياضيات التجارية الـ32.</h3><p>راجع الاختبارات الفصلية والاختبار النهائي لاستيفاء شروط الإكمال.</p></div><a href="#progress" class="primary-action">عرض الاختبارات ←</a></section>';
-    const chapterBlock = '<section class="chapter-progress" aria-labelledby="chapterProgressTitle"><div class="chapter-progress-heading"><div><span class="eyebrow">خريطة الإنجاز</span><h3 id="chapterProgressTitle">تقدمك عبر الفصول الثمانية</h3><p>يعكس الدروس المسجلة فعلياً على هذا الجهاز، لا مجرد فتح الصفحات.</p></div><span class="chapter-progress-total">' + data.completedLessons + ' / 32 درساً</span></div><div class="chapter-progress-list">' + curriculum.chapters.map(chapter => { const done = chapter.lessons.filter(lesson => { const state = ENGINE.getLessonProgress(lesson.code).progress; return state && state.status === "completed"; }).length; const percent = pct(done, chapter.lessons.length); return '<div class="chapter-progress-row"><div class="chapter-progress-label"><strong>الفصل ' + String(chapter.number).padStart(2,"0") + ' · ' + esc(root.KPI_AR_LABEL ? root.KPI_AR_LABEL(chapter.title) : chapter.title) + '</strong><span>' + done + ' / ' + chapter.lessons.length + '</span></div><div class="chapter-progress-track" role="progressbar" aria-label="تقدم الفصل ' + chapter.number + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + percent + '"><i style="width:' + percent + '%"></i></div></div>'; }).join("") + '</div></section>';
+    const rows = curriculum.chapters.map(chapter => {
+      const done = chapter.lessons.filter(lesson => ENGINE.getLessonProgress(lesson.code).progress?.status === "completed").length;
+      const percent = pct(done, chapter.lessons.length);
+      const title = language === "ar" && root.KPI_AR_LABEL ? root.KPI_AR_LABEL(chapter.title) : chapter.title;
+      return `<div class="chapter-progress-row"><div class="chapter-progress-label"><strong>${copy.chapter} ${esc(chapter.number)} · ${esc(title)}</strong>
+        <bdi dir="ltr">${done} / ${chapter.lessons.length}</bdi></div><div class="chapter-progress-track" role="progressbar"
+        aria-label="${copy.chapterProgress} · ${esc(title)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}">
+        <i style="width:${percent}%"></i></div></div>`;
+    }).join("");
+    const chapterBlock = `<section class="chapter-progress" aria-labelledby="chapterProgressTitle"><div class="chapter-progress-heading">
+      <div><h3 id="chapterProgressTitle">${copy.chapterProgress}</h3><p>${copy.chaptersHint}</p></div>
+      <span class="chapter-progress-total"><bdi dir="ltr">${data.completedLessons} / ${data.totalLessons}</bdi> ${copy.lessons}</span>
+      </div><div class="chapter-progress-list">${rows}</div></section>`;
     if (chapterOnly) return chapterBlock;
-    return '<section class="learning-hero"><div class="learning-hero-copy"><span class="eyebrow">محرك التعلّم · المستوى التأسيسي</span><h2>تقدمك مبني على الإنجاز، لا على فتح الصفحات.</h2><p>كل نقطة وكل حالة نجاح لها سجل واضح يمكنك مراجعته واستعادته.</p></div><div class="learning-hero-metrics"><div><strong>' + data.earnedXp.toLocaleString("en-US") + '</strong><span>نقاط الخبرة المكتسبة</span></div><div><strong>' + data.passedAssessments + '/9</strong><span>الاختبارات المجتازة</span></div></div></section>' + resumeBlock + '<section class="learning-mini-grid"><article class="learning-mini-card"><span>الدروس المكتملة</span><strong>' + data.completedLessons + ' / 32</strong><div class="learning-progress-track"><i style="width:' + lessonProgress + '%"></i></div></article><article class="learning-mini-card"><span>الاختبارات المجتازة</span><strong>' + data.passedAssessments + ' / 9</strong><div class="learning-progress-track"><i style="width:' + assessmentProgress + '%"></i></div></article><article class="learning-mini-card"><span>رصيد XP</span><strong>' + data.earnedXp.toLocaleString("en-US") + ' / 2,880</strong><div class="learning-progress-track"><i style="width:' + pct(data.earnedXp, data.availableXp) + '%"></i></div></section>' + chapterBlock;
+    return '<section class="learning-hero"><div class="learning-hero-copy"><span class="eyebrow">محرك التعلّم · المستوى التأسيسي</span><h2>تقدمك مبني على الإنجاز، لا على فتح الصفحات.</h2><p>كل نقطة وكل حالة نجاح لها سجل واضح يمكنك مراجعته واستعادته.</p></div><div class="learning-hero-metrics"><div><strong>' + data.earnedXp.toLocaleString("en-US") + '</strong><span>نقاط الخبرة المكتسبة</span></div><div><strong>' + data.passedAssessments + '/9</strong><span>الاختبارات المجتازة</span></div></div></section>' + resumeBlock + '<section class="learning-mini-grid"><article class="learning-mini-card"><span>الدروس المكتملة</span><strong>' + data.completedLessons + ' / 32</strong><div class="learning-progress-track"><i style="width:' + lessonProgress + '%"></i></div></article><article class="learning-mini-card"><span>الاختبارات المجتازة</span><strong>' + data.passedAssessments + ' / 9</strong><div class="learning-progress-track"><i style="width:' + assessmentProgress + '%"></i></div></article><article class="learning-mini-card"><span>رصيد XP</span><strong>' + data.earnedXp.toLocaleString("en-US") + ' / ' + data.availableXp.toLocaleString("en-US") + '</strong><div class="learning-progress-track"><i style="width:' + pct(data.earnedXp, data.availableXp) + '%"></i></div></section>' + chapterBlock;
   }
   function lessonPanel(code) {
     const current = ENGINE.getLessonProgress(code);
     const completed = current.progress && current.progress.status === "completed";
     const evidence = current.evidence;
+    const reward = ENGINE.getLessonXp(code);
+    const rewardLabel = reward ? "+" + reward + " نقطة خبرة" : "تدريب دون نقاط";
+    const rewardRule = reward ? "تُمنح النقاط مرة واحدة بعد استكمال أدلة الإنجاز الأربعة." : "يُحفظ إكمال التدريب بعد تسجيل الأدلة الأربعة دون إضافة نقاط خبرة.";
     const check = (key, label, hint) => '<label class="evidence-item"><input type="checkbox" data-evidence="' + key + '"' + (evidence[key] ? " checked" : "") + (completed ? " disabled" : "") + '><span><strong>' + label + '</strong><small>' + hint + '</small></span></label>';
     return '<section class="lesson-progress-panel" id="lessonProgressPanel" data-lesson="' + esc(code) + '"><div class="lesson-progress-head"><div><span class="eyebrow">سجل التعلّم</span><h2>إثبات الإنجاز العملي</h2><p>فتح الدرس لا يمنح نقاطاً. سجّل إكمال الأنشطة الفعلية أولاً.</p></div><span class="lesson-status ' + (completed ? "done" : "active") + '">' + (completed ? "مكتمل" : "قيد التعلم") + '</span></div><div class="evidence-grid">' +
       check("interactiveLab", "تنفيذ المختبر التطبيقي", "طبّقت الحسابات أو خطوات التمرين داخل الدرس.") +
       check("professionalChallenge", "حل التحدي المهني", "أنجزت التحدي التطبيقي وراجعت مخرجاته.") +
       check("fieldChecklist", "مراجعة قائمة التحقق الميدانية", "تحققت من عناصر قائمة التطبيق الميداني.") +
       check("learnerAttested", "إقرار المتعلم", "أؤكد أنني أنجزت العناصر أعلاه بنفسي.") +
-      '</div><div class="lesson-progress-actions"><p class="lesson-feedback" id="lessonEvidenceFeedback" role="status">' + (completed ? "تم تسجيل هذا الدرس. نقاطه لا تتكرر عند إعادة فتحه." : "علّم العناصر بعد تنفيذها فعلياً؛ التسجيل في هذه النسخة إقرار ذاتي محلي.") + '</p><button class="primary-action learning-action" id="completeLessonButton"' + (completed ? " disabled" : "") + '>تأكيد الإنجاز <span>+90 نقطة خبرة</span></button></div><div class="lesson-xp-rule">90 نقطة خبرة متاحة مرة واحدة لكل درس، بعد استكمال أدلة الإنجاز الأربعة. لا تمنح الاختبارات XP في المواصفات الحالية.</div></section>';
+      '</div><div class="lesson-progress-actions"><p class="lesson-feedback" id="lessonEvidenceFeedback" role="status">' + (completed ? "تم تسجيل إنجاز هذا الدرس." : "علّم العناصر بعد تنفيذها فعلياً؛ التسجيل في هذه النسخة إقرار ذاتي محلي.") + '</p><button class="primary-action learning-action" id="completeLessonButton"' + (completed ? " disabled" : "") + '>تأكيد الإنجاز <span>' + rewardLabel + '</span></button></div><div class="lesson-xp-rule">' + rewardRule + '</div></section>';
   }
 
   function mountLessonPanel(code) {
@@ -155,7 +173,7 @@
       const note = document.getElementById("lessonEvidenceFeedback");
       if (note) note.textContent = result.alreadyCompleted
         ? "هذا الدرس مسجل مسبقاً؛ لم تُمنح نقاط إضافية."
-        : "تم تسجيل الإنجاز وإضافة 90 نقطة خبرة إلى سجلّك.";
+        : result.xpAwarded ? "تم تسجيل الإنجاز وإضافة " + result.xpAwarded + " نقطة خبرة إلى سجلّك." : "تم تسجيل إكمال التدريب دون إضافة نقاط خبرة.";
       if (root.location && root.location.hash === "#progress") refreshCurrentView();
     });
   }
@@ -208,7 +226,7 @@
     const status = ENGINE.getStorageStatus();
     return '<div class="page-heading"><div><span class="eyebrow">محرك التعلّم · الرياضيات التجارية</span><h1>مركز التقدم والتقييم</h1><p>سجل واحد للدروس، والاختبارات، وXP، وأهلية شهادة الإكمال.</p></div></div>' +
       dashboardSummary() +
-      '<section class="progress-section"><div class="progress-section-heading"><div><h2>مسار الدروس</h2><p>32 درساً · 90 نقطة خبرة لكل درس بعد إثبات التنفيذ</p></div><strong>' + completedPct + '%</strong></div><div class="learning-progress-track large"><i style="width:' + completedPct + '%"></i></div><div class="progress-chapters">' + chapters + '</div></section>' +
+      '<section class="progress-section"><div class="progress-section-heading"><div><h2>مسار الدروس</h2><p>32 درساً · 90 نقطة للدرس المؤهل بعد إثبات الإنجاز. التدريب BM-005 دون نقاط.</p></div><strong>' + completedPct + '%</strong></div><div class="learning-progress-track large"><i style="width:' + completedPct + '%"></i></div><div class="progress-chapters">' + chapters + '</div></section>' +
       '<section class="progress-section"><div class="progress-section-heading"><div><h2>الاختبارات التسعة</h2><p>ثمانية اختبارات فصلية واختبار عملي نهائي · عتبة النجاح 80%</p></div><strong>' + passedPct + '%</strong></div><div class="assessment-grid">' + assessmentCards() + '</div></section>' +
       '<section class="certificate-panel ' + (certificate.eligible ? "eligible" : "") + '"><div><span class="eyebrow">إكمال المستوى التأسيسي</span><h2>' + (certificate.eligible ? "متطلبات الإكمال مستوفاة" : "شهادة الإكمال غير متاحة بعد") + '</h2><p>' + esc(certificate.certificateTitle) + '</p><small>الشرط: اجتياز الاختبارات الفصلية الثمانية والاختبار النهائي بنتيجة 80% أو أكثر. شهادة داخلية غير معتمدة خارجياً.</small></div><div class="certificate-state">' + (certificate.eligible ? "ELIGIBLE" : data.passedAssessments + " / 9 PASSED") + '</div></section>' +
       backupPanel() + storageNote() + '<p class="assessment-disclaimer">هذه نسخة تعليمية محلية: الإجابات وسجل الدرجات محفوظان في المتصفح ويمكن تعديلهما من أدوات المطور. لا يوجد مراقب امتحان أو مصادقة أو تحقق مركزي من هوية المتعلم.</p>';
@@ -326,16 +344,20 @@
 
   function mountProgressActions() {
     bindProgressActions();
+    bindCatalogRetry();
+  }
+
+  function bindCatalogRetry() {
     const retry = document.getElementById("retryLearningCatalog");
     if (retry) retry.addEventListener("click", () => {
       loadPromise = null;
       loadError = null;
       retry.disabled = true;
-      retry.textContent = "جارٍ إعادة التحميل…";
+      retry.textContent = root.KPI.i18n[document.documentElement.lang].home.loading;
       loadCatalog().then(ok => {
         if (!ok && retry.isConnected) {
           retry.disabled = false;
-          retry.textContent = "إعادة المحاولة";
+          retry.textContent = root.KPI.i18n[document.documentElement.lang].home.retry;
         }
       });
     });
@@ -344,6 +366,7 @@
   root.KPI_LEARNING_UI = Object.freeze({
     dashboardSummary,
     settingsView,
+    bindCatalogRetry,
     progressView,
     mountLessonPanel,
     renderAssessmentRoute,

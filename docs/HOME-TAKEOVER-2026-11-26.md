@@ -27,3 +27,11 @@ A real Tab traversal at 390 × 844 initially placed the focused shortcut underne
 ### Home and settings review, 27 November
 
 The resume card now precedes secondary progress information. Chapter rows name the topic, display the learner's actual completion count and link to the next or review lesson. Settings opens the existing backup controls from either navigation menu and supports direct loading. At 390 × 844 the fresh Arabic dashboard measured 2,908 CSS pixels with secondary details closed. Browser coverage includes a zero-lesson chapter, mobile Settings navigation and export after a reload.
+
+### Bilingual Home and practice credit, 27 November
+
+Home now supports English and Arabic, including chapter status, resume evidence, professional tools, study details, and navigation labels. Switching languages preserves the learner record. Following a lesson opens its Arabic source and returning Home restores the learner's choice. The reception photograph keeps its subject clear of the heading in both directions. The seven-width Chromium review includes a 320 × 568 viewport and captures the initial screen before opening secondary details.
+
+The four evidence fields still control completion. Investigation found separate paths for the BM-005 lab score and the lesson completion button. The latter previously granted 90 XP. New BM-005 completions now retain the evidence and advance the lesson record with zero XP. Existing valid transactions are honoured on reload and backup restore. A new learner has 2,790 available XP across 31 eligible lessons and one practice lesson.
+
+The founder review includes a runnable build, the checked-out revision, 14 bilingual viewport captures, measurements and an Arabic checklist. Comparison with the two approved visual references remains open.

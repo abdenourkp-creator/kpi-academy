@@ -9,3 +9,5 @@
   .mobile-brand strong { display: block; font: 700 12px Georgia, serif; letter-spacing: .7px; }
   .mobile-brand small { display: block; font-size: 8px; line-height: 1.2; }
 }
+
+@media (max-width: 1023px) { .sidebar:not(.open) { visibility: hidden; } }

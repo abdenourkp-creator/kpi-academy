@@ -20,8 +20,8 @@ assert.equal(bm.chapters.length, 8, "Business Mathematics must have 8 chapters")
 const lessons = bm.chapters.flatMap(chapter => chapter.lessons);
 assert.equal(lessons.length, 32, "Business Mathematics must have 32 lessons");
 assert.equal(new Set(lessons.map(lesson => lesson.code)).size, 32, "lesson codes must be unique");
-assert.equal(lessons.reduce((sum, lesson) => sum + lesson.availableXp, 0), 2880, "maximum lesson XP must equal 2,880");
-assert.ok(lessons.every(lesson => lesson.availableXp === 90), "each lesson must carry 90 available XP");
+assert.equal(lessons.reduce((sum, lesson) => sum + lesson.availableXp, 0), 2790, "31 eligible lessons award 2,790 XP");
+assert.ok(lessons.every(lesson => lesson.availableXp === (lesson.code === "BM-005" ? 0 : 90)), "practice must carry zero XP and eligible lessons 90");
 for (const lesson of lessons) {
   assert.ok(fs.existsSync(path.join(root, lesson.sourcePath)), lesson.code + " source file must exist");
   assert.ok(fs.statSync(path.join(root, lesson.sourcePath)).size > 500, lesson.code + " source file appears incomplete");
@@ -45,4 +45,4 @@ assert.match(byId["sales-mix"].formula, /Unit Mix.*Revenue Mix/);
 assert.match(byId.waste.formula, /Food & Beverage COGS/);
 assert.match(byId.revpash.formula, /Available Seat Hours/);
 
-console.log("Content integrity passed: 3 modules, 8 chapters, 32 source-backed lessons, 2,880 XP, 6 Accounting scope areas, and 15 KPI definitions.");
+console.log("Content integrity passed: 3 modules, 8 chapters, 32 source-backed lessons, 2,790 XP, 6 Accounting scope areas, and 15 KPI definitions.");

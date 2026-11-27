@@ -17,7 +17,7 @@
       '<details><summary>النص المكتوب للمقطع</summary><p>' + info[2] + '</p></details></section>';
   }
 
-  function quickLinks() {
+  function quickLinks(copy, isEnglish) {
     const links = [
       ["modules", "modules", "الوحدات التعليمية", "Modules"],
       ["calculator", "tools", "حاسبة المؤشرات", "KPI Calculator"],
@@ -27,36 +27,37 @@
       ["progress", "progress", "التقييم والتقدم", "Assessments & Progress"]
     ];
     return `<section aria-labelledby="home-tools-title">
-      <div class="ka-home-heading"><h2 id="home-tools-title">أدوات التعلّم والتطبيق</h2></div>
+      <div class="ka-home-heading"><h2 id="home-tools-title">${copy.toolTitle}</h2></div>
       <nav class="sprint-shortcuts" aria-labelledby="home-tools-title">${links.map(([route, icon, label, english]) =>
         `<a href="#${route}"><svg aria-hidden="true"><use href="#ka-icon-${icon}"/></svg>
-          <strong>${label}</strong><small lang="en" dir="ltr">${english}</small></a>`).join("")}</nav>
+          <strong>${isEnglish ? english : label}</strong>${isEnglish ? "" : `<small lang="en" dir="ltr">${english}</small>`}</a>`).join("")}</nav>
     </section>`;
   }
 
-  function learningRoute(curriculum, progress, translate, escape) {
+  function learningRoute(curriculum, progress, translate, escape, copy) {
     function chapterRow(chapter) {
       const { lessons, number, title } = chapter;
       const done = lessons.filter(lesson => progress[lesson.code]?.status === "completed").length;
       const started = lessons.find(lesson => progress[lesson.code]?.status === "in-progress");
       const next = started || lessons.find(lesson => progress[lesson.code]?.status !== "completed");
-      const status = !lessons.length ? "لا توجد دروس" : !next ? "مكتمل" : started || done ? "قيد التقدم" : "لم يبدأ";
+      const status = !lessons.length ? copy.noLessons : !next ? copy.done : started || done ? copy.started : copy.unstarted;
       const label = escape(translate(title));
       const review = next || lessons[0];
       return `<li>
-        <span class="ka-chapter-index" aria-label="الفصل ${escape(String(number))}">${escape(String(number).padStart(2, "0"))}</span>
-        <div class="ka-route-topic"><strong>${label}</strong><small>${status} · <bdi>${done} / ${lessons.length}</bdi></small>
-          ${lessons.length ? `<progress aria-label="تقدم فصل ${label}" value="${done}" max="${lessons.length}"></progress>` : ""}</div>
-        ${review ? `<a href="#lesson-${escape(review.code)}" aria-label="${next ? "فتح" : "مراجعة"} درس ${escape(review.code)} من فصل ${label}"><span aria-hidden="true">←</span></a>` : ""}
+        <span class="ka-chapter-index" aria-label="${copy.chapter} ${escape(String(number))}">${escape(String(number).padStart(2, "0"))}</span>
+        <div class="ka-route-topic"><strong>${label}</strong><small>${status} · <bdi dir="ltr">${done} / ${lessons.length}</bdi></small>
+          ${lessons.length ? `<progress aria-label="${copy.chapterProgress} · ${label}" value="${done}" max="${lessons.length}"></progress>` : ""}</div>
+        ${review ? `<a href="#lesson-${escape(review.code)}" aria-label="${next ? copy.open : copy.review} ${escape(review.code)} · ${label}"><span aria-hidden="true">${copy.arrow}</span></a>` : ""}
       </li>`;
     }
     return `<section class="sprint-route" aria-labelledby="sprint-route-title">
-      <div class="ka-home-heading"><h2 id="sprint-route-title">فصول الرياضيات التجارية</h2><a href="#module-business-mathematics">عرض الدروس ←</a></div>
-      ${curriculum.chapters.length ? `<ol>${curriculum.chapters.map(chapterRow).join("")}</ol>` : "<p>لا توجد فصول متاحة.</p>"}
+      <div class="ka-home-heading"><h2 id="sprint-route-title">${copy.chapters}</h2><a href="#module-business-mathematics">${copy.showLessons} ${copy.arrow}</a></div>
+      ${curriculum.chapters.length ? `<ol>${curriculum.chapters.map(chapterRow).join("")}</ol>` : `<p>${copy.noChapters}</p>`}
     </section>`;
   }
 
-  function overview(curriculum, translate, escape) {
+  function overview(curriculum, translate, escape, language = "ar") {
+    const copy = root.KPI.i18n[language].home;
     const engine = root.KPI_LEARNING_ENGINE;
     const stats = engine.getDashboard();
     const lessons = curriculum.chapters.flatMap(chapter => chapter.lessons.map(lesson => ({ ...lesson, chapter })));
@@ -67,35 +68,34 @@
     const pct = stats.totalLessons > 0 ? Math.round(stats.completedLessons / stats.totalLessons * 100) : 0;
     const empty = lessons.length === 0;
     const target = next ? "#lesson-" + next.code : empty ? "#modules" : "#progress";
-    const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : empty ? "لا توجد دروس متاحة حاليًا" : "مراجعة نتائج الوحدة";
+    const title = next ? translate(next.title.replace(/^BM-\d+ — /, "")) : empty ? copy.empty : copy.results;
     const evidence = next ? engine.getLessonProgress(next.code).evidence : null;
     const evidenceCount = evidence ? ["interactiveLab", "professionalChallenge", "fieldChecklist", "learnerAttested"]
       .filter(key => evidence[key] === true).length : 0;
-    const lessonContext = next ? '<p class="ka-resume-context">الرياضيات التجارية · الفصل ' +
-      escape(String(next.chapter.number)) + '</p>' : '';
-    const lessonEvidence = next ? '<div class="ka-resume-evidence"><span>متطلبات الإكمال <bdi>' +
-      evidenceCount + ' / 4</bdi></span><progress aria-label="متطلبات إكمال الدرس" value="' +
-      evidenceCount + '" max="4"></progress></div>' : '';
-    const currentLabel = next ? progress[next.code]?.status === "in-progress" ? "تابع من حيث توقفت" : "درسك التالي" : empty ? "المنهج" : "أكملت الدروس";
+    const lessonContext = next ? `<p class="ka-resume-context">${copy.math} · ${copy.chapter} ${escape(String(next.chapter.number))}${language === "en" ? " · Taught in Arabic" : ""}</p>` : "";
+    const lessonEvidence = next ? `<div class="ka-resume-evidence"><span>${copy.evidence} <bdi dir="ltr">${evidenceCount} / 4</bdi></span>
+      <progress aria-label="${copy.meter}" value="${evidenceCount}" max="4"></progress></div>` : "";
+    let currentLabel = empty ? copy.curriculum : copy.finished;
+    if (next) currentLabel = progress[next.code]?.status === "in-progress" ? copy.return : copy.next;
     return `<div class="sprint-overview">
       <div class="ka-current-learning">
         <article class="sprint-resume">
           <div class="ka-resume-heading"><strong>${currentLabel}</strong>${next ? `<bdi class="sprint-code">${escape(next.code)}</bdi>` : ""}</div>
           <h2>${escape(title)}</h2>${lessonContext}${lessonEvidence}
-          <div class="ka-resume-actions"><a class="sprint-primary" href="${target}">${next ? "متابعة الدرس" : empty ? "عرض الوحدات" : "عرض النتائج"} ←</a>
-          ${next && clipInfo[next.code] ? `<a class="sprint-video-link" href="${target}?tab=video">شرح بالفيديو</a>` : ""}</div>
+          <div class="ka-resume-actions"><a class="sprint-primary" href="${target}">${next ? copy.continue : empty ? copy.modules : copy.seeResults} ${copy.arrow}</a>
+          ${next && clipInfo[next.code] ? `<a class="sprint-video-link" href="${target}?tab=video">${copy.video}</a>` : ""}</div>
         </article>
         <section class="ka-home-score" aria-labelledby="home-progress-title">
-          <div class="ka-home-heading"><h2 id="home-progress-title">سجلّ تعلّمك</h2><a href="#progress">التفاصيل ←</a></div>
+          <div class="ka-home-heading"><h2 id="home-progress-title">${copy.yourProgress}</h2><a href="#progress">${copy.details}</a></div>
           <div class="ka-home-metrics">
-            <div class="sprint-ring" style="--value:${pct}%"><div><strong dir="ltr">${pct}%</strong><span>التقدم العام</span></div></div>
-            <dl><div><dt>نقاط الخبرة</dt><dd><bdi>${stats.earnedXp.toLocaleString("en-US")} XP</bdi></dd></div>
-            <div><dt>الدروس المكتملة</dt><dd><bdi>${stats.completedLessons} / ${stats.totalLessons}</bdi></dd></div>
-            <div><dt>الاختبارات المجتازة</dt><dd><bdi>${stats.passedAssessments} / ${stats.totalAssessments}</bdi></dd></div></dl>
+            <div class="sprint-ring" style="--value:${pct}%"><div><strong dir="ltr">${pct}%</strong><span>${copy.total}</span></div></div>
+            <dl><div><dt>${copy.xp}</dt><dd><bdi dir="ltr">${stats.earnedXp.toLocaleString("en-US")} XP</bdi></dd></div>
+            <div><dt>${copy.completed}</dt><dd><bdi dir="ltr">${stats.completedLessons} / ${stats.totalLessons}</bdi></dd></div>
+            <div><dt>${copy.passed}</dt><dd><bdi dir="ltr">${stats.passedAssessments} / ${stats.totalAssessments}</bdi></dd></div></dl>
           </div>
         </section>
       </div>
-      ${quickLinks()}${learningRoute(curriculum, progress, translate, escape)}
+      ${quickLinks(copy, language === "en")}${learningRoute(curriculum, progress, translate, escape, copy)}
     </div>`;
   }
 

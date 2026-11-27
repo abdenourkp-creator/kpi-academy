@@ -76,6 +76,20 @@ function startServer() {
     assert.equal(await emptyPage.locator(".sprint-route a[href^='#lesson-']").count(), 0);
     await emptyPage.close();
 
+    const retryContext = await browser.newContext();
+    const retryPage = await retryContext.newPage();
+    await retryPage.route("**/data/assessments/business-mathematics.json", route => route.fulfill({ json: {} }), { times: 1 });
+    await retryPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await retryPage.locator("#homeLanguage").click();
+    await retryPage.locator(".ka-dashboard-details > summary").click();
+    const retry = retryPage.getByRole("button", { name: "Try again" });
+    await retry.waitFor();
+    await retry.click();
+    await retryPage.locator(".chapter-progress-row").first().waitFor();
+    assert.equal(await retryPage.locator(".chapter-progress-row").count(), 8);
+    assert.equal(await retryPage.locator("#retryLearningCatalog").count(), 0);
+    await retryContext.close();
+
     const catalogPage = await context.newPage();
     let catalogAttempts = 0;
     await catalogPage.route("**/data/modules.json", async route => {
@@ -634,6 +648,29 @@ function startServer() {
     assert.equal(await evidenceMeter.getAttribute("value"), "1");
     assert.equal(await evidenceMeter.getAttribute("max"), "4");
     assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
+    const learnerState = () => labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getState());
+    const beforeSwitch = await learnerState();
+    await labPage.locator("#homeLanguage").click();
+    await labPage.getByRole("heading", { name: "Business Intelligence Academy for Hospitality" }).waitFor();
+    assert.equal(await labPage.locator("html").getAttribute("dir"), "ltr");
+    assert.equal(await resume.getByRole("progressbar", { name: "Lesson completion requirements" }).getAttribute("value"), "1");
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    await labPage.reload({ waitUntil: "networkidle" });
+    assert.equal(await labPage.locator("html").getAttribute("lang"), "en");
+    assert.deepEqual(await learnerState(), beforeSwitch, "changing Home language and reloading must preserve the learner record");
+    await labPage.locator("#moreToggle").click();
+    await labPage.locator("#moreDrawer").getByRole("link", { name: "Settings" }).waitFor();
+    await labPage.keyboard.press("Escape");
+    await resume.locator(".sprint-primary").click();
+    await labPage.locator("#lessonProgressPanel").waitFor();
+    assert.equal(await labPage.locator("html").getAttribute("dir"), "rtl");
+    await labPage.goBack();
+    await resume.getByRole("progressbar", { name: "Lesson completion requirements" }).waitFor();
+    const afterLesson = await learnerState();
+    await labPage.locator("#homeLanguage").click();
+    assert.equal(await evidenceMeter.getAttribute("value"), "1");
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    assert.deepEqual(await learnerState(), afterLesson);
     const practicalShortcut = labPage.locator('.sprint-shortcuts a[href="#lesson-BM-005?tab=lab"]');
     assert.equal(await practicalShortcut.count(), 1);
     assert.match(await practicalShortcut.textContent(), /حالة تطبيقية/);
@@ -653,6 +690,11 @@ function startServer() {
     }
     assert.equal(await labPage.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
       "the gross-margin case must fit the mobile viewport");
+    await labPage.locator("#lessonProgressPanel").waitFor();
+    for (const checkbox of await labPage.locator("#lessonProgressPanel [data-evidence]").all()) await checkbox.check();
+    await labPage.locator("#completeLessonButton").click();
+    assert.match(await labPage.locator("#lessonEvidenceFeedback").textContent(), /دون إضافة نقاط/);
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
     // Isolated completed-curriculum fixture through the real evidence/XP API.
     await labPage.evaluate(() => {
       const engine = window.KPI_LEARNING_ENGINE;
@@ -667,11 +709,11 @@ function startServer() {
     assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
     assert.equal(await resume.locator(".ka-resume-evidence").count(), 0);
     assert.equal(await labPage.locator(".sprint-ring strong").textContent(), "100%");
-    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2880);
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2790);
     await labPage.reload({ waitUntil: "networkidle" });
     await resume.locator(".sprint-primary").waitFor();
     assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
-    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2880);
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2790);
     await resume.locator(".sprint-primary").click();
     await labPage.waitForFunction(() => location.hash === "#progress");
     await labContext.close();
