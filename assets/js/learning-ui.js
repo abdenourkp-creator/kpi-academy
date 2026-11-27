@@ -171,6 +171,15 @@
     }).join("");
   }
 
+  function backupPanel() {
+    return '<section class="backup-panel"><div><h2>نسخة احتياطية لبيانات التعلم</h2><p>صدّر سجلّك أو استعده على هذا الجهاز. لا توجد مزامنة بين الأجهزة.</p></div><div class="backup-actions"><button class="secondary-action" id="exportLearningBackup">تصدير النسخة</button><label class="secondary-action file-pick">استعادة نسخة<input type="file" id="importLearningBackup" accept="application/json,.json"></label><button class="danger-action" id="resetLearningProgress">إعادة ضبط التقدم</button></div><p class="backup-feedback" id="backupFeedback" role="status"></p></section>';
+  }
+
+  function settingsView() {
+    return '<div class="page-heading"><div><h1>إعدادات التعلّم</h1></div></div>' +
+      storageNote() + backupPanel();
+  }
+
   function progressView() {
     if (!catalog || !curriculum) {
       if (!loadPromise && !loadError) loadCatalog();
@@ -202,7 +211,7 @@
       '<section class="progress-section"><div class="progress-section-heading"><div><h2>مسار الدروس</h2><p>32 درساً · 90 نقطة خبرة لكل درس بعد إثبات التنفيذ</p></div><strong>' + completedPct + '%</strong></div><div class="learning-progress-track large"><i style="width:' + completedPct + '%"></i></div><div class="progress-chapters">' + chapters + '</div></section>' +
       '<section class="progress-section"><div class="progress-section-heading"><div><h2>الاختبارات التسعة</h2><p>ثمانية اختبارات فصلية واختبار عملي نهائي · عتبة النجاح 80%</p></div><strong>' + passedPct + '%</strong></div><div class="assessment-grid">' + assessmentCards() + '</div></section>' +
       '<section class="certificate-panel ' + (certificate.eligible ? "eligible" : "") + '"><div><span class="eyebrow">إكمال المستوى التأسيسي</span><h2>' + (certificate.eligible ? "متطلبات الإكمال مستوفاة" : "شهادة الإكمال غير متاحة بعد") + '</h2><p>' + esc(certificate.certificateTitle) + '</p><small>الشرط: اجتياز الاختبارات الفصلية الثمانية والاختبار النهائي بنتيجة 80% أو أكثر. شهادة داخلية غير معتمدة خارجياً.</small></div><div class="certificate-state">' + (certificate.eligible ? "ELIGIBLE" : data.passedAssessments + " / 9 PASSED") + '</div></section>' +
-      '<section class="backup-panel"><div><h2>نسخة احتياطية لبيانات التعلم</h2><p>صدّر سجلّك أو استعده على هذا الجهاز. لا توجد مزامنة بين الأجهزة.</p></div><div class="backup-actions"><button class="secondary-action" id="exportLearningBackup">تصدير النسخة</button><label class="secondary-action file-pick">استعادة نسخة<input type="file" id="importLearningBackup" accept="application/json,.json"></label><button class="danger-action" id="resetLearningProgress">إعادة ضبط التقدم</button></div><p class="backup-feedback" id="backupFeedback" role="status"></p></section>' + storageNote() + '<p class="assessment-disclaimer">هذه نسخة تعليمية محلية: الإجابات وسجل الدرجات محفوظان في المتصفح ويمكن تعديلهما من أدوات المطور. لا يوجد مراقب امتحان أو مصادقة أو تحقق مركزي من هوية المتعلم.</p>';
+      backupPanel() + storageNote() + '<p class="assessment-disclaimer">هذه نسخة تعليمية محلية: الإجابات وسجل الدرجات محفوظان في المتصفح ويمكن تعديلهما من أدوات المطور. لا يوجد مراقب امتحان أو مصادقة أو تحقق مركزي من هوية المتعلم.</p>';
   }
 
   function renderسuestion(question, index) {
@@ -334,6 +343,7 @@
 
   root.KPI_LEARNING_UI = Object.freeze({
     dashboardSummary,
+    settingsView,
     progressView,
     mountLessonPanel,
     renderAssessmentRoute,

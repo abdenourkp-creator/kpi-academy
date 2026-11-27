@@ -26,28 +26,34 @@
       ["simulator", "simulator", "محاكاة الإدارة", "Simulator"],
       ["progress", "progress", "التقييم والتقدم", "Assessments & Progress"]
     ];
-    return '<nav class="sprint-shortcuts" aria-label="أدوات الأكاديمية">' + links.map(([route, icon, label, english]) =>
-      '<a href="#' + route + '"><svg aria-hidden="true"><use href="#ka-icon-' + icon + '"/></svg>' +
-      '<strong>' + label + '</strong><small dir="ltr">' + english + '</small></a>'
-    ).join("") + '</nav>';
+    return `<section aria-labelledby="home-tools-title">
+      <div class="ka-home-heading"><h2 id="home-tools-title">أدوات التعلّم والتطبيق</h2></div>
+      <nav class="sprint-shortcuts" aria-labelledby="home-tools-title">${links.map(([route, icon, label, english]) =>
+        `<a href="#${route}"><svg aria-hidden="true"><use href="#ka-icon-${icon}"/></svg>
+          <strong>${label}</strong><small lang="en" dir="ltr">${english}</small></a>`).join("")}</nav>
+    </section>`;
   }
 
-  function learningRoute(curriculum, progress, escape) {
-    const chapters = curriculum.chapters;
-    return '<section class="sprint-route" aria-labelledby="sprint-route-title">' +
-      '<h2 id="sprint-route-title">مسار التعلّم <small lang="en" dir="ltr">Learning route</small></h2>' +
-      (chapters.length ? '<ol>' + chapters.map(chapter => {
-        const total = chapter.lessons.length;
-        const done = chapter.lessons.filter(lesson => progress[lesson.code]?.status === "completed").length;
-        const next = chapter.lessons.find(lesson => progress[lesson.code]?.status === "in-progress") ||
-          chapter.lessons.find(lesson => progress[lesson.code]?.status !== "completed");
-        const status = !total ? "لا توجد دروس" : done === total ? "مكتمل" :
-          done || chapter.lessons.some(lesson => progress[lesson.code]?.status === "in-progress") ? "قيد التقدم" : "لم يبدأ";
-        return '<li><strong>الفصل ' + escape(String(chapter.number)) + '</strong> · ' + status +
-          ' <bdi>' + done + ' / ' + total + '</bdi>' +
-          (total ? '<progress aria-label="تقدم الفصل ' + escape(String(chapter.number)) + '" max="' + total + '" value="' + done + '"></progress>' : '') +
-          (next ? '<a class="sprint-primary" href="#lesson-' + escape(next.code) + '">فتح الدرس <bdi>' + escape(next.code) + '</bdi></a>' : '') + '</li>';
-      }).join("") + '</ol>' : '<p>لا توجد فصول متاحة.</p>') + '</section>';
+  function learningRoute(curriculum, progress, translate, escape) {
+    function chapterRow(chapter) {
+      const { lessons, number, title } = chapter;
+      const done = lessons.filter(lesson => progress[lesson.code]?.status === "completed").length;
+      const started = lessons.find(lesson => progress[lesson.code]?.status === "in-progress");
+      const next = started || lessons.find(lesson => progress[lesson.code]?.status !== "completed");
+      const status = !lessons.length ? "لا توجد دروس" : !next ? "مكتمل" : started || done ? "قيد التقدم" : "لم يبدأ";
+      const label = escape(translate(title));
+      const review = next || lessons[0];
+      return `<li>
+        <span class="ka-chapter-index" aria-label="الفصل ${escape(String(number))}">${escape(String(number).padStart(2, "0"))}</span>
+        <div class="ka-route-topic"><strong>${label}</strong><small>${status} · <bdi>${done} / ${lessons.length}</bdi></small>
+          ${lessons.length ? `<progress aria-label="تقدم فصل ${label}" value="${done}" max="${lessons.length}"></progress>` : ""}</div>
+        ${review ? `<a href="#lesson-${escape(review.code)}" aria-label="${next ? "فتح" : "مراجعة"} درس ${escape(review.code)} من فصل ${label}"><span aria-hidden="true">←</span></a>` : ""}
+      </li>`;
+    }
+    return `<section class="sprint-route" aria-labelledby="sprint-route-title">
+      <div class="ka-home-heading"><h2 id="sprint-route-title">فصول الرياضيات التجارية</h2><a href="#module-business-mathematics">عرض الدروس ←</a></div>
+      ${curriculum.chapters.length ? `<ol>${curriculum.chapters.map(chapterRow).join("")}</ol>` : "<p>لا توجد فصول متاحة.</p>"}
+    </section>`;
   }
 
   function overview(curriculum, translate, escape) {
@@ -70,16 +76,27 @@
     const lessonEvidence = next ? '<div class="ka-resume-evidence"><span>متطلبات الإكمال <bdi>' +
       evidenceCount + ' / 4</bdi></span><progress aria-label="متطلبات إكمال الدرس" value="' +
       evidenceCount + '" max="4"></progress></div>' : '';
-    return '<section class="sprint-overview" aria-label="سجل التعلّم">' +
-      '<div class="sprint-greeting"><div><h2>مرحبًا بك</h2><p>مسار الرياضيات التجارية للضيافة</p></div><a href="#progress">سجلّ التعلّم ←</a></div>' +
-      '<div class="sprint-score"><div class="sprint-ring" style="--value:' + pct + '%"><div><strong dir="ltr">' + pct + '%</strong><span>التقدم العام</span></div></div>' +
-      '<dl><div><dt>نقاط الخبرة</dt><dd dir="ltr">' + stats.earnedXp.toLocaleString("en-US") + ' XP</dd></div>' +
-      '<div><dt>الدروس المكتملة</dt><dd dir="ltr">' + stats.completedLessons + ' / ' + stats.totalLessons + '</dd></div>' +
-      '<div><dt>الاختبارات المجتازة</dt><dd dir="ltr">' + stats.passedAssessments + ' / ' + stats.totalAssessments + '</dd></div></dl></div>' +
-      '<article class="sprint-resume"><div><span class="sprint-code">' + (next ? escape(next.code) : empty ? "NO LESSONS" : "BUSINESS MATHEMATICS") + '</span>' +
-      lessonContext + '<h2>' + escape(title) + '</h2>' + lessonEvidence + '<a class="sprint-primary" href="' + target + '">' + (next ? "متابعة الدرس" : empty ? "عرض الوحدات" : "عرض النتائج") + ' ←</a>' +
-      (next && clipInfo[next.code] ? '<a class="sprint-video-link" href="' + target + '?tab=video">▶ شرح قصير</a>' : "") +
-      '</div><img src="assets/diagrams/academy/module-business-mathematics.svg" alt=""></article>' + quickLinks() + learningRoute(curriculum, progress, escape) + '</section>';
+    const currentLabel = next ? progress[next.code]?.status === "in-progress" ? "تابع من حيث توقفت" : "درسك التالي" : empty ? "المنهج" : "أكملت الدروس";
+    return `<div class="sprint-overview">
+      <div class="ka-current-learning">
+        <article class="sprint-resume">
+          <div class="ka-resume-heading"><strong>${currentLabel}</strong>${next ? `<bdi class="sprint-code">${escape(next.code)}</bdi>` : ""}</div>
+          <h2>${escape(title)}</h2>${lessonContext}${lessonEvidence}
+          <div class="ka-resume-actions"><a class="sprint-primary" href="${target}">${next ? "متابعة الدرس" : empty ? "عرض الوحدات" : "عرض النتائج"} ←</a>
+          ${next && clipInfo[next.code] ? `<a class="sprint-video-link" href="${target}?tab=video">شرح بالفيديو</a>` : ""}</div>
+        </article>
+        <section class="ka-home-score" aria-labelledby="home-progress-title">
+          <div class="ka-home-heading"><h2 id="home-progress-title">سجلّ تعلّمك</h2><a href="#progress">التفاصيل ←</a></div>
+          <div class="ka-home-metrics">
+            <div class="sprint-ring" style="--value:${pct}%"><div><strong dir="ltr">${pct}%</strong><span>التقدم العام</span></div></div>
+            <dl><div><dt>نقاط الخبرة</dt><dd><bdi>${stats.earnedXp.toLocaleString("en-US")} XP</bdi></dd></div>
+            <div><dt>الدروس المكتملة</dt><dd><bdi>${stats.completedLessons} / ${stats.totalLessons}</bdi></dd></div>
+            <div><dt>الاختبارات المجتازة</dt><dd><bdi>${stats.passedAssessments} / ${stats.totalAssessments}</bdi></dd></div></dl>
+          </div>
+        </section>
+      </div>
+      ${quickLinks()}${learningRoute(curriculum, progress, translate, escape)}
+    </div>`;
   }
 
   function lessonProgress() {

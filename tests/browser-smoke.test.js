@@ -54,6 +54,28 @@ function startServer() {
       assert.equal(await current.count(), 1, "one current page per navigation landmark");
       assert.equal(await current.getAttribute("data-view"), "dashboard");
     }
+    const settingsPage = await context.newPage();
+    await settingsPage.setViewportSize({ width: 390, height: 844 });
+    await settingsPage.goto("http://127.0.0.1:" + port + "/#dashboard");
+    await settingsPage.locator("#moreToggle").click();
+    await settingsPage.locator('#moreDrawer a[href="#settings"]').click();
+    await settingsPage.getByRole("heading", { name: "إعدادات التعلّم" }).waitFor();
+    assert.equal(await settingsPage.locator("#moreToggle").getAttribute("aria-expanded"), "false");
+    await settingsPage.reload();
+    const downloadReady = settingsPage.waitForEvent("download");
+    await settingsPage.locator("#exportLearningBackup").click();
+    assert.equal((await downloadReady).suggestedFilename(), "kpi-academy-learning-backup.json");
+    await settingsPage.close();
+
+    const emptyPage = await context.newPage();
+    await emptyPage.route("**/data/business-mathematics.json", route =>
+      route.fulfill({ json: { chapters: [{ number: 1, title: "Numerical Foundations", lessons: [] }] } }));
+    await emptyPage.goto("http://127.0.0.1:" + port + "/#dashboard");
+    await emptyPage.getByRole("heading", { name: "لا توجد دروس متاحة حاليًا" }).waitFor();
+    assert.equal(await emptyPage.locator(".sprint-resume .sprint-primary").getAttribute("href"), "#modules");
+    assert.equal(await emptyPage.locator(".sprint-route a[href^='#lesson-']").count(), 0);
+    await emptyPage.close();
+
     const catalogPage = await context.newPage();
     let catalogAttempts = 0;
     await catalogPage.route("**/data/modules.json", async route => {

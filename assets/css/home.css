@@ -1,0 +1,114 @@
+/* Home owns the course cover, current learning, tools and chapter list. */
+.ka-dashboard {
+  display: grid;
+  gap: clamp(20px, 3vw, 36px);
+  line-height: 1.55;
+}
+.ka-home-cover {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  align-items: end;
+  min-height: clamp(190px, 23vw, 285px);
+  border: 1px solid var(--ka-border);
+  border-radius: 24px;
+  background: var(--ka-ink);
+}
+.ka-home-cover .ka-welcome-visual {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: auto;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+}
+.ka-home-cover .ka-welcome-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: 30% 52%;
+  border: 0;
+  border-radius: 0;
+  filter: none;
+}
+.ka-home-cover .ka-welcome-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(270deg, #061321 3%, #061321e8 32%, #06132126 78%);
+}
+.ka-cover-copy { max-width: 64%; padding: clamp(20px, 3vw, 40px); }
+.ka-cover-copy p { margin: 0; font-size: clamp(.83rem, 1.1vw, 1rem); color: var(--ka-text-shell); }
+.ka-cover-copy .ka-cover-subject { color: var(--ka-gold-bright); font-weight: 700; }
+.ka-cover-copy h1 { margin: .22em 0; line-height: 1.28; font-size: clamp(1.55rem, 3.65vw, 3.45rem); color: var(--ka-white); }
+.ka-cover-copy h1 span { display: block; }
+.sprint-overview { display: grid; gap: clamp(20px, 3vw, 36px); min-width: 0; }
+.ka-current-learning { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap: 12px; }
+.sprint-resume, .ka-home-score { padding: clamp(16px, 2vw, 26px); border-radius: 20px; min-width: 0; }
+.sprint-resume { color-scheme: light; color: var(--ka-text-on-light); background: #f8f2e7; border-inline-start: 4px solid var(--ka-gold); }
+.ka-resume-heading, .ka-home-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.ka-resume-heading { color: #73521d; font-size: .83rem; }
+.ka-resume-heading .sprint-code { color: #73521d; font: 700 .8rem var(--ka-font-latin); letter-spacing: .05em; }
+.sprint-resume h2 { font-size: clamp(1.4rem, 2.35vw, 2.15rem); line-height: 1.35; margin: .22em 0; color: var(--ka-text-on-light); }
+.ka-resume-context, .ka-resume-evidence { font-size: .83rem; color: #495463; }
+.ka-resume-context { margin: 0; }
+.ka-resume-evidence { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-block: 8px; }
+.ka-resume-evidence progress { width: 72px; height: 7px; accent-color: #775a27; }
+.ka-resume-actions { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; margin-block-start: 8px; }
+.sprint-primary, .sprint-video-link, .ka-home-heading a, .ka-dashboard .ka-module-link {
+  display: inline-flex; align-items: center; min-height: 44px; min-width: 44px;
+}
+.sprint-primary { background: var(--ka-ink-soft); color: var(--ka-white); padding: 7px 18px; border-radius: 10px; font-weight: 700; }
+.sprint-video-link { color: #2d4d65; text-decoration: underline; text-underline-offset: 4px; }
+.sprint-resume a:focus-visible { outline: 3px solid #00649a; outline-offset: 3px; }
+.ka-home-heading h2 { font-size: clamp(1.15rem, 1.8vw, 1.55rem); color: var(--ka-text); margin: 0; }
+.ka-home-heading { margin-block-end: 10px; }
+.ka-home-heading a { color: var(--ka-gold-bright); font-size: .875rem; }
+.ka-home-score { background: var(--ka-gradient-card); border: 1px solid var(--ka-border-blue); }
+.ka-home-score .ka-home-heading { margin-block-end: 4px; }
+.ka-home-metrics { display: grid; grid-template-columns: minmax(0, 1fr) minmax(84px, .65fr); align-items: center; column-gap: 12px; }
+.ka-home-metrics .sprint-ring { grid-area: 1 / 2; max-width: 112px; padding: 6px; background: conic-gradient(var(--ka-gold-bright) var(--value), var(--ka-glass-3) 0); }
+.ka-home-metrics dl { grid-area: 1 / 1; margin: 0; font-size: .86rem; }
+.ka-home-metrics dl div { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px 8px; padding-block: 6px; }
+.ka-home-metrics dl div + div { border-block-start: 1px solid var(--ka-border); }
+.ka-home-metrics dt { color: var(--ka-muted); }
+.ka-home-metrics dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sprint-shortcuts { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; }
+.sprint-shortcuts a { display: grid; align-content: start; min-width: 0; padding: 15px 10px; border: 1px solid var(--ka-border); border-radius: 12px; background: var(--ka-glass-1); }
+.sprint-shortcuts svg { width: 23px; height: 23px; color: var(--ka-gold-bright); margin-block-end: 8px; }
+.sprint-shortcuts strong { font-size: .87rem; color: var(--ka-text); }
+.sprint-shortcuts small { font-size: .7rem; color: var(--ka-muted); text-align: right; }
+.sprint-shortcuts a:hover, .sprint-route a:hover { background: var(--ka-glass-2); }
+.sprint-shortcuts a:focus-visible { outline: 2px solid var(--ka-focus); outline-offset: 3px; }
+.sprint-route ol { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 24px; list-style: none; padding: 0; margin: 0; }
+.sprint-route li { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 12px; border-block-start: 1px solid var(--ka-border); padding-block: 10px; }
+.ka-chapter-index { direction: ltr; font: 600 1.15rem var(--ka-font-latin); color: var(--ka-gold-bright); }
+.ka-route-topic { display: grid; gap: 3px; }
+.ka-route-topic small { color: var(--ka-muted); }
+.ka-route-topic progress { width: min(100%, 110px); height: 5px; accent-color: var(--ka-gold); }
+.sprint-route li a { display: grid; place-items: center; min-width: 44px; min-height: 44px; border: 1px solid var(--ka-border); border-radius: 50%; color: var(--ka-text); }
+.ka-dashboard-details { min-width: 0; }
+.ka-dashboard-details > summary { min-height: 48px; padding: 12px 16px; border: 1px solid var(--ka-border-blue); border-radius: var(--ka-radius-control); color: var(--ka-text); cursor: pointer; }
+.ka-dashboard-details[open] > summary { margin-block-end: 12px; }
+@media (max-width: 1150px) { .sprint-shortcuts { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media (max-width: 660px) {
+  .ka-dashboard, .sprint-overview { gap: 18px; }
+  .ka-current-learning, .sprint-route ol { grid-template-columns: minmax(0,1fr); }
+  .ka-home-cover { min-height: 166px; border-radius: 18px; }
+  .ka-cover-copy { max-width: 78%; padding: 14px; }
+  .ka-cover-copy p { max-width: 22em; }
+  .ka-home-cover .ka-welcome-visual img { object-position: 24% 50%; }
+  .ka-home-cover .ka-welcome-visual::after { background: linear-gradient(270deg, #061321f5, #061321c9 48%, #0613210d 95%); }
+  .ka-home-score { padding-block: 8px 14px; }
+  .ka-home-metrics .sprint-ring { max-width: 84px; }
+  .ka-home-metrics dl div { padding-block: 3px; }
+  .sprint-shortcuts a { padding: 11px 8px; }
+  .ka-home-library .ka-module-card { display: grid; grid-template-columns: 60px minmax(0,1fr); align-items: start; gap: 10px; padding: 12px; }
+  .ka-home-library .ka-module-art { height: 60px; padding: 0; margin: 0; border-radius: 8px; }
+  .ka-home-library .ka-module-card-content { padding: 0; }
+  .ka-home-library .ka-module-card h3 { margin: 5px 0; }
+}

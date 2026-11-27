@@ -23,3 +23,7 @@ The approved Home and Lesson images were not available in this execution workspa
 ### Keyboard focus follow-up
 
 A real Tab traversal at 390 × 844 initially placed the focused shortcut underneath the fixed bottom bar even though its focus outline existed. The shell now reserves scroll clearance for both the sticky header and bottom navigation. A repeat Chromium capture showed the cyan outline and entire focused card unobscured. The browser regression checks the focused card's bounds after scrolling; this does not replace a complete keyboard and screen-reader audit.
+
+### Home and settings review, 27 November
+
+The resume card now precedes secondary progress information. Chapter rows name the topic, display the learner's actual completion count and link to the next or review lesson. Settings opens the existing backup controls from either navigation menu and supports direct loading. At 390 × 844 the fresh Arabic dashboard measured 2,908 CSS pixels with secondary details closed. Browser coverage includes a zero-lesson chapter, mobile Settings navigation and export after a reload.
