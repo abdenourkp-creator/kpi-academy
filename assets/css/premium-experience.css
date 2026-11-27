@@ -1,13 +1,13 @@
 /* KPI Academy — premium hospitality intelligence experience
    Additive visual layer. Preserves existing learning, assessment and calculation logic. */
 :root{
- --blue:#19BDEB;--navy:#06182B;--light-blue:#0C2A43;--soft-blue:#123C5B;
- --bg:#061321;--surface:#0B2033;--text:#EAF3FC;--muted:#9CB1C4;--border:rgba(129,177,211,.22);
- --success:#19C987;--warning:#E7B95C;--error:#F06E78;--radius:20px;
+ --blue:#19BDEB;--navy:#06182B;--light-blue:#0C2A43;
+ --bg:#061321;--surface:#0B2033;--muted:#9CB1C4;--border:rgba(129,177,211,.22);
+ 
  --shadow:0 18px 48px rgba(0,0,0,.28);
  color-scheme:dark;
 }
-html,body{background:#061321;color:var(--text)}
+html,body{background:#061321;color:var(--ka-text-shell)}
 body{background:radial-gradient(ellipse at 80% -10%,rgba(20,91,135,.28),transparent 40%),linear-gradient(160deg,#071827 0%,#04111F 70%,#061827 100%);min-height:100vh}
 .app-shell{background:transparent}
 .sidebar{background:rgba(5,19,33,.94);border-left:1px solid var(--border);backdrop-filter:blur(18px)}

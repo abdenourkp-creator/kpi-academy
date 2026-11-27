@@ -51,6 +51,13 @@ async function capture(browser,root,label,viewport,routesToCapture){
   function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,item.name);if(item.isDirectory())walk(full);else files.push(full);}}
   walk(output);
   if(files.length!==59)throw new Error("Expected 59 screenshots, captured "+files.length);
+  const homeServer = await startServer(currentRoot);
+  try {
+    await require("./home-review")(browser, "http://127.0.0.1:" + homeServer.port, path.join(output, "home-review"));
+  } finally {
+    homeServer.server.close();
+  }
+  console.log("Home review captured in both languages at seven widths.");
   console.log("Visual capture complete: "+files.length+" before/after desktop and after mobile screenshots.");
  }finally{await browser.close();}
 })();

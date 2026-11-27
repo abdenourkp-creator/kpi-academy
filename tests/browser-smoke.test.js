@@ -11,7 +11,8 @@ const mime = {
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".md": "text/markdown; charset=utf-8",
-  ".svg": "image/svg+xml"
+  ".svg": "image/svg+xml",
+  ".mp4": "video/mp4"
 };
 
 function startServer() {
@@ -48,6 +49,66 @@ function startServer() {
     page.on("pageerror", error => failures.push(error.message));
 
     await page.goto("http://127.0.0.1:" + port + "/", { waitUntil: "networkidle" });
+    for (const nav of [".main-nav", ".mobile-bottom-nav"]) {
+      const current = page.locator(nav + ' .nav-link[aria-current="page"]');
+      assert.equal(await current.count(), 1, "one current page per navigation landmark");
+      assert.equal(await current.getAttribute("data-view"), "dashboard");
+    }
+    const settingsPage = await context.newPage();
+    await settingsPage.setViewportSize({ width: 390, height: 844 });
+    await settingsPage.goto("http://127.0.0.1:" + port + "/#dashboard");
+    await settingsPage.locator("#moreToggle").click();
+    await settingsPage.locator('#moreDrawer a[href="#settings"]').click();
+    await settingsPage.getByRole("heading", { name: "إعدادات التعلّم" }).waitFor();
+    assert.equal(await settingsPage.locator("#moreToggle").getAttribute("aria-expanded"), "false");
+    await settingsPage.reload();
+    const downloadReady = settingsPage.waitForEvent("download");
+    await settingsPage.locator("#exportLearningBackup").click();
+    assert.equal((await downloadReady).suggestedFilename(), "kpi-academy-learning-backup.json");
+    await settingsPage.close();
+
+    const emptyPage = await context.newPage();
+    await emptyPage.route("**/data/business-mathematics.json", route =>
+      route.fulfill({ json: { chapters: [{ number: 1, title: "Numerical Foundations", lessons: [] }] } }));
+    await emptyPage.goto("http://127.0.0.1:" + port + "/#dashboard");
+    await emptyPage.getByRole("heading", { name: "لا توجد دروس متاحة حاليًا" }).waitFor();
+    assert.equal(await emptyPage.locator(".sprint-resume .sprint-primary").getAttribute("href"), "#modules");
+    assert.equal(await emptyPage.locator(".sprint-route a[href^='#lesson-']").count(), 0);
+    await emptyPage.close();
+
+    const retryContext = await browser.newContext();
+    const retryPage = await retryContext.newPage();
+    await retryPage.route("**/data/assessments/business-mathematics.json", route => route.fulfill({ json: {} }), { times: 1 });
+    await retryPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await retryPage.locator("#homeLanguage").click();
+    await retryPage.locator(".ka-dashboard-details > summary").click();
+    const retry = retryPage.getByRole("button", { name: "Try again" });
+    await retry.waitFor();
+    await retry.click();
+    await retryPage.locator(".chapter-progress-row").first().waitFor();
+    assert.equal(await retryPage.locator(".chapter-progress-row").count(), 8);
+    assert.equal(await retryPage.locator("#retryLearningCatalog").count(), 0);
+    await retryContext.close();
+
+    const catalogPage = await context.newPage();
+    let catalogAttempts = 0;
+    await catalogPage.route("**/data/modules.json", async route => {
+      catalogAttempts++;
+      if (catalogAttempts === 1) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        await route.abort();
+      } else await route.continue();
+    });
+    await catalogPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "domcontentloaded" });
+    await catalogPage.locator("#app [role=status]").waitFor();
+    await catalogPage.locator("#retryAcademyCatalog").waitFor();
+    await catalogPage.evaluate(() => location.hash = "#modules");
+    await catalogPage.locator("#retryAcademyCatalog").click();
+    await catalogPage.locator(".main-nav .nav-link[data-view='modules'][aria-current='page']").waitFor();
+    assert.equal(await catalogPage.locator(".mobile-bottom-nav .nav-link[data-view='modules'][aria-current='page']").count(), 1);
+    assert.equal(await catalogPage.locator(".nav-link[data-view='dashboard'][aria-current='page']").count(), 0);
+    assert.equal(catalogAttempts, 2, "catalog retry must make exactly one additional request");
+    await catalogPage.close();
     await page.setViewportSize({ width: 390, height: 844 });
     const menuButton = page.locator("#menuToggle");
     await menuButton.click();
@@ -55,17 +116,109 @@ function startServer() {
     await page.keyboard.press("Escape");
     assert.equal(await menuButton.getAttribute("aria-expanded"), "false", "Escape must close the mobile menu");
     await page.setViewportSize({ width: 1365, height: 900 });
-    await page.getByRole("heading", { name: "افهم الأرقام. اتخذ قرارات أفضل." }).waitFor();
+    await page.getByRole("heading", { name: "أكاديمية ذكاء الأعمال لقطاع الضيافة" }).waitFor();
     assert.equal(await page.locator(".skip-link").getAttribute("href"), "#main-content", "keyboard users must have a skip link to the main landmark");
     assert.equal(await page.locator("#main-content").getAttribute("tabindex"), "-1", "the main landmark must be programmatically focusable");
     assert.equal(await page.locator(".ka-module-card").count(), 3, "dashboard must show exactly the three approved MVP modules");
     assert.equal(await page.locator(".ka-module-art img").count(), 3, "all modules must have visual illustrations");
     assert.equal(await page.locator(".ka-welcome-visual img").evaluate(img => img.complete && img.naturalWidth > 0), true, "dashboard hero illustration must load");
     assert.equal(await page.locator(".ka-module-art img").evaluateAll(imgs => imgs.every(img => img.complete && img.naturalWidth > 0)), true, "module illustrations must load");
+    // The next action must be visible above the fixed navigation on a fresh phone viewport.
+    for (const width of [320, 360, 390, 430]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.evaluate(() => scrollTo(0, 0));
+      const action = await page.locator(".sprint-resume .sprint-primary").boundingBox();
+      const nav = await page.locator(".mobile-bottom-nav").boundingBox();
+      assert.ok(action && nav && action.y >= 0 && action.y + action.height <= nav.y,
+        "resume action must be visible above mobile navigation at " + width + "px");
+      for (const link of await page.locator(".mobile-bottom-nav .mobile-bottom-link").all()) {
+        const bounds = await link.boundingBox();
+        assert.ok(bounds && bounds.width >= 44 && bounds.height >= 44,
+          "mobile navigation must provide 44px targets at " + width + "px");
+      }
+    }
+    await page.setViewportSize({ width: 768, height: 900 });
+    assert.equal(await page.locator(".mobile-bottom-nav").evaluate(el => getComputedStyle(el).position), "fixed",
+      "tablet navigation must remain fixed when displayed");
+    assert.equal(await menuButton.isVisible(), true, "tablet users can open the sidebar");
+    assert.equal(await page.locator(".mobile-brand").isVisible(), true, "tablet header retains the academy identity");
+    await menuButton.click();
+    assert.equal(await menuButton.getAttribute("aria-expanded"), "true");
+    await page.keyboard.press("Escape");
+    await page.setViewportSize({ width: 1365, height: 900 });
+    assert.equal(await page.locator(".ka-dashboard-details").getAttribute("open"), null,
+      "secondary progress details begin collapsed");
+    await page.locator(".ka-dashboard-details > summary").click();
     await page.locator(".chapter-progress").waitFor();
+    assert.equal(await page.locator(".st-skill-node").first().isVisible(), true,
+      "the disclosure must retain access to personal study tools");
     assert.equal(await page.locator(".chapter-progress-row").count(), 8, "dashboard must render one live progress row per curriculum chapter");
     assert.equal(await page.locator(".st-skill-node").count(), 8, "dashboard must render the eight-chapter skill tree");
     assert.equal(await page.locator(".st-badge").count(), 4, "dashboard must render four progress-derived achievement badges");
+    assert.equal(await page.locator(".sprint-ring strong").textContent(), "0%");
+    assert.equal(await page.locator(".sprint-resume").getByRole("link", { name: /متابعة الدرس/ }).getAttribute("href"), "#lesson-BM-001");
+    await page.setViewportSize({ width: 390, height: 844 });
+    const route = page.locator(".sprint-route");
+    assert.equal(await route.locator("li").count(), 8);
+    assert.equal(await route.locator("progress[value='0']").count(), 8);
+    const firstChapterLink = route.locator('a[href="#lesson-BM-001"]');
+    assert.equal(await firstChapterLink.count(), 1);
+    assert.ok((await firstChapterLink.boundingBox()).height >= 44);
+    assert.equal(await page.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
+    // Phase 2 responsive acceptance: inspect the actual dashboard at each required width.
+    for (const width of [320, 360, 390, 430, 768, 1365]) {
+      await page.setViewportSize({ width, height: 900 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+        "dashboard must not overflow at " + width + "px");
+      for (const selector of [".sprint-shortcuts a", ".sprint-route a", ".sprint-resume a"]) {
+        const links = page.locator(selector);
+        assert.ok(await links.count() > 0, selector + " must exist");
+        for (const link of await links.all()) {
+          const bounds = await link.boundingBox();
+          assert.ok(bounds && bounds.height >= 44 && bounds.width >= 44,
+            selector + " must meet 44px touch target at " + width + "px");
+        }
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    // Keyboard regression: traverse real adjacent shortcuts, reverse and activate.
+    const keyboardLinks = page.locator(".sprint-shortcuts a");
+    await keyboardLinks.first().focus();
+    await page.keyboard.press("Tab");
+    assert.equal(await keyboardLinks.nth(1).evaluate(el => el === document.activeElement), true);
+    assert.equal(await keyboardLinks.nth(1).evaluate(el => el.matches(":focus-visible")), true);
+    // Let the browser finish its smooth focus scroll before checking fixed-shell clearance.
+    await page.waitForTimeout(1500);
+    const focusedBounds = await keyboardLinks.nth(1).boundingBox();
+    const bottomNavBounds = await page.locator(".mobile-bottom-nav").boundingBox();
+    const topbarBounds = await page.locator(".topbar").boundingBox();
+    assert.ok(focusedBounds && bottomNavBounds && topbarBounds &&
+      focusedBounds.y >= topbarBounds.y + topbarBounds.height &&
+      focusedBounds.y + focusedBounds.height <= bottomNavBounds.y,
+    "keyboard focus must remain visible between the sticky header and fixed navigation");
+    const focusStyle = await keyboardLinks.nth(1).evaluate(el => {
+      const style = getComputedStyle(el);
+      return (style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0) || style.boxShadow !== "none";
+    });
+    assert.ok(focusStyle, "keyboard shortcut must have a rendered focus indicator");
+    await page.keyboard.press("Shift+Tab");
+    assert.equal(await keyboardLinks.first().evaluate(el => el === document.activeElement), true);
+    const keyboardHref = await keyboardLinks.first().getAttribute("href");
+    await page.keyboard.press("Enter");
+    await page.waitForFunction(expected => location.hash === expected, keyboardHref);
+    await page.locator(".sprint-shortcuts").waitFor({ state: "detached" });
+    await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    const shortcutRoutes = ["modules", "calculator", "analytics", "lesson-BM-005?tab=lab", "simulator", "progress"];
+    for (const route of shortcutRoutes) {
+      const shortcut = page.locator('.sprint-shortcuts a[href="#' + route + '"]');
+      assert.equal(await shortcut.count(), 1, "each live quick action must appear once");
+      assert.ok((await shortcut.boundingBox()).height >= 44, "shortcut must meet minimum touch height");
+      await shortcut.click();
+      await page.waitForFunction(expected => location.hash === "#" + expected, route);
+      await page.locator(".sprint-shortcuts").waitFor({ state: "detached" });
+      await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    }
+    await page.setViewportSize({ width: 1365, height: 900 });
     await page.goto("http://127.0.0.1:" + port + "/#module-business-mathematics", { waitUntil: "networkidle" });
     assert.equal(await page.locator(".ka-chapter-visual").count(), 8, "all eight chapters must have visual learning maps");
     await page.goto("http://127.0.0.1:" + port + "/#module-restaurant-kpis", { waitUntil: "networkidle" });
@@ -122,7 +275,8 @@ function startServer() {
     await page.getByRole("heading", { name: "مركز التقدم والتقييم" }).waitFor();
     assert.equal(await page.locator(".assessment-card").count(), 9);
     assert.equal(await page.locator(".learning-resume").count(), 1);
-    assert.match(await page.locator(".learning-resume").textContent(), /BM-001|جارٍ تحميل خريطة الدروس/);
+    await page.waitForFunction(() => document.querySelector(".learning-resume")?.textContent.includes("BM-005"));
+    assert.match(await page.locator(".learning-resume").textContent(), /BM-005/, "opening the practical-case shortcut must resume the visited unfinished lesson");
 
     const failurePage = await context.newPage();
     const recoveryPageErrors = [];
@@ -428,6 +582,7 @@ function startServer() {
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await page.locator(".ka-dashboard-details > summary").click();
     await page.locator(".chapter-progress").waitFor();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false, "dashboard visual chart must fit mobile width");
     await page.goto("http://127.0.0.1:" + port + "/#analytics", { waitUntil: "networkidle" });
@@ -474,6 +629,94 @@ function startServer() {
         assert.equal(hasOverflow, false, route + " must not overflow at " + width + "px");
       }
     }
+
+    // Exercise the dashboard's lab deep link in a separate learner profile.
+    const labContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const labPage = await labContext.newPage();
+    labPage.on("pageerror", error => failures.push(error.message));
+    await labPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    const resume = labPage.locator(".sprint-resume");
+    assert.match(await resume.locator(".ka-resume-context").textContent(), /الرياضيات التجارية/);
+    const evidenceMeter = resume.getByRole("progressbar", { name: "متطلبات إكمال الدرس" });
+    assert.equal(await evidenceMeter.getAttribute("value"), "0");
+    await labPage.evaluate(() => {
+      window.KPI_LEARNING_ENGINE.startLesson("BM-006");
+      window.KPI_LEARNING_ENGINE.saveLessonEvidence("BM-006", { interactiveLab: true });
+    });
+    await labPage.reload({ waitUntil: "networkidle" });
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    assert.equal(await evidenceMeter.getAttribute("value"), "1");
+    assert.equal(await evidenceMeter.getAttribute("max"), "4");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
+    const learnerState = () => labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getState());
+    const beforeSwitch = await learnerState();
+    await labPage.locator("#homeLanguage").click();
+    await labPage.getByRole("heading", { name: "Business Intelligence Academy for Hospitality" }).waitFor();
+    assert.equal(await labPage.locator("html").getAttribute("dir"), "ltr");
+    assert.equal(await resume.getByRole("progressbar", { name: "Lesson completion requirements" }).getAttribute("value"), "1");
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    await labPage.reload({ waitUntil: "networkidle" });
+    assert.equal(await labPage.locator("html").getAttribute("lang"), "en");
+    assert.deepEqual(await learnerState(), beforeSwitch, "changing Home language and reloading must preserve the learner record");
+    await labPage.locator("#moreToggle").click();
+    await labPage.locator("#moreDrawer").getByRole("link", { name: "Settings" }).waitFor();
+    await labPage.keyboard.press("Escape");
+    await resume.locator(".sprint-primary").click();
+    await labPage.locator("#lessonProgressPanel").waitFor();
+    assert.equal(await labPage.locator("html").getAttribute("dir"), "rtl");
+    await labPage.goBack();
+    await resume.getByRole("progressbar", { name: "Lesson completion requirements" }).waitFor();
+    const afterLesson = await learnerState();
+    await labPage.locator("#homeLanguage").click();
+    assert.equal(await evidenceMeter.getAttribute("value"), "1");
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#lesson-BM-006");
+    assert.deepEqual(await learnerState(), afterLesson);
+    const practicalShortcut = labPage.locator('.sprint-shortcuts a[href="#lesson-BM-005?tab=lab"]');
+    assert.equal(await practicalShortcut.count(), 1);
+    assert.match(await practicalShortcut.textContent(), /حالة تطبيقية/);
+    await practicalShortcut.click();
+    await labPage.waitForFunction(() => location.hash === "#lesson-BM-005?tab=lab");
+    await labPage.locator("[data-margin-value]").waitFor();
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "70.0%");
+    assert.equal(await labPage.locator("[data-gross-profit]").textContent(), "29,400 MAD");
+    await labPage.locator("[data-gross-cost]").fill("50000");
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "-19.0%");
+    await labPage.locator("[data-gross-sales]").fill("0");
+    assert.equal(await labPage.locator("[data-margin-value]").textContent(), "—");
+    for (const clip of ["bm-001", "bm-005"]) {
+      const response = await labPage.request.get("http://127.0.0.1:" + port + "/assets/video/" + clip + ".mp4");
+      assert.equal(response.headers()["content-type"], "video/mp4");
+      assert.ok((await response.body()).length > 1000);
+    }
+    assert.equal(await labPage.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false,
+      "the gross-margin case must fit the mobile viewport");
+    await labPage.locator("#lessonProgressPanel").waitFor();
+    for (const checkbox of await labPage.locator("#lessonProgressPanel [data-evidence]").all()) await checkbox.check();
+    await labPage.locator("#completeLessonButton").click();
+    assert.match(await labPage.locator("#lessonEvidenceFeedback").textContent(), /دون إضافة نقاط/);
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 0);
+    // Isolated completed-curriculum fixture through the real evidence/XP API.
+    await labPage.evaluate(() => {
+      const engine = window.KPI_LEARNING_ENGINE;
+      for (let n = 1; n <= 32; n++) {
+        const code = "BM-" + String(n).padStart(3, "0");
+        engine.saveLessonEvidence(code, { interactiveLab: true, professionalChallenge: true, fieldChecklist: true, learnerAttested: true });
+        if (!engine.completeLesson(code).ok) throw new Error("Completion fixture failed: " + code);
+      }
+    });
+    await labPage.goto("http://127.0.0.1:" + port + "/#dashboard", { waitUntil: "networkidle" });
+    await resume.locator(".sprint-primary").waitFor();
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
+    assert.equal(await resume.locator(".ka-resume-evidence").count(), 0);
+    assert.equal(await labPage.locator(".sprint-ring strong").textContent(), "100%");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2790);
+    await labPage.reload({ waitUntil: "networkidle" });
+    await resume.locator(".sprint-primary").waitFor();
+    assert.equal(await resume.locator(".sprint-primary").getAttribute("href"), "#progress");
+    assert.equal(await labPage.evaluate(() => window.KPI_LEARNING_ENGINE.getDashboard().earnedXp), 2790);
+    await resume.locator(".sprint-primary").click();
+    await labPage.waitForFunction(() => location.hash === "#progress");
+    await labContext.close();
 
     assert.deepEqual(failures, [], "browser must not emit uncaught page errors");
     console.log("Browser smoke passed: dashboard load state and assessment retry, 9 assessments, lesson evidence/90 XP, assessment pass + failed retake history, backup export/restore, RTL mobile overflow on progress/lesson/exam, LTR metadata and zero uncaught page errors.");

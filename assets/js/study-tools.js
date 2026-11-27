@@ -25,13 +25,39 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;",
 function dueItems(){return Object.entries(state.reviews).filter(([,r])=>r.nextAt&&Date.parse(r.nextAt)<=Date.now()).map(([code,r])=>({code,...r}));}
 function registerVisit(code,title){const r=state.reviews[code]||{stage:0,nextAt:new Date(Date.now()+86400000).toISOString(),title};r.title=title;r.lastOpenedAt=new Date().toISOString();state.reviews[code]=r;save();}
 function review(code){const r=state.reviews[code];if(!r)return;const intervals=[1,3,7];r.stage=Math.min((r.stage||0)+1,3);r.lastReviewedAt=new Date().toISOString();r.nextAt=new Date(Date.now()+(r.stage>=3?30:intervals[r.stage])*86400000).toISOString();save();return r;}
-function dashboardWidget(curriculum){
-const due=dueItems(),engine=root.KPI_LEARNING_ENGINE,data=engine?engine.getDashboard():{completedLessons:0,passedAssessments:0,courseComplete:false};
-const saved=state.bookmarks.map(code=>'<a href="#lesson-'+esc(code)+'">'+esc(code)+' ←</a>').join("");
-const chapters=(curriculum&&curriculum.chapters||[]).map(ch=>{const done=ch.lessons.filter(l=>{const p=engine&&engine.getLessonProgress(l.code).progress;return p&&p.status==="completed";}).length;const pct=ch.lessons.length?Math.round(done/ch.lessons.length*100):0;return '<a class="st-skill-node" href="#lesson-'+esc(ch.lessons[0].code)+'"><span><b>0'+ch.number+'</b><strong>'+esc(ch.title)+'</strong></span><em>'+done+'/'+ch.lessons.length+'</em><i><span style="width:'+pct+'%"></span></i></a>';}).join("");
-const badges=[["البداية الأولى","إكمال أول درس",data.completedLessons>=1],["ممارس منضبط","إكمال 5 دروس",data.completedLessons>=5],["قارئ التقييم","اجتياز أول اختبار",data.passedAssessments>=1],["مستوى Foundation","إكمال الدروس والاختبارات المعتمدة",!!data.courseComplete]];
-return '<section class="st-dashboard"><div><span class="eyebrow">PERSONAL STUDY SYSTEM</span><h2>مركز المراجعة الشخصية</h2><p>ملاحظاتك ومحفوظاتك ومواعيد المراجعة. الشارات تعكس إنجازاتك المسجلة ولا تضيف XP مستقلاً.</p></div><div class="st-dash-stats"><span><strong>'+state.bookmarks.length+'</strong> محفوظ</span><span><strong>'+due.length+'</strong> مراجعة مستحقة</span><span><strong>'+data.completedLessons+'</strong> درس مكتمل</span></div><div class="st-dashboard-grid"><article class="st-skill-tree"><h3>🌱 شجرة المهارات</h3><p>مسار الفصول الثمانية في Business Mathematics.</p><div class="st-skill-list">'+chapters+'</div></article><article class="st-badges"><h3>🏅 شارات الإنجاز</h3><p>تُفتح تلقائياً عند تحقق شروطها من سجل التعلم الرسمي.</p><div class="st-badge-list">'+badges.map(b=>'<div class="st-badge '+(b[2]?"earned":"locked")+'"><span>'+(b[2]?"✓":"○")+'</span><div><strong>'+b[0]+'</strong><small>'+b[1]+'</small></div></div>').join("")+'</div></article></div>'+(due.length?'<div class="st-due-list">'+due.slice(0,4).map(x=>'<a href="#lesson-'+esc(x.code)+'"><b>'+esc(x.code)+'</b><span>'+esc(x.title||"مراجعة الدرس")+'</span><em>مستحقة الآن ←</em></a>').join("")+'</div>':'<p class="st-empty">لا توجد مراجعات مستحقة. عند فتح درس، سيُضاف إلى جدول 1–3–7 أيام.</p>')+(saved?'<div class="st-saved-links"><strong>دروسك المحفوظة</strong>'+saved+'</div>':"")+'</section>';
+function dashboardWidget(curriculum, language = "ar") {
+  const copy = root.KPI.i18n[language].home;
+  const engine = root.KPI_LEARNING_ENGINE;
+  const data = engine.getDashboard();
+  const chapters = curriculum?.chapters || [];
+  const displayTitle = title => language === "ar" && root.KPI_AR_LABEL ? root.KPI_AR_LABEL(title) : title;
+  const titles = new Map(chapters.flatMap(ch => ch.lessons.map(lesson => [lesson.code, displayTitle(lesson.title)])));
+  const skills = chapters.filter(ch => ch.lessons.length).map(ch => {
+    const done = ch.lessons.filter(lesson => engine.getLessonProgress(lesson.code).progress?.status === "completed").length;
+    const percent = Math.round(done / ch.lessons.length * 100);
+    return `<a class="st-skill-node" href="#lesson-${esc(ch.lessons[0].code)}">
+      <span><b>${esc(String(ch.number).padStart(2,"0"))}</b><strong>${esc(displayTitle(ch.title))}</strong></span>
+      <em><bdi>${done}/${ch.lessons.length}</bdi></em><i><span style="width:${percent}%"></span></i></a>`;
+  }).join("");
+  const badges = [
+    [copy.firstBadge, copy.firstBadgeHint, data.completedLessons >= 1],
+    [copy.fiveBadge, copy.fiveBadgeHint, data.completedLessons >= 5],
+    [copy.examBadge, copy.examBadgeHint, data.passedAssessments >= 1],
+    [copy.foundationBadge, copy.foundationHint, data.courseComplete]
+  ];
+  const saved = state.bookmarks.map(code => `<a href="#lesson-${esc(code)}"><bdi>${esc(code)}</bdi> ${copy.arrow}</a>`).join("");
+  const due = dueItems();
+  return `<section class="st-dashboard"><h2>${copy.study}</h2>
+    <div class="st-dash-stats"><span><strong>${state.bookmarks.length}</strong> ${copy.saved}</span>
+      <span><strong>${due.length}</strong> ${copy.due}</span><span><strong>${data.completedLessons}</strong> ${copy.completeLessons}</span></div>
+    <div class="st-dashboard-grid"><article class="st-skill-tree"><h3>${copy.skills}</h3><div class="st-skill-list">${skills}</div></article>
+      <article class="st-badges"><h3>${copy.badges}</h3><div class="st-badge-list">
+      ${badges.map(([title, hint, earned]) => `<div class="st-badge ${earned ? "earned" : "locked"}"><span>${earned ? "✓" : "○"}</span><div><strong>${title}</strong><small>${hint}</small></div></div>`).join("")}</div></article></div>
+    ${due.length ? `<div class="st-due-list">${due.slice(0,4).map(item => `<a href="#lesson-${esc(item.code)}"><bdi>${esc(item.code)}</bdi><span>${esc(titles.get(item.code) || item.code)}</span><em>${copy.dueNow} ${copy.arrow}</em></a>`).join("")}</div>` : `<p class="st-empty">${copy.noReview}</p>`}
+    ${saved ? `<div class="st-saved-links"><strong>${copy.savedLessons}</strong>${saved}</div>` : ""}
+  </section>`;
 }
+
 function lessonPanel(code,title){registerVisit(code,title);const saved=state.bookmarks.includes(code),note=state.notes[code]||"",r=state.reviews[code];return '<section class="st-panel"><div class="st-panel-head"><div><span class="eyebrow">STUDY COMPANION</span><h2>أدواتك لهذا الدرس</h2><p>احفظ الفكرة، دوّن ملاحظتك، ثم ارجع إليها في موعد المراجعة.</p></div><button type="button" class="st-bookmark '+(saved?"active":"")+'" id="stBookmark" aria-pressed="'+saved+'">'+(saved?"★ محفوظ":"☆ احفظ الدرس")+'</button></div><div class="st-tools-grid"><article class="st-tool-card"><h3>📝 ملاحظاتي</h3><p>اكتب الفكرة التي تريد تذكرها أو السؤال الذي بقي لديك.</p><textarea id="stNote" rows="4" placeholder="اكتب ملاحظتك هنا...">'+esc(note)+'</textarea><small id="stNoteStatus" role="status">تُحفظ تلقائياً على هذا الجهاز.</small></article><article class="st-tool-card"><h3>🧠 مراجعة متباعدة</h3><p>راجع الدرس بعد يوم، ثم 3 أيام، ثم 7 أيام.</p><div class="st-review-date"><strong>'+(r?new Date(r.nextAt).toLocaleDateString("ar-MA"):"غداً")+'</strong><span>موعد المراجعة التالية</span></div><button type="button" class="st-review-button" id="stReview">راجعت الفكرة اليوم</button><small id="stReviewStatus" role="status">لا تمنح المراجعة XP ولا تغيّر نتائج الاختبارات.</small></article></div><article class="st-glossary"><div><span class="eyebrow">SMART GLOSSARY</span><h3>قاموس المصطلحات</h3><p>ابحث عن المصطلح الإنجليزي واقرأ معناه وتطبيقه.</p></div><input id="stGlossarySearch" type="search" placeholder="ابحث عن Part أو Food Cost..." aria-label="ابحث في المصطلحات"><div class="st-term-list">'+TERMS.map(t=>'<details class="st-term"><summary><span dir="ltr">'+esc(t[0])+'</span><b>'+esc(t[1])+'</b></summary><p>'+esc(t[2])+'</p><small>'+esc(t[3])+'</small></details>').join("")+'</div><p class="st-glossary-foot">قاموس تأسيسي أولي؛ الأمثلة التطبيقية مستندة إلى محتوى BM-005 المعتمد.</p></article></section>';}
 
 function flashcardMarkup(){

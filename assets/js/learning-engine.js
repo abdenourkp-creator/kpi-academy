@@ -5,6 +5,7 @@
   const BACKUP_TAG = "KPI_ACADEMY_LEARNING_BACKUP";
   const SCHEMA_VERSION = 1;
   const LESSON_XP = 90;
+  const PRACTICE_LESSON = "BM-005";
   const PASS_THRESHOLD = 80;
   const LESSON_CODES = new Set(Array.from({ length: 32 }, (_, i) => "BM-" + String(i + 1).padStart(3, "0")));
   const ASSESSMENT_IDS = new Set([
@@ -74,7 +75,7 @@
         const hasLedgerEntry = state.xpTransactions.some(tx => tx.sourceId === code);
         if (!isObject(evidence) ||
             ["interactiveLab", "professionalChallenge", "fieldChecklist", "learnerAttested"].some(key => evidence[key] !== true) ||
-            !hasLedgerEntry) {
+            (!hasLedgerEntry && code !== PRACTICE_LESSON)) {
           return { ok: false, reason: "completed-lesson-without-evidence-or-xp" };
         }
       }
@@ -215,6 +216,10 @@
     return persist(next);
   }
 
+  function getLessonXp(code) {
+    return isLessonCode(code) && code !== PRACTICE_LESSON ? LESSON_XP : 0;
+  }
+
   function completeLesson(code) {
     if (!isLessonCode(code)) return { ok: false, reason: "unknown-lesson" };
     const existing = memoryState.lessonProgress[code];
@@ -236,18 +241,19 @@
     };
 
     const transactionId = "lesson-completion:" + code;
-    if (!next.xpTransactions.some(tx => tx.transactionId === transactionId)) {
+    const xpAwarded = getLessonXp(code);
+    if (xpAwarded && !next.xpTransactions.some(tx => tx.transactionId === transactionId)) {
       next.xpTransactions.push({
         transactionId,
         sourceType: "lesson-completion",
         sourceId: code,
-        amount: LESSON_XP,
+        amount: xpAwarded,
         evidence: clone(evidence),
         createdAt: completedAt
       });
     }
     const result = persist(next);
-    return Object.assign({ completed: true, alreadyCompleted: false, xpAwarded: LESSON_XP, totalXp: getEarnedXp() }, result);
+    return Object.assign({ completed: true, alreadyCompleted: false, xpAwarded, totalXp: getEarnedXp() }, result);
   }
 
   function getLessonProgress(code) {
@@ -366,7 +372,9 @@
       inProgressLessons,
       notStartedLessons: 32 - completedLessons - inProgressLessons,
       earnedXp: getEarnedXp(),
-      availableXp: 32 * LESSON_XP,
+      // Earlier builds rewarded BM-005. Preserve that earned credit for its existing learner.
+      availableXp: (LESSON_CODES.size - 1) * LESSON_XP +
+        (memoryState.xpTransactions.find(tx => tx.sourceId === PRACTICE_LESSON)?.amount || 0),
       xpTransactions: memoryState.xpTransactions.length,
       attemptedAssessments,
       passedAssessments: course.passedAssessmentCount,
@@ -436,6 +444,7 @@
     saveLessonEvidence,
     completeLesson,
     getLessonProgress,
+    getLessonXp,
     submitAssessment,
     getAssessmentSummary,
     getCourseStatus,

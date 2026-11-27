@@ -19,7 +19,7 @@ function loadEngine() {
 
 let engine = loadEngine();
 assert.equal(engine.getDashboard().earnedXp, 0);
-assert.equal(engine.getDashboard().availableXp, 2880);
+assert.equal(engine.getDashboard().availableXp, 2790);
 
 assert.equal(engine.startLesson("BM-001").ok, true);
 assert.equal(engine.getDashboard().inProgressLessons, 1);
@@ -44,6 +44,21 @@ assert.equal(completed.xpAwarded, 90);
 assert.equal(engine.getDashboard().earnedXp, 90);
 assert.equal(engine.completeLesson("BM-001").xpAwarded, 0, "completion must be idempotent");
 assert.equal(engine.getDashboard().earnedXp, 90, "duplicate completion must not duplicate XP");
+
+assert.equal(engine.completeLesson("BM-005").ok, false);
+engine.saveLessonEvidence("BM-005", engine.getLessonProgress("BM-001").evidence);
+assert.equal(engine.completeLesson("BM-005").xpAwarded, 0);
+assert.equal(engine.getState().xpTransactions.length, 1);
+const practiceBackup = engine.exportBackup();
+assert.equal(engine.importBackup(practiceBackup).ok, true);
+assert.equal(loadEngine().getLessonProgress("BM-005").progress.status, "completed");
+const legacy = JSON.parse(practiceBackup);
+legacy.state.xpTransactions.push({ ...legacy.state.xpTransactions[0], transactionId: "lesson-completion:BM-005", sourceId: "BM-005" });
+assert.equal(engine.importBackup(JSON.stringify(legacy)).ok, true, "a previously earned award must survive restore");
+assert.equal(engine.completeLesson("BM-005").xpAwarded, 0);
+assert.equal(engine.getDashboard().earnedXp, 180);
+assert.equal(engine.getDashboard().availableXp, 2880);
+assert.equal(engine.importBackup(practiceBackup).ok, true);
 
 function assessment(id, count) {
   return {

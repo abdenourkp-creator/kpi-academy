@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#061321">
 <meta name="description" content="KPI Academy — Hospitality KPI and Business Intelligence learning platform">
 <title>KPI Academy</title>
+<link rel="icon" href="assets/academy-mark.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/styles.css">
 <link rel="stylesheet" href="assets/css/lesson-experience.css">
 <link rel="stylesheet" href="assets/css/visual-learning.css">
@@ -17,6 +18,18 @@
 <link rel="stylesheet" href="assets/css/bm002-lab.css">
 <link rel="stylesheet" href="assets/css/bm003-lab.css">
 <link rel="stylesheet" href="assets/css/bm004-lab.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/shell.css">
+<link rel="stylesheet" href="assets/css/sprint-experience.css">
+<link rel="stylesheet" href="assets/css/home.css">
+<script src="assets/js/namespace.js" defer></script>
+<script src="assets/js/ar.js" defer></script>
+<script src="assets/js/en.js" defer></script>
+<script src="assets/js/bidi.js" defer></script>
+<script src="assets/js/home-language.js" defer></script>
+<script src="assets/js/formatting.js" defer></script>
 <script src="assets/js/kpi-engine.js" defer></script>
 <script src="assets/js/calculator.js" defer></script>
 <script src="assets/js/learning-engine.js" defer></script>
@@ -33,36 +46,56 @@
 <script src="assets/js/live-venue-archive.js" defer></script>
 <script src="assets/js/live-venue.js" defer></script>
 <script src="assets/js/study-tools.js" defer></script>
+<script src="assets/js/sprint-experience.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 
 </head>
 <body>
-<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+<a class="skip-link" href="#main-content"><span data-shell-label="skip">تجاوز إلى المحتوى الرئيسي</span></a>
 <div class="app-shell">
-<aside class="sidebar" id="sidebar" aria-label="القائمة الرئيسية">
-<a class="brand" href="#dashboard"><span class="brand-mark">K</span><span><strong>KPI Academy</strong><small>Hospitality Intelligence</small></span></a>
-<div class="nav-label">مساحة التعلم</div>
-<nav class="main-nav" aria-label="التنقل الرئيسي">
-<a href="#dashboard" class="nav-link active" data-view="dashboard"><span class="nav-icon">⌂</span> لوحة التحكم</a>
-<a href="#modules" class="nav-link" data-view="modules"><span class="nav-icon">▤</span> الوحدات التعليمية</a>
-<a href="#calculator" class="nav-link" data-view="calculator"><span class="nav-icon">∑</span> حاسبة المؤشرات</a>
-<a href="#analytics" class="nav-link" data-view="analytics"><span class="nav-icon">▥</span> مختبر التحليل</a>
-<a href="#simulator" class="nav-link" data-view="simulator"><span class="nav-icon">◈</span> محاكاة الإدارة</a>
-<a href="#progress" class="nav-link" data-view="progress"><span class="nav-icon">◎</span> التقييم والتقدم</a>
+<aside class="sidebar" id="sidebar" aria-label="القائمة الرئيسية" data-shell-aria="mainMenu">
+<a class="brand" href="#dashboard"><svg class="brand-mark-svg" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38V24h7v14M20 38V15h7v23M32 38V8h7v30" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M5 42h38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span><strong>KPI Academy</strong><small>Hospitality Intelligence</small></span></a>
+<div class="nav-label"><span data-shell-label="learningSpace">مساحة التعلم</span></div>
+<nav class="main-nav" aria-label="التنقل الرئيسي" data-shell-aria="mainNav">
+<a href="#dashboard" class="nav-link active" data-view="dashboard"><span class="nav-icon"><svg><use href="#ka-icon-home"/></svg></span><span data-shell-label="home">لوحة التحكم</span></a>
+<a href="#modules" class="nav-link" data-view="modules"><span class="nav-icon"><svg><use href="#ka-icon-modules"/></svg></span><span data-shell-label="modules">الوحدات التعليمية</span></a>
+<a href="#calculator" class="nav-link" data-view="calculator"><span class="nav-icon"><svg><use href="#ka-icon-tools"/></svg></span><span data-shell-label="tools">حاسبة المؤشرات</span></a>
+<a href="#progress" class="nav-link" data-view="progress"><span class="nav-icon"><svg><use href="#ka-icon-progress"/></svg></span><span data-shell-label="progress">التقييم والتقدم</span></a>
+<a href="#analytics" class="nav-link" data-view="analytics"><span class="nav-icon"><svg><use href="#ka-icon-analytics"/></svg></span><span data-shell-label="analytics">مختبر التحليل</span></a>
+<a href="#simulator" class="nav-link" data-view="simulator"><span class="nav-icon"><svg><use href="#ka-icon-simulator"/></svg></span><span data-shell-label="simulator">محاكاة الإدارة</span></a>
+<a href="#settings" class="nav-link drawer-static-link" data-view="settings"><span class="nav-icon"><svg><use href="#ka-icon-settings"/></svg></span><span data-shell-label="settings">الإعدادات</span></a>
 </nav>
-<div class="sidebar-bottom"><div class="sidebar-note"><span class="note-dot"></span><span>مساحة تعلم احترافية</span></div><span class="version">KPI ACADEMY · LEARNING INTELLIGENCE</span></div>
+<div class="sidebar-bottom"><div class="sidebar-note"><span class="note-dot"></span><span><span data-shell-label="studySpace">مساحة تعلم احترافية</span></span></div><span class="version">KPI ACADEMY · LEARNING INTELLIGENCE</span></div>
 </aside>
 <main class="main-area" id="main-content" tabindex="-1">
-<header class="topbar"><button class="icon-button mobile-menu" id="menuToggle" aria-label="فتح القائمة" aria-controls="sidebar" aria-expanded="false">☰</button><a class="mobile-brand" href="#dashboard" aria-label="KPI Academy الرئيسية"><span class="mobile-brand-mark">K</span><span><strong>KPI ACADEMY</strong><small>Hospitality Business Intelligence</small></span></a><div class="breadcrumb"><span>الأكاديمية</span><span class="crumb-separator">/</span><strong id="pageTitle">لوحة التحكم</strong></div><div class="topbar-meta"><span class="status-dot"></span><span>بيئة تعليمية محلية</span></div></header>
+<header class="topbar"><button class="icon-button mobile-menu" id="menuToggle" aria-label="فتح القائمة" data-shell-aria="menu" aria-controls="sidebar" aria-expanded="false">☰</button><a class="mobile-brand" href="#dashboard" aria-label="KPI Academy الرئيسية" data-shell-aria="homeLink"><svg class="mobile-brand-mark-svg" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38V24h7v14M20 38V15h7v23M32 38V8h7v30" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg><span><strong>KPI ACADEMY</strong><small>Hospitality Business Intelligence</small></span></a><div class="breadcrumb"><span><span data-shell-label="academy">الأكاديمية</span></span><span class="crumb-separator">/</span><strong id="pageTitle"><span data-shell-label="home">لوحة التحكم</span></strong></div><div class="topbar-meta"><span class="status-dot"></span><span><span data-shell-label="device">بيئة تعليمية محلية</span></span></div><div class="header-actions"><button type="button" id="homeLanguage" class="ka-language-button" lang="en" aria-label="Show Home in English">English</button></div></header>
 <section class="page-content" id="app" aria-live="polite"><div class="loading-state">جارٍ تحميل الأكاديمية…</div></section>
 <footer class="footer"><span>KPI Academy</span><span>Learn · Calculate · Analyze · Manage</span></footer>
 </main>
-<nav class="mobile-bottom-nav" aria-label="التنقل الرئيسي">
-<a href="#dashboard" class="nav-link mobile-bottom-link active" data-view="dashboard"><span class="nav-icon">⌂</span><span>الرئيسية</span></a>
-<a href="#modules" class="nav-link mobile-bottom-link" data-view="modules"><span class="nav-icon">▤</span><span>الوحدات</span></a>
-<a href="#calculator" class="nav-link mobile-bottom-link" data-view="calculator"><span class="nav-icon">▥</span><span>الأدوات</span></a>
-<a href="#progress" class="nav-link mobile-bottom-link" data-view="progress"><span class="nav-icon">◎</span><span>تقدمي</span></a>
-<a href="#simulator" class="nav-link mobile-bottom-link" data-view="simulator"><span class="nav-icon">◈</span><span>المحاكاة</span></a>
+<nav class="mobile-bottom-nav" aria-label="التنقل الرئيسي" data-shell-aria="mainNav">
+<a href="#dashboard" class="nav-link mobile-bottom-link active" data-view="dashboard"><span class="nav-icon"><svg><use href="#ka-icon-home"/></svg></span><span><span data-shell-label="home">الرئيسية</span></span></a>
+<a href="#modules" class="nav-link mobile-bottom-link" data-view="modules"><span class="nav-icon"><svg><use href="#ka-icon-modules"/></svg></span><span><span data-shell-label="modules">الوحدات</span></span></a>
+<a href="#calculator" class="nav-link mobile-bottom-link" data-view="calculator"><span class="nav-icon"><svg><use href="#ka-icon-tools"/></svg></span><span><span data-shell-label="tools">الأدوات</span></span></a>
+<a href="#progress" class="nav-link mobile-bottom-link" data-view="progress"><span class="nav-icon"><svg><use href="#ka-icon-progress"/></svg></span><span><span data-shell-label="progress">تقدمي</span></span></a>
+<button class="nav-link mobile-bottom-link more-trigger" id="moreToggle" type="button" aria-controls="moreDrawer" aria-expanded="false"><span class="nav-icon"><svg><use href="#ka-icon-more"/></svg></span><span><span data-shell-label="more">المزيد</span></span></button>
 </nav>
+<div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+<aside class="more-drawer" id="moreDrawer" aria-label="المزيد" data-shell-aria="more" aria-hidden="true">
+<strong><span data-shell-label="more">المزيد</span></strong>
+<a href="#analytics" class="nav-link" data-view="analytics"><span class="nav-icon"><svg><use href="#ka-icon-analytics"/></svg></span><span data-shell-label="analytics">مختبر التحليل</span></a>
+<a href="#simulator" class="nav-link" data-view="simulator"><span class="nav-icon"><svg><use href="#ka-icon-simulator"/></svg></span><span data-shell-label="simulator">محاكاة الإدارة</span></a>
+<a href="#settings" class="nav-link drawer-static-link" data-view="settings"><span class="nav-icon"><svg><use href="#ka-icon-settings"/></svg></span><span data-shell-label="settings">الإعدادات</span></a>
+</aside>
+<svg xmlns="http://www.w3.org/2000/svg" class="ka-svg-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+<symbol id="ka-icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-7h-6v7H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="ka-icon-modules" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="3" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="13" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="ka-icon-tools" viewBox="0 0 24 24"><path d="M4 19h16M7 16V9m5 7V4m5 12v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="7" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="ka-icon-progress" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 15l4-4 3 2 5-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ka-icon-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="19" cy="12" r="1.7" fill="currentColor"/></symbol>
+<symbol id="ka-icon-analytics" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 16v-4m4 4V7m4 9v-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="ka-icon-simulator" viewBox="0 0 24 24"><path d="M12 3 21 8v8l-9 5-9-5V8zM3 8l9 5 9-5M12 13v8M8 5l9 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+<symbol id="ka-icon-settings" viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM19 13.5l2 1.2-2 3.4-2.2-1.1a8 8 0 0 1-2 .9L14.5 20h-5l-.3-2.1a8 8 0 0 1-2-.9L5 18.1l-2-3.4 2-1.2a8 8 0 0 1 0-2.3l-2-1.2 2-3.4 2.2 1.1a8 8 0 0 1 2-.9L9.5 4h5l.3 2.1a8 8 0 0 1 2 .9L19 5.9l2 3.4-2 1.2a8 8 0 0 1 0 3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+</svg>
+<script src="assets/js/shell.js" defer></script>
 </div>
 </body></html>
